@@ -4,6 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
+import {
+  MatButtonModule, MatCheckboxModule, MatDialogModule,
+  MatFormFieldModule, MatIconModule, MatInputModule,
+  MatMenuModule, MatProgressSpinnerModule, MatSelectModule,
+  MatSidenavModule, MatSnackBarModule, MatListModule, MatToolbarModule, MatGridListModule, MatCardModule,
+  MatSlideToggleModule
+} from '@angular/material';
+
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
@@ -22,6 +30,7 @@ import { CounterComponent } from './components/counter/counter.component';
         CommonModule,
         HttpModule,
         FormsModule,
+		MatButtonModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
