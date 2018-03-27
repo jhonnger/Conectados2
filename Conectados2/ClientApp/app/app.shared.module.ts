@@ -22,7 +22,8 @@ import { CounterComponent } from './components/counter/counter.component';
 import { ChatComponent } from './components/chat/chat.component'
 import {ChatService} from './services/chat.service';
 import {TipoDenunciaService} from './services/tipo-denuncia.service'
-import {NuevocasoComponent} from "./components/nuevocaso/nuevocaso.component";
+import { NuevocasoComponent } from "./components/nuevocaso/nuevocaso.component";
+import { UltialertaComponent } from "./components/ultialerta/ultialerta.component";
 import {MatStepperModule} from '@angular/material/stepper';
 import {ReactiveFormsModule} from '@angular/forms';
 import { MatNativeDateModule} from '@angular/material';
@@ -38,7 +39,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
         FetchDataComponent,
         HomeComponent,
         ChatComponent,
-        NuevocasoComponent
+        NuevocasoComponent,
+        UltialertaComponent
     ], entryComponents:[NuevocasoComponent],
     imports: [
         CommonModule,
