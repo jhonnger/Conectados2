@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,15 +8,31 @@ namespace Conectados2.Entities
 {
     public class UsuarioDTO
     {
-        public long IdUsuario { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string FotoPerfil { get; set; }
-        public DateTime FecCreacion { get; set; }
-        public DateTime FecModificacion { get; set; }
-        public string UsuarioMod { get; set; }
-        public bool Estado { get; set; }
-        public string SecurityStamp { get; set; }
-        public string Username { get; set; }
+        [Required]
+        public string nombre { get; set; }
+
+        [Required]
+        public string apellidos { get; set; }
+
+        [Required]
+        public string email { get; set; }
+
+        [Required]
+        public string numDocumento { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string password { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Compare("password", ErrorMessage = "La contraseña y la confirmacion no coinciden")]
+        public string confirmPassword { get; set; }
+
+        [Required]
+        public string fotoPerfil { get; set; }
+
+        [Required]
+        public string usuario { get; set; }
     }
 }

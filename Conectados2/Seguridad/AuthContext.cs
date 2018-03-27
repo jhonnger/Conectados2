@@ -205,15 +205,15 @@ namespace Conectados2.Seguridad
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasColumnName("password")
-                    .HasMaxLength(250)
+                    .HasMaxLength(128)
                     .IsUnicode(false);
 
-                entity.Property(e => e.SecurityStamp)
-                    .IsRequired()
-                    .HasColumnName("security_stamp")
-                    .HasMaxLength(100)
-                    .IsUnicode(false)
-                    .HasDefaultValueSql("('-')");
+                entity.Property(e => e.PasswordSalt)
+                    
+                    .HasColumnName("password_salt")
+                    .HasMaxLength(258)
+                    .IsUnicode(false);
+
 
                 entity.Property(e => e.Username)
                     .IsRequired()
@@ -227,6 +227,11 @@ namespace Conectados2.Seguridad
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.HasOne(d => d.Persona)
+                    .WithOne(p => p.Usuario)
+                    .HasForeignKey<Usuario>(d => d.IdUsuario)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_usuario_persona");
             });
 
         }

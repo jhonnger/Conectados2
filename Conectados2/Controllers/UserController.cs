@@ -37,13 +37,13 @@ namespace Conectados2.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]UsuarioDTO userDto)
+        public IActionResult Authenticate([FromBody]LoginModel userDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            var user = _userService.Authenticate(userDto.Username, userDto.Password);
+            var user = _userService.Authenticate(userDto.usuario, userDto.password);
 
             if (user == null)
                 return Unauthorized();
@@ -79,14 +79,17 @@ namespace Conectados2.Controllers
         public IActionResult Register([FromBody]UsuarioDTO userDto)
         {
             // map dto to entity
-           
-            var user = _mapper.Map<Seguridad.Usuario>(userDto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+           // var user = _mapper.Map<Seguridad.Usuario>(userDto);
               
 
             try
             {
                 // save 
-                _userService.Create(user, userDto.Password);
+                _userService.Create(userDto);
                 return Ok();
             }
             catch (AppException ex)
@@ -122,7 +125,7 @@ namespace Conectados2.Controllers
             try
             {
                 // save 
-                _userService.Update(user, userDto.Password);
+                _userService.Update(user, userDto.password);
                 return Ok();
             }
             catch (AppException ex)

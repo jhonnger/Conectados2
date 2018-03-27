@@ -4,6 +4,8 @@ using Conectados2.Seguridad;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Conectados2.Helpers
@@ -13,13 +15,14 @@ namespace Conectados2.Helpers
         Usuario Authenticate(string username, string password);
         IEnumerable<Usuario> GetAll();
         Usuario GetById(int id);
-        Usuario Create(Usuario user, string password);
+        Usuario Create(Entities.UsuarioDTO user);
         void Update(Usuario user, string password = null);
         void Delete(int id);
     }
 
     public class UserService : IUserService
     {
+        private const string userDefault = "Sistema";
         private AuthContext _context;
 
         public UserService(AuthContext context)
@@ -39,7 +42,7 @@ namespace Conectados2.Helpers
                 return null;
 
             // check if password is correct
-            if (!true)
+            if (!VerifyPasswordHash(password, Encoding.UTF8.GetBytes(user.Password), Encoding.UTF8.GetBytes(user.PasswordSalt)))
                 return null;
 
             // authentication successful
@@ -56,25 +59,45 @@ namespace Conectados2.Helpers
             return _context.Usuario.Find(id);
         }
 
-        public Usuario Create(Usuario user, string password)
+        public Usuario Create(Entities.UsuarioDTO userDto)
         {
+            string passwordHash, passwordSalt;
             // validation
-            if (string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(userDto.password))
                 throw new AppException("Password is required");
 
-            if (_context.Usuario.Any(x => x.Username == user.Username))
-                throw new AppException("Username " + user.Username + " is already taken");
+            if (_context.Persona.Any(x => x.NumDoc == userDto.numDocumento))
+                throw new AppException("Numero de documento " + userDto.numDocumento + " ya está registrado");
 
-            byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            if (_context.Usuario.Any(x => x.Username == userDto.usuario))
+                throw new AppException("Username " + userDto.usuario + " ya ha sido registrado");
 
-            user.Password = passwordHash.ToString();
-            //user.PasswordSalt = passwordSalt;
+            if (_context.Usuario.Any(x => x.Email == userDto.email))
+                throw new AppException("Email " + userDto.email + " ya ha sido registrado");
 
-            _context.Usuario.Add(user);
+            Usuario usuario = new Usuario();
+            Persona persona = new Persona();
+
+            persona.Nombre = userDto.nombre;
+            persona.Apellido = userDto.apellidos;
+            persona.NumDoc = userDto.numDocumento;
+            persona.UsuarioMod = userDefault;
+            persona.FecCreacion = DateTime.Now;
+            persona.FecModificacion = DateTime.Now;
+            
+            CreatePasswordHash(userDto.password,out passwordHash,out passwordSalt);
+
+            usuario.Email = userDto.email;
+            usuario.Username = userDto.usuario;
+            usuario.Password = passwordHash;
+            usuario.PasswordSalt = passwordSalt;
+            usuario.FotoPerfil = "default.jpg";
+            usuario.Persona = persona;
+            usuario.UsuarioMod = userDefault;
+            _context.Usuario.Add(usuario);
             _context.SaveChanges();
 
-            return user;
+            return usuario;
         }
 
         public void Update(Usuario userParam, string password = null)
@@ -99,7 +122,7 @@ namespace Conectados2.Helpers
             // update password if it was entered
             if (!string.IsNullOrWhiteSpace(password))
             {
-                byte[] passwordHash, passwordSalt;
+                string passwordHash, passwordSalt;
                 CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
                 user.Password = passwordHash.ToString();
@@ -122,15 +145,16 @@ namespace Conectados2.Helpers
 
         // private helper methods
 
-        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        private static void CreatePasswordHash(string password, out string passwordHash, out string passwordSalt)
         {
             if (password == null) throw new ArgumentNullException("password");
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
 
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            passwordSalt = getSalt();
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(Encoding.UTF8.GetBytes(passwordSalt)))
             {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+               
+                passwordHash = BitConverter.ToString(hmac.ComputeHash(Encoding.UTF8.GetBytes(password))).Replace("-", "").ToLower();
             }
         }
 
@@ -138,12 +162,12 @@ namespace Conectados2.Helpers
         {
             if (password == null) throw new ArgumentNullException("password");
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
-            if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
-            if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+            if (storedHash.Length != 128) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
+            if (storedSalt.Length != 32) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
 
             using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
             {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                var computedHash = Encoding.UTF8.GetBytes(BitConverter.ToString(hmac.ComputeHash(Encoding.UTF8.GetBytes(password))).Replace("-", "").ToLower());
                 for (int i = 0; i < computedHash.Length; i++)
                 {
                     if (computedHash[i] != storedHash[i]) return false;
@@ -151,6 +175,15 @@ namespace Conectados2.Helpers
             }
 
             return true;
+        }
+        private static string getSalt()
+        {
+            byte[] bytes = new byte[128 / 8];
+            using (var keyGenerator = RandomNumberGenerator.Create())
+            {
+                keyGenerator.GetBytes(bytes);
+                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+            }
         }
     }
 }

@@ -14,12 +14,13 @@ namespace Conectados2.Models
         public long IdUsuario { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string PasswordSalt { get; set; }
         public string FotoPerfil { get; set; }
         public DateTime FecCreacion { get; set; }
         public DateTime FecModificacion { get; set; }
         public string UsuarioMod { get; set; }
         public bool Estado { get; set; }
-        public string SecurityStamp { get; set; }
+      
         public string Username { get; set; }
 
         public Persona IdUsuarioNavigation { get; set; }

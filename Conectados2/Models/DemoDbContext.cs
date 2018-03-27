@@ -768,12 +768,7 @@ namespace Conectados2.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
-                entity.Property(e => e.SecurityStamp)
-                    .IsRequired()
-                    .HasColumnName("security_stamp")
-                    .HasMaxLength(100)
-                    .IsUnicode(false)
-                    .HasDefaultValueSql("('-')");
+                
 
                 entity.Property(e => e.Username)
                     .IsRequired()
