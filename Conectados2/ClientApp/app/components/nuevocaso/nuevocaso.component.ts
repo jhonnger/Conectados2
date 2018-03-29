@@ -23,7 +23,8 @@ export class NuevocasoComponent implements OnInit {
   ngOnInit() {
     this._tipoDenunciaService.listar().subscribe(
       data => {
-        this.tipoDenuncia = JSON.parse(JSON.stringify(data));
+        console.log(data);
+        this.tipoDenuncia = (data);
       }
     );
     this.firstFormGroup = this._formBuilder.group({

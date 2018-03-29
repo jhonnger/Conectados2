@@ -5,7 +5,7 @@ import {AppSettings} from '../endPoint.config';
 @Injectable()
 export class TipoDenunciaService {
 
-  url = AppSettings.API_ENDPOINT + 'api/SampleData/WeatherForecasts';
+  url = AppSettings.API_ENDPOINT + 'api/TipoDenuncia';
 
   constructor(private http: Http
               ) { }
@@ -19,7 +19,7 @@ export class TipoDenunciaService {
   listar() {
     return this.http.get(this.url + '/' )
       .map( res => {
-        return res;
+        return res.json();
       });
   }
 }

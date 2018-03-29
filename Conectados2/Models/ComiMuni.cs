@@ -22,6 +22,7 @@ namespace Conectados2.Models
         public DateTime FecModificacion { get; set; }
         public string UsuarioMod { get; set; }
         public bool Estado { get; set; }
+        public string Nombre { get; set; }
 
         public Jurisdiccion IdJurisdiccionNavigation { get; set; }
         public TipoMuni IdTipoComiMuniNavigation { get; set; }

@@ -17,6 +17,11 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Conectados2.Seguridad;
+using Conectados2.Models;
+using Conectados2.Servicio;
+using Conectados2.Servicio.impl;
+using Conectados2.Repositorio;
+using Conectados2.Repositorio.impl;
 
 namespace Conectados2
 {
@@ -35,7 +40,11 @@ namespace Conectados2
             services.AddCors();
             var connection = @"data source=JHONGGER-PC;initial catalog=conectaDB;;user id=sa;password=root;integrated security=True;MultipleActiveResultSets=True";
             services.AddDbContext<AuthContext>(options => options.UseSqlServer(connection));
-            
+            services.AddDbContext<DemoDbContext>(options => options.UseSqlServer(connection));
+
+            services.AddTransient<TipoDenunciaServicio, TipoDenunciaServicioImpl>();
+            services.AddTransient<TipoDenunciaRepositorio, TipoDenunciaRepositorioImpl>();
+
             services.AddMvc();
             services.AddAutoMapper();
 
@@ -91,6 +100,10 @@ namespace Conectados2
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "api",
+                    template: "api/{controller=Home}/{id?}");
 
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",

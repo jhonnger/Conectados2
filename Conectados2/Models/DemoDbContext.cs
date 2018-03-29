@@ -6,6 +6,7 @@ namespace Conectados2.Models
 {
     public partial class DemoDbContext : DbContext
     {
+        public DemoDbContext(DbContextOptions<DemoDbContext> options) : base(options) { }
         public virtual DbSet<ComiMuni> ComiMuni { get; set; }
         public virtual DbSet<ComiMuniMembresia> ComiMuniMembresia { get; set; }
         public virtual DbSet<Configuracion> Configuracion { get; set; }
@@ -60,6 +61,12 @@ namespace Conectados2.Models
                     .HasColumnName("fec_modificacion")
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasColumnName("nombre")
+                    .HasMaxLength(80)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.IdJurisdiccion).HasColumnName("id_jurisdiccion");
 

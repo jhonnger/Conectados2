@@ -6,7 +6,7 @@
         <ng-template matStepLabel>General</ng-template>
         <mat-form-field class="full-width">
           <mat-select formControlName="tipoIncidente" placeholder="Tipo de incidente">
-            <mat-option  *ngFor='let tipo of tipoDenuncia'  value="tipo.id_tipo_denuncia">{{tipo.nombre}}</mat-option>
+            <mat-option  *ngFor='let tipo of tipoDenuncia'  value="tipo.idTipoDenuncia">{{tipo.nombre}}</mat-option>
           </mat-select>
           <mat-error>Debe elegir un tipo de incidente</mat-error>
         </mat-form-field>
