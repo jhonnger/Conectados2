@@ -28,8 +28,8 @@ li {
     position: expression("absolute");
     display: none;
     z-index: 1;
-    bottom: 100px;
-    right: 100px;
+    top: 49px;
+    right: 0px;
     display: block;
 }
 
@@ -78,9 +78,7 @@ li {
 }
 
 .chatboxmensajes {
-    padding-top: 10px;
-    overflow-y: auto;
-    overflow-x: auto;
+    overflow-x: hidden;
 }
 
 .chatboxtextarea {

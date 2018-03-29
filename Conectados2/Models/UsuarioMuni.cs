@@ -6,7 +6,7 @@ namespace Conectados2.Models
     public partial class UsuarioMuni
     {
         public int IdUsuarioMuni { get; set; }
-        public long IdUsuario { get; set; }
+        public int IdUsuario { get; set; }
         public int IdMuni { get; set; }
 
         public ComiMuni IdMuniNavigation { get; set; }

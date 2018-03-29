@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgStyle, NgForOf } from '@angular/common';
 import { ChatService } from '../../services/chat.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {TipoDenunciaService} from '../../services/tipo-denuncia.service';
-import { TipoDenuncia } from '../../interfaces/TipoDenuncia';
 
 
 @Component({
@@ -17,7 +15,7 @@ export class UltialertaComponent implements OnInit {
 
 
     // tslint:disable-next-line:no-inferrable-types
-    tam_chat: number = 530;
+    tam_chat: number = 200;
     // tslint:disable-next-line:no-inferrable-types
     flagChat: boolean = true;
 
@@ -180,10 +178,10 @@ export class UltialertaComponent implements OnInit {
 
     minimizarChat() {
         this.flagChat = !this.flagChat;
-        if (this.tam_chat === 530) {
+        if (this.tam_chat === 200) {
             this.tam_chat = 200;
         } else {
-            this.tam_chat = 530;
+            this.tam_chat = 200;
         }
         console.log(this.tam_chat);
     }

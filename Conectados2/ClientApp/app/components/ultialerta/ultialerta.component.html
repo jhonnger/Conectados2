@@ -11,46 +11,20 @@
     </div>
     <!--If para Ocultar o minimiizar el chat-->
     <div *ngIf="flagChat">
-        <div class="chatboxcontent">
-            <div class="row">
-                <div class="col-8" style="padding-left:0px;padding-right:0px;">
-                    <div class=row>
-                        <div class="col-12" style="height: 240px;">
-                            <mat-tab-group>
-                                <mat-tab *ngFor="let tab of chats" [label]="tab.usuario">
-                                    <div class="chatboxmensajes" style="height: 190px;">
-                                        <div *ngFor="let msgs of tab.conversacion">
-                                            <div class="chatboxmessage">
-                                                <span class="chatboxmessagefrom">{{msgs.user}}:&nbsp;&nbsp;</span>
-                                                <span class="chatboxmessagecontent">{{msgs.text}}</span>
-                                            </div>
-                                            <div class="chatboxmessage">
-                                                <span class="chatboxinfo">{{msgs.hora}}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="chatboxinput">
-                                        <textarea class="chatboxtextarea" (keypress)="onEnter($event, tab, text)" name="text" [(ngModel)]="text" placeholder="Escribir mensaje aquí.." style="resize: none;" ngModel></textarea>
-                                    </div>
-                                </mat-tab>
-                            </mat-tab-group>
+        <div class="chatboxcontent">            
+            <div class="col" style="padding-left:10px;padding-right: 5px;">
+                <mat-tab-group>
+                    <mat-tab label="Mensajes">
+                        <div class="chatboxmensajes" style="height: 250px;">
+                            <mat-list style="padding-top: 0px;">
+                                <mat-list-item *ngFor="let msg of mensajes" style="height: 50px; cursor: pointer;" (click)="elegirMensaje(msg)">
+                                    <h4 mat-line>{{msg.usuario}}</h4>
+                                    <p mat-line>{{msg.ultimo_mensaje.text | slice:0:10 }}.. : {{msg.ultimo_mensaje.hora}}</p>
+                                </mat-list-item>
+                            </mat-list>
                         </div>
-                    </div>
-                </div>
-                <div class="col-4" style="padding-left:0px;padding-right: 0px;">
-                    <mat-tab-group>
-                        <mat-tab label="Mensajes">
-                            <div class="chatboxmensajes" style="height: 250px;">
-                                <mat-list style="padding-top: 0px;">
-                                    <mat-list-item *ngFor="let msg of mensajes" style="height: 50px; cursor: pointer;" (click)="elegirMensaje(msg)">
-                                        <h4 mat-line>{{msg.usuario}}</h4>
-                                        <p mat-line>{{msg.ultimo_mensaje.text | slice:0:10 }}.. : {{msg.ultimo_mensaje.hora}}</p>
-                                    </mat-list-item>
-                                </mat-list>
-                            </div>
-                        </mat-tab>
-                    </mat-tab-group>
-                </div>
+                    </mat-tab>
+                </mat-tab-group>              
             </div>
         </div>
     </div>

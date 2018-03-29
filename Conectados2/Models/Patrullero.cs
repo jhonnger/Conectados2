@@ -7,7 +7,7 @@ namespace Conectados2.Models
     {
         public int IdPatrullero { get; set; }
         public string Placa { get; set; }
-        public long IdPersona { get; set; }
+        public int IdPersona { get; set; }
         public int IdComiMuni { get; set; }
 
         public ComiMuni IdComiMuniNavigation { get; set; }
