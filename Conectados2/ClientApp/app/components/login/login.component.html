@@ -1,0 +1,49 @@
+<div class="login">
+
+    <div class="outer">
+        <div class="middle">
+            <div class="loginBox md-whiteframe-z1">
+                <mat-toolbar  color="primary">
+                    <h2 class="md-toolbar-tools"><span>Iniciar sesión</span></h2>
+                </mat-toolbar>
+                <form action="#"  (ngSubmit) = "submit()" ngNativeValidate name="loginForm">
+                    <mat-card  class="md-padding">
+                        <mat-form-field class="full-width">
+
+                            <input matInput placeholder="Usuario" required
+                                   [formControl]="usuarioFormControl"
+                                   [(ngModel)]="usuario.usuario"
+                                   name="username" />
+                            <mat-icon matPrefix >person</mat-icon>
+                            <mat-error >Debe ingresar un usuario.</mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="full-width">
+
+                            <input matInput placeholder="Contraseña" required
+                                   type="password"
+                                   [(ngModel)]="usuario.password"
+                                   [formControl]="passwordFormControl"
+                                   name="password" />
+                            <mat-icon matPrefix >lock</mat-icon>
+                            <mat-error >Necesita especificar una contraseña.</mat-error>
+                        </mat-form-field>
+                        <div>
+                            <div>
+                                <mat-checkbox>Recuerdame!</mat-checkbox>
+                                <button mat-raised-button color="primary" type="submit" class="right">Iniciar sesión</button>
+                            </div>
+
+                            <div></div>
+                            <br>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div style="text-align: center">
+
+                            <button mat-raised-button color="primary" href="#">Crear una cuenta</button>
+                        </div>
+                    </mat-card>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

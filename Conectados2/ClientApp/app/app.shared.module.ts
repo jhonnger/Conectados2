@@ -27,9 +27,17 @@ import { NuevocasoComponent } from "./components/nuevocaso/nuevocaso.component";
 import {MatStepperModule} from '@angular/material/stepper';
 import {ReactiveFormsModule} from '@angular/forms';
 import { MatNativeDateModule} from '@angular/material';
+import { LoadingComponent } from "./components/Loading/loading.component";
 
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {LoginComponent} from './components/login/login.component';
+import {UtilService} from './services/util.service';
+import {AuthService} from './services/auth.service';
+
+import {
+    AuthGuardService as AuthGuard} from './services/auth-guard.service';
+import {JwtHelper} from "angular2-jwt/angular2-jwt";
 
 @NgModule({
     declarations: [
@@ -40,18 +48,28 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
         HomeComponent,
         ChatComponent,
         NuevocasoComponent,
+        LoginComponent,
+		LoadingComponent,
         UltialertaComponent
-    ], entryComponents:[NuevocasoComponent],
+    ], entryComponents:[NuevocasoComponent, LoadingComponent],
     imports: [
         CommonModule,
         HttpModule,
         FormsModule,
+        MatProgressSpinnerModule,
         ReactiveFormsModule,
+        MatCardModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatSnackBarModule,
 		MatButtonModule,
         MatTabsModule,
         MatDialogModule,
         MatNativeDateModule,
         AmazingTimePickerModule,
+        MatListModule,
+        MatGridListModule,
+        MatCheckboxModule,
         MatInputModule,
         MatDatepickerModule,
         MatSelectModule,
@@ -62,7 +80,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
         }),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
-            { path: 'home', component: HomeComponent },
+            { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  },
+            { path: 'login', component: LoginComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: '**', redirectTo: 'home' }
@@ -70,7 +89,11 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     ],
     providers:[
         ChatService,
-        TipoDenunciaService
+        TipoDenunciaService,
+        AuthService,
+        UtilService,
+        JwtHelper,
+        AuthGuard
     ]
 })
 export class AppModuleShared {

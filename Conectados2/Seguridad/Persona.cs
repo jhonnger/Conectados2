@@ -9,7 +9,7 @@ namespace Conectados2.Seguridad
         {
         }
 
-        public long IdPersona { get; set; }
+        public int IdPersona { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string NumDoc { get; set; }

@@ -11,7 +11,7 @@ namespace Conectados2.Seguridad
             RolUsuario = new HashSet<RolUsuario>();
         }
 
-        public long IdUsuario { get; set; }
+        public int IdUsuario { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string FotoPerfil { get; set; }
