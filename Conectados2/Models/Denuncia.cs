@@ -7,7 +7,7 @@ namespace Conectados2.Models
     {
         public int IdDenuncia { get; set; }
         public int IdTipoDenuncia { get; set; }
-        public long IdUsuario { get; set; }
+        public int IdUsuario { get; set; }
         public int IdEstadoDenuncia { get; set; }
         public int IdPosicionDenuncia { get; set; }
         public int IdPosicionUsuario { get; set; }

@@ -11,7 +11,7 @@ namespace Conectados2.Models
             RolUsuario = new HashSet<RolUsuario>();
         }
 
-        public long IdRol { get; set; }
+        public int IdRol { get; set; }
         public string Descripcion { get; set; }
 
         public ICollection<RolPermiso> RolPermiso { get; set; }

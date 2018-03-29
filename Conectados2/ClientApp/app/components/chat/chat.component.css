@@ -29,7 +29,7 @@ li {
     display: none;
     z-index: 1;
     bottom: 0px;
-    right: 10px;
+    right: 0px;
     display: block;
 }
 
@@ -81,6 +81,13 @@ li {
     padding-top: 10px;
     overflow-y: auto;
     overflow-x: auto;
+    scrollbar-face-color: #FFFFFF;
+    scrollbar-shadow-color: #FFFFFF;
+    scrollbar-highlight-color: #FFFFFF;
+    scrollbar-3dlight-color: #FFFFFF;
+    scrollbar-darkshadow-color: #FFFFFF;
+    scrollbar-track-color: #FFFFFF;
+    scrollbar-arrow-color: #FFFFFF;
 }
 
 .chatboxtextarea {

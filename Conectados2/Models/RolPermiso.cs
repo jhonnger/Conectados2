@@ -6,7 +6,7 @@ namespace Conectados2.Models
     public partial class RolPermiso
     {
         public int IdRolPermiso { get; set; }
-        public long IdRol { get; set; }
+        public int IdRol { get; set; }
         public int IdPermiso { get; set; }
 
         public Permiso IdPermisoNavigation { get; set; }

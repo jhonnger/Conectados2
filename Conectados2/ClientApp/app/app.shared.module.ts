@@ -19,11 +19,11 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
-import { ChatComponent } from './components/chat/chat.component'
+import { ChatComponent } from './components/chat/chat.component';
+import { UltialertaComponent } from "./components/ultialerta/ultialerta.component";
 import {ChatService} from './services/chat.service';
 import {TipoDenunciaService} from './services/tipo-denuncia.service'
 import { NuevocasoComponent } from "./components/nuevocaso/nuevocaso.component";
-import { UltialertaComponent } from "./components/ultialerta/ultialerta.component";
 import {MatStepperModule} from '@angular/material/stepper';
 import {ReactiveFormsModule} from '@angular/forms';
 import { MatNativeDateModule} from '@angular/material';

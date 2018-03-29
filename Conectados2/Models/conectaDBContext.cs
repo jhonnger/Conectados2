@@ -4,16 +4,19 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Conectados2.Models
 {
-    public partial class DemoDbContext : DbContext
+    public partial class conectaDBContext : DbContext
     {
         public virtual DbSet<ComiMuni> ComiMuni { get; set; }
         public virtual DbSet<ComiMuniMembresia> ComiMuniMembresia { get; set; }
         public virtual DbSet<Configuracion> Configuracion { get; set; }
+        public virtual DbSet<Conversacion> Conversacion { get; set; }
         public virtual DbSet<Denuncia> Denuncia { get; set; }
         public virtual DbSet<EstadoDenuncia> EstadoDenuncia { get; set; }
         public virtual DbSet<Jurisdiccion> Jurisdiccion { get; set; }
         public virtual DbSet<Membresia> Membresia { get; set; }
+        public virtual DbSet<Mensaje> Mensaje { get; set; }
         public virtual DbSet<Pago> Pago { get; set; }
+        public virtual DbSet<Participantes> Participantes { get; set; }
         public virtual DbSet<Patrullero> Patrullero { get; set; }
         public virtual DbSet<Permiso> Permiso { get; set; }
         public virtual DbSet<Persona> Persona { get; set; }
@@ -26,7 +29,6 @@ namespace Conectados2.Models
         public virtual DbSet<TipoDenuncia> TipoDenuncia { get; set; }
         public virtual DbSet<TipoMuni> TipoMuni { get; set; }
         public virtual DbSet<Ubicacion> Ubicacion { get; set; }
-        
         public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<UsuarioMuni> UsuarioMuni { get; set; }
 
@@ -35,7 +37,7 @@ namespace Conectados2.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(@"data source=JHONGGER-PC;initial catalog=conectaDB;;user id=sa;password=root;integrated security=True;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer(@"data source=NotHP;initial catalog=conectaDB;;user id=sa;password=root;integrated security=True;MultipleActiveResultSets=True");
             }
         }
 
@@ -158,6 +160,22 @@ namespace Conectados2.Models
                     .HasForeignKey(d => d.IdComiMuni)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_configuracion_comi_muni");
+            });
+
+            modelBuilder.Entity<Conversacion>(entity =>
+            {
+                entity.HasKey(e => e.IdConversacion);
+
+                entity.ToTable("conversacion");
+
+                entity.Property(e => e.IdConversacion)
+                    .HasColumnName("id_conversacion")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Descripcion)
+                    .IsRequired()
+                    .HasColumnName("descripcion")
+                    .HasMaxLength(20);
             });
 
             modelBuilder.Entity<Denuncia>(entity =>
@@ -351,6 +369,42 @@ namespace Conectados2.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<Mensaje>(entity =>
+            {
+                entity.HasKey(e => e.IdMensaje);
+
+                entity.ToTable("mensaje");
+
+                entity.Property(e => e.IdMensaje)
+                    .HasColumnName("id_mensaje")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Hora)
+                    .HasColumnName("hora")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.IdConversacion).HasColumnName("id_conversacion");
+
+                entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
+
+                entity.Property(e => e.Texto)
+                    .IsRequired()
+                    .HasColumnName("texto")
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.IdConversacionNavigation)
+                    .WithMany(p => p.Mensaje)
+                    .HasForeignKey(d => d.IdConversacion)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_mensaje_conversacion");
+
+                entity.HasOne(d => d.IdUsuarioNavigation)
+                    .WithMany(p => p.Mensaje)
+                    .HasForeignKey(d => d.IdUsuario)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_mensaje_usuario");
+            });
+
             modelBuilder.Entity<Pago>(entity =>
             {
                 entity.HasKey(e => e.IdPago);
@@ -391,6 +445,33 @@ namespace Conectados2.Models
                     .HasForeignKey(d => d.IdComiMuniMembresia)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_pago_comi_muni_membresia");
+            });
+
+            modelBuilder.Entity<Participantes>(entity =>
+            {
+                entity.HasKey(e => e.IdParticipantes);
+
+                entity.ToTable("participantes");
+
+                entity.Property(e => e.IdParticipantes)
+                    .HasColumnName("id_participantes")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.IdConversacion).HasColumnName("id_conversacion");
+
+                entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
+
+                entity.HasOne(d => d.IdConversacionNavigation)
+                    .WithMany(p => p.Participantes)
+                    .HasForeignKey(d => d.IdConversacion)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_participantes_conversacion");
+
+                entity.HasOne(d => d.IdUsuarioNavigation)
+                    .WithMany(p => p.Participantes)
+                    .HasForeignKey(d => d.IdUsuario)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_participantes_usuario");
             });
 
             modelBuilder.Entity<Patrullero>(entity =>
@@ -444,13 +525,6 @@ namespace Conectados2.Models
                 entity.HasKey(e => e.IdPersona);
 
                 entity.ToTable("persona");
-
-                entity.HasIndex(e => e.IdPersona)
-                    .HasName("IX_persona");
-
-                entity.HasIndex(e => e.NumDoc)
-                    .HasName("IX_persona_1")
-                    .IsUnique();
 
                 entity.Property(e => e.IdPersona).HasColumnName("id_persona");
 
@@ -532,8 +606,6 @@ namespace Conectados2.Models
                     .HasMaxLength(60)
                     .IsUnicode(false);
             });
-
-            
 
             modelBuilder.Entity<RolPermiso>(entity =>
             {
@@ -722,21 +794,17 @@ namespace Conectados2.Models
                     .HasColumnType("decimal(10, 6)");
             });
 
-       
-
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.IdUsuario);
 
                 entity.ToTable("usuario");
 
-                entity.HasIndex(e => e.Username)
-                    .HasName("IX_usuario_1")
+                entity.HasIndex(e => e.IdPersona)
+                    .HasName("IX_usuario")
                     .IsUnique();
 
-                entity.Property(e => e.IdUsuario)
-                    .HasColumnName("id_usuario")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -762,19 +830,22 @@ namespace Conectados2.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.IdJurisdiccion).HasColumnName("id_jurisdiccion");
+
+                entity.Property(e => e.IdPersona).HasColumnName("id_persona");
+
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasColumnName("password")
-                    .HasMaxLength(250)
+                    .HasMaxLength(256)
                     .IsUnicode(false);
 
-                
-
-                entity.Property(e => e.Username)
+                entity.Property(e => e.PasswordSalt)
                     .IsRequired()
-                    .HasColumnName("username")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .HasColumnName("password_salt")
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('--')");
 
                 entity.Property(e => e.UsuarioMod)
                     .IsRequired()
@@ -782,9 +853,9 @@ namespace Conectados2.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.IdUsuarioNavigation)
+                entity.HasOne(d => d.IdPersonaNavigation)
                     .WithOne(p => p.Usuario)
-                    .HasForeignKey<Usuario>(d => d.IdUsuario)
+                    .HasForeignKey<Usuario>(d => d.IdPersona)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_usuario_persona");
             });
