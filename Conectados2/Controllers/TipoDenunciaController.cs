@@ -32,7 +32,7 @@ namespace Conectados2.Controllers
         }
 
         // GET: api/TipoDenuncia/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}" )]
         public async Task<IActionResult> GetTipoDenuncia([FromRoute] int id)
         {
             if (!ModelState.IsValid)

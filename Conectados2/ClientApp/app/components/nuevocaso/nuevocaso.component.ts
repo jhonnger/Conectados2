@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {TipoDenunciaService} from '../../services/tipo-denuncia.service';
 import {TipoDenuncia} from '../../interfaces/TipoDenuncia';
+import {UtilService} from "../../services/util.service";
 
 @Component({
   selector: 'app-nuevocaso',
   templateUrl: './nuevocaso.component.html',
   styleUrls: ['./nuevocaso.component.css']
 })
-export class NuevocasoComponent implements OnInit {
+export class NuevocasoComponent implements OnInit, AfterViewInit {
+    
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -18,15 +20,11 @@ export class NuevocasoComponent implements OnInit {
   date = new FormControl(new Date());
 
   constructor(private _formBuilder: FormBuilder,
-              private _tipoDenunciaService: TipoDenunciaService) { }
+              private _tipoDenunciaService: TipoDenunciaService,
+              private _utilService: UtilService) { }
 
   ngOnInit() {
-    this._tipoDenunciaService.listar().subscribe(
-      data => {
-        console.log(data);
-        this.tipoDenuncia = (data);
-      }
-    );
+    
     this.firstFormGroup = this._formBuilder.group({
       tipoIncidente: ['', Validators.required],
       horaIncidente: ['', Validators.required]
@@ -42,6 +40,21 @@ export class NuevocasoComponent implements OnInit {
       horaIncidente: horaActual
     });
   }
+    ngAfterViewInit(){
+      setTimeout( () =>{
+          this._utilService.showLoading();
+          this._tipoDenunciaService.listar().subscribe(
+              data => {
+                  console.log(data);
+                  if(data.success){
+                      this.tipoDenuncia = (data.data);
+                  }
+                  this._utilService.hideLoading();
+              }
+          );     
+      }, 200);
+        
+    }
 
   obtenerHoraActual() {
     const currentdate = new Date();
