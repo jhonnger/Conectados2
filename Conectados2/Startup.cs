@@ -40,7 +40,7 @@ namespace Conectados2
             services.AddCors();
             var connection = @"data source=JHONGGER-PC;initial catalog=conectaDB;;user id=sa;password=root;integrated security=True;MultipleActiveResultSets=True";
             services.AddDbContext<AuthContext>(options => options.UseSqlServer(connection));
-            services.AddDbContext<DemoDbContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<conectaDBContext>(options => options.UseSqlServer(connection));
 
             services.AddTransient<TipoDenunciaServicio, TipoDenunciaServicioImpl>();
             services.AddTransient<TipoDenunciaRepositorio, TipoDenunciaRepositorioImpl>();

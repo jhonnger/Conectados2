@@ -9,10 +9,10 @@ namespace Conectados2.Repositorio.impl
 {
     public class BaseRepositorioImpl<Entidad, key> : BaseRepositorio<Entidad, key> where Entidad : class
     {
-        private readonly DemoDbContext _context;
+        private readonly conectaDBContext _context;
 
         
-        public BaseRepositorioImpl(DemoDbContext context)
+        public BaseRepositorioImpl(conectaDBContext context)
         {
             _context = context;
         }

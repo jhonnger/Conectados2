@@ -16,7 +16,7 @@ namespace Conectados2.Controllers
     [Route("api/TipoDenuncia")]
     public class TipoDenunciaController : Controller
     {
-        private readonly DemoDbContext _context;
+        private readonly conectaDBContext _context;
         private readonly TipoDenunciaServicio tipoDenunciaServicioImpl;
 
          public TipoDenunciaController(TipoDenunciaServicio tipoDenunciaServicioImpl)

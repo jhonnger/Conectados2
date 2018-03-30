@@ -8,7 +8,7 @@ namespace Conectados2.Repositorio.impl
 {
     public class TipoDenunciaRepositorioImpl : BaseRepositorioImpl<TipoDenuncia, int>, TipoDenunciaRepositorio
     {
-        public TipoDenunciaRepositorioImpl(DemoDbContext context) : base(context)
+        public TipoDenunciaRepositorioImpl(conectaDBContext context) : base(context)
         {
         }
     }

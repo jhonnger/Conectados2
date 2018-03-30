@@ -1,12 +1,18 @@
 ﻿using System;
+using Conectados2.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Options;
 
 namespace Conectados2.Models
 {
     public partial class conectaDBContext : DbContext
     {
-        public DemoDbContext(DbContextOptions<DemoDbContext> options) : base(options) { }
+        private readonly AppSettings _appSettings;
+        public conectaDBContext(DbContextOptions<conectaDBContext> options,
+                                IOptions<AppSettings> appSettings) : base(options) {
+            _appSettings = appSettings.Value;
+        }
         public virtual DbSet<ComiMuni> ComiMuni { get; set; }
         public virtual DbSet<ComiMuniMembresia> ComiMuniMembresia { get; set; }
         public virtual DbSet<Configuracion> Configuracion { get; set; }
@@ -38,7 +44,7 @@ namespace Conectados2.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(@"data source=NotHP;initial catalog=conectaDB;;user id=sa;password=root;integrated security=True;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer(@""+_appSettings.ConexionJohhny);
             }
         }
 
