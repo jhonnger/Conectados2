@@ -4,33 +4,28 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AgmCoreModule } from '@agm/core';
-import {
-  MatButtonModule, MatCheckboxModule, MatDialogModule,
-  MatFormFieldModule, MatIconModule, MatInputModule,
-  MatMenuModule, MatProgressSpinnerModule, MatSelectModule,
-  MatSidenavModule, MatSnackBarModule, MatListModule, MatToolbarModule, MatGridListModule, MatCardModule,
-  MatSlideToggleModule
-} from '@angular/material';
 
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button'
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import {  MatListModule } from "@angular/material/list";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatGridListModule } from "@angular/material/grid-list";
+import {  MatCardModule } from '@angular/material/card';
+
+
 import { AppComponent } from './components/app/app.component';
-import { NavMenuComponent } from './components/navmenu/navmenu.component';
-import { HomeComponent } from './components/home/home.component';
-import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
-import { CounterComponent } from './components/counter/counter.component';
-import { ChatComponent } from './components/chat/chat.component';
-import { UltialertaComponent } from "./components/ultialerta/ultialerta.component";
-import {ChatService} from './services/chat.service';
-import {TipoDenunciaService} from './services/tipo-denuncia.service'
-import { NuevocasoComponent } from "./components/nuevocaso/nuevocaso.component";
-import {MatStepperModule} from '@angular/material/stepper';
+
+
 import {ReactiveFormsModule} from '@angular/forms';
-import { MatNativeDateModule} from '@angular/material';
+import { MatNativeDateModule} from '@angular/material/core';
 import { LoadingComponent } from "./components/Loading/loading.component";
 
-import { AmazingTimePickerModule } from 'amazing-time-picker';
-import {MatDatepickerModule} from '@angular/material/datepicker';
 import {LoginComponent} from './components/login/login.component';
 import {UtilService} from './services/util.service';
 import {AuthService} from './services/auth.service';
@@ -38,20 +33,18 @@ import {AuthService} from './services/auth.service';
 import {
     AuthGuardService as AuthGuard} from './services/auth-guard.service';
 import {JwtHelper} from "angular2-jwt/angular2-jwt";
+import { APP_ROUTES } from './app.routes';
+import { UsuarioMuniComponent } from './usuariomuni/usuario-muni.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        NavMenuComponent,
-        CounterComponent,
-        FetchDataComponent,
-        HomeComponent,
-        ChatComponent,
-        NuevocasoComponent,
+        UsuarioMuniComponent,
         LoginComponent,
-		LoadingComponent,
-        UltialertaComponent
-    ], entryComponents:[NuevocasoComponent, LoadingComponent],
+        LoadingComponent,
+        AdminComponent
+    ], entryComponents:[LoadingComponent],
     imports: [
         CommonModule,
         HttpModule,
@@ -63,33 +56,15 @@ import {JwtHelper} from "angular2-jwt/angular2-jwt";
         MatToolbarModule,
         MatSnackBarModule,
 		MatButtonModule,
-        MatTabsModule,
         MatDialogModule,
         MatNativeDateModule,
-        AmazingTimePickerModule,
         MatListModule,
         MatGridListModule,
         MatCheckboxModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatSelectModule,
-        MatStepperModule,
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyD6l0Wq6cXBaDqF7I03FxvG-6-Py0Ib0F4',
-            libraries: ['places']
-        }),
-        RouterModule.forRoot([
-            { path: '', redirectTo: 'home', pathMatch: 'full' },
-            { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  },
-            { path: 'login', component: LoginComponent },
-            { path: 'counter', component: CounterComponent },
-            { path: 'fetch-data', component: FetchDataComponent },
-            { path: '**', redirectTo: 'home' }
-        ])
+        MatInputModule,        
+        APP_ROUTES,
     ],
     providers:[
-        ChatService,
-        TipoDenunciaService,
         AuthService,
         UtilService,
         JwtHelper,

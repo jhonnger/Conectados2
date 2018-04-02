@@ -5,18 +5,19 @@ import {MatDialog} from '@angular/material/dialog';
 @Injectable()
 export class UtilService {
 
-    dialogRef: any;
+    dialogRefe: any;
     constructor(public dialog: MatDialog) {
     }
 
 
     showLoading() {
-        this.dialogRef = this.dialog.open(LoadingComponent, {
+        this.dialogRefe = this.dialog.open(LoadingComponent, {
+            id: "loading", 
             disableClose: true
         });
     }
 
     hideLoading(){
-        this.dialogRef.close();
+        this.dialogRefe.close();
     }
 }
