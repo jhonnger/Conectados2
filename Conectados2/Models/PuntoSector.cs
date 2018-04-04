@@ -5,12 +5,12 @@ namespace Conectados2.Models
 {
     public partial class PuntoSector
     {
-        public int IdPuntoJurisdiccion { get; set; }
-        public int IdJurisdiccion { get; set; }
+        public int IdPuntoSector { get; set; }
+        public int IdSector { get; set; }
         public decimal Longitud { get; set; }
         public decimal Latitud { get; set; }
         public int Orden { get; set; }
 
-        public Jurisdiccion IdJurisdiccionNavigation { get; set; }
+        public Sector IdSectorNavigation { get; set; }
     }
 }

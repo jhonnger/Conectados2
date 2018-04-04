@@ -19,7 +19,7 @@ namespace Conectados2.Models
         public virtual DbSet<Conversacion> Conversacion { get; set; }
         public virtual DbSet<Denuncia> Denuncia { get; set; }
         public virtual DbSet<EstadoDenuncia> EstadoDenuncia { get; set; }
-        public virtual DbSet<Jurisdiccion> Jurisdiccion { get; set; }
+        public virtual DbSet<Sector> Sector { get; set; }
         public virtual DbSet<Membresia> Membresia { get; set; }
         public virtual DbSet<Mensaje> Mensaje { get; set; }
         public virtual DbSet<Pago> Pago { get; set; }
@@ -31,8 +31,7 @@ namespace Conectados2.Models
         public virtual DbSet<Rol> Rol { get; set; }
         public virtual DbSet<RolPermiso> RolPermiso { get; set; }
         public virtual DbSet<RolUsuario> RolUsuario { get; set; }
-        public virtual DbSet<Seccion> Seccion { get; set; }
-        public virtual DbSet<SubSeccion> SubSeccion { get; set; }
+        public virtual DbSet<TipoSector> TipoSector { get; set; }
         public virtual DbSet<TipoDenuncia> TipoDenuncia { get; set; }
         public virtual DbSet<TipoMuni> TipoMuni { get; set; }
         public virtual DbSet<Ubicacion> Ubicacion { get; set; }
@@ -78,7 +77,7 @@ namespace Conectados2.Models
 
                 entity.Property(e => e.IdJurisdiccion).HasColumnName("id_jurisdiccion");
 
-                entity.Property(e => e.IdMembresia).HasColumnName("id_membresia");
+                
 
                 entity.Property(e => e.IdTipoComiMuni).HasColumnName("id_tipo_comi_muni");
 
@@ -90,13 +89,13 @@ namespace Conectados2.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.IdJurisdiccionNavigation)
+                entity.HasOne(d => d.IdSectorNavigation)
                     .WithMany(p => p.ComiMuni)
                     .HasForeignKey(d => d.IdJurisdiccion)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_comi_muni_jurisdiccion");
 
-                entity.HasOne(d => d.IdTipoComiMuniNavigation)
+                entity.HasOne(d => d.TipoComiMuni)
                     .WithMany(p => p.ComiMuni)
                     .HasForeignKey(d => d.IdTipoComiMuni)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -322,19 +321,36 @@ namespace Conectados2.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Jurisdiccion>(entity =>
+             modelBuilder.Entity<Sector>(entity =>
             {
-                entity.HasKey(e => e.IdJurisdiccion);
+                entity.HasKey(e => e.IdSector);
 
-                entity.ToTable("jurisdiccion");
+                entity.ToTable("sector");
 
-                entity.Property(e => e.IdJurisdiccion).HasColumnName("id_jurisdiccion");
+                entity.Property(e => e.IdSector)
+                    .HasColumnName("id_sector")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.IdSectorPadre).HasColumnName("id_sector_padre");
+
+                entity.Property(e => e.IdTipoSector).HasColumnName("id_tipo_sector");
 
                 entity.Property(e => e.Nombre)
                     .IsRequired()
                     .HasColumnName("nombre")
                     .HasMaxLength(70)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.IdSectorPadreNavigation)
+                    .WithMany(p => p.InverseIdSectorPadreNavigation)
+                    .HasForeignKey(d => d.IdSectorPadre)
+                    .HasConstraintName("FK_sector_sector");
+
+                entity.HasOne(d => d.TipoSector)
+                    .WithMany(p => p.Sector)
+                    .HasForeignKey(d => d.IdTipoSector)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_sector_tipo_sector");
             });
 
             modelBuilder.Entity<Membresia>(entity =>
@@ -578,15 +594,15 @@ namespace Conectados2.Models
 
             modelBuilder.Entity<PuntoSector>(entity =>
             {
-                entity.HasKey(e => e.IdPuntoJurisdiccion);
+                entity.HasKey(e => e.IdPuntoSector);
 
                 entity.ToTable("punto_sector");
 
-                entity.Property(e => e.IdPuntoJurisdiccion)
-                    .HasColumnName("id_punto_jurisdiccion")
+                entity.Property(e => e.IdPuntoSector)
+                    .HasColumnName("id_punto_sector")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.IdJurisdiccion).HasColumnName("id_jurisdiccion");
+                entity.Property(e => e.IdSector).HasColumnName("id_sector");
 
                 entity.Property(e => e.Latitud)
                     .HasColumnName("latitud")
@@ -598,9 +614,9 @@ namespace Conectados2.Models
 
                 entity.Property(e => e.Orden).HasColumnName("orden");
 
-                entity.HasOne(d => d.IdJurisdiccionNavigation)
+                entity.HasOne(d => d.IdSectorNavigation)
                     .WithMany(p => p.PuntoSector)
-                    .HasForeignKey(d => d.IdJurisdiccion)
+                    .HasForeignKey(d => d.IdSector)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_punto_sector_jurisdiccion");
             });
@@ -678,52 +694,23 @@ namespace Conectados2.Models
                     .HasConstraintName("FK_rol_usuario_usuario");
             });
 
-            modelBuilder.Entity<Seccion>(entity =>
-            {
-                entity.HasKey(e => e.IdSeccion);
+        
 
-                entity.ToTable("seccion");
+            modelBuilder.Entity<TipoSector>(entity =>
+                {
+                    entity.HasKey(e => e.IdTipoSector);
 
-                entity.Property(e => e.IdSeccion).HasColumnName("id_seccion");
+                    entity.ToTable("tipo_sector");
 
-                entity.Property(e => e.Descripcion)
-                    .IsRequired()
-                    .HasColumnName("descripcion")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                    entity.Property(e => e.IdTipoSector).HasColumnName("id_tipo_sector");
 
-                entity.Property(e => e.IdJurisdiccion).HasColumnName("id_jurisdiccion");
-
-                entity.HasOne(d => d.IdJurisdiccionNavigation)
-                    .WithMany(p => p.Seccion)
-                    .HasForeignKey(d => d.IdJurisdiccion)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_seccion_jurisdiccion");
+                    entity.Property(e => e.Nombre)
+                        .IsRequired()
+                        .HasColumnName("nombre")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
             });
-
-            modelBuilder.Entity<SubSeccion>(entity =>
-            {
-                entity.HasKey(e => e.IdSubSeccion);
-
-                entity.ToTable("sub_seccion");
-
-                entity.Property(e => e.IdSubSeccion).HasColumnName("id_sub_seccion");
-
-                entity.Property(e => e.Descripcion)
-                    .IsRequired()
-                    .HasColumnName("descripcion")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.IdSeccion).HasColumnName("id_seccion");
-
-                entity.HasOne(d => d.IdSeccionNavigation)
-                    .WithMany(p => p.SubSeccion)
-                    .HasForeignKey(d => d.IdSeccion)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_sub_seccion_seccion");
-            });
-
+            
             modelBuilder.Entity<TipoDenuncia>(entity =>
             {
                 entity.HasKey(e => e.IdTipoDenuncia);
@@ -783,6 +770,11 @@ namespace Conectados2.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
+
+            modelBuilder.Entity<TipoMuni>()
+                .HasMany(c => c.ComiMuni)
+                .WithOne(e => e.TipoComiMuni)
+                .IsRequired();
 
             modelBuilder.Entity<Ubicacion>(entity =>
             {

@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace Conectados2.Servicio.impl
 {
-    public class TipoDenunciaServicioImpl: BaseServicioImpl<TipoDenuncia, int>, TipoDenunciaServicio
+    public class MunicipalidadServicioImpl: BaseServicioImpl<ComiMuni, int>, MunicipalidadServicio
     {
-         public TipoDenunciaServicioImpl(TipoDenunciaRepositorio tipoDenunciaRepositorio) 
-            : base(tipoDenunciaRepositorio)
+         public MunicipalidadServicioImpl(MunicipalidadRepositorio municipalidadRepositorio) 
+            : base(municipalidadRepositorio)
         {
         }
+
+        
     }
 }

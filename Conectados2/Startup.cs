@@ -22,6 +22,8 @@ using Conectados2.Servicio;
 using Conectados2.Servicio.impl;
 using Conectados2.Repositorio;
 using Conectados2.Repositorio.impl;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Conectados2
 {
@@ -45,7 +47,22 @@ namespace Conectados2
             services.AddTransient<TipoDenunciaServicio, TipoDenunciaServicioImpl>();
             services.AddTransient<TipoDenunciaRepositorio, TipoDenunciaRepositorioImpl>();
 
-            services.AddMvc();
+            services.AddTransient<MunicipalidadServicio, MunicipalidadServicioImpl>();
+            services.AddTransient<MunicipalidadRepositorio, MunicipalidadRepositorioImpl>();
+
+            services.AddTransient<TipoMuniServicio, TipoMuniServicioImpl>();
+            services.AddTransient<TipoMuniRepositorio, TipoMuniRepositorioImpl>();
+
+            services.AddTransient<SectorServicio, SectorServicioImpl>();
+            services.AddTransient<SectorRepositorio, SectorRepositorioImpl>();
+
+            services.AddTransient<TipoSectorServicio, TipoSectorServicioImpl>();
+            services.AddTransient<TipoSectorRepositorio, TipoSectorRepositorioImpl>();
+
+            services.AddMvc().AddJsonOptions(options => {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
             services.AddAutoMapper();
 
             // configure strongly typed settings objects

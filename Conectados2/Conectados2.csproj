@@ -27,14 +27,19 @@
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Compile Remove="ClientApp\app\components\NewFolder1\**" />
     <Compile Remove="ClientApp\app\components\NewFolder\**" />
+    <Compile Remove="nuevos\**" />
     <Content Remove="ClientApp\**" />
+    <Content Remove="nuevos\**" />
     <EmbeddedResource Remove="ClientApp\app\components\NewFolder1\**" />
     <EmbeddedResource Remove="ClientApp\app\components\NewFolder\**" />
+    <EmbeddedResource Remove="nuevos\**" />
     <None Remove="ClientApp\app\components\NewFolder1\**" />
     <None Remove="ClientApp\app\components\NewFolder\**" />
+    <None Remove="nuevos\**" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ContextoDB\" />
+    <Folder Include="modelos\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">

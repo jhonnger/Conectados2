@@ -46,7 +46,7 @@ import { MatInputModule } from '@angular/material';
 		USUARIOMUNI_ROUTES,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyD6l0Wq6cXBaDqF7I03FxvG-6-Py0Ib0F4',
-            libraries: ['places']
+            libraries: ['places','drawing']
         }),
     ], 
 	providers: [
