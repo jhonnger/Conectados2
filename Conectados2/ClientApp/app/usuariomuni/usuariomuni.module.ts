@@ -20,6 +20,7 @@ import { ChatService } from "../services/chat.service";
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { TipoDenunciaService } from '../services/tipo-denuncia.service';
 import { MatInputModule } from '@angular/material';
+import { UsuarioMuniComponent } from './usuario-muni.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { MatInputModule } from '@angular/material';
         ChatComponent,
         NuevocasoComponent,
         UltialertaComponent,
+        UsuarioMuniComponent,
     ], entryComponents:[NuevocasoComponent],
     exports: [
         

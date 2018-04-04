@@ -29,21 +29,22 @@ import { LoadingComponent } from "./components/Loading/loading.component";
 import {LoginComponent} from './components/login/login.component';
 import {UtilService} from './services/util.service';
 import {AuthService} from './services/auth.service';
-
+import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import {
     AuthGuardService as AuthGuard} from './services/auth-guard.service';
-import {JwtHelper} from "angular2-jwt/angular2-jwt";
+
 import { APP_ROUTES } from './app.routes';
 import { UsuarioMuniComponent } from './usuariomuni/usuario-muni.component';
 import { AdminComponent } from './admin/admin.component';
 
+import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you need
+import { UsuarioMuniModule } from './usuariomuni/usuariomuni.module';
+import { AdminModule } from './admin/admin.module';
 @NgModule({
     declarations: [
         AppComponent,
-        UsuarioMuniComponent,
         LoginComponent,
-        LoadingComponent,
-        AdminComponent
+        LoadingComponent
     ], entryComponents:[LoadingComponent],
     imports: [
         CommonModule,
@@ -51,6 +52,7 @@ import { AdminComponent } from './admin/admin.component';
         FormsModule,
         MatProgressSpinnerModule,
         ReactiveFormsModule,
+        AmazingTimePickerModule,
         MatCardModule,
         MatIconModule,
         MatToolbarModule,
@@ -61,15 +63,27 @@ import { AdminComponent } from './admin/admin.component';
         MatListModule,
         MatGridListModule,
         MatCheckboxModule,
-        MatInputModule,        
+        MatInputModule,   
+        AdminModule, 
+        UsuarioMuniModule,    
         APP_ROUTES,
+        JwtModule.forRoot({
+            config: {
+              tokenGetter: tokenGetter,
+              whitelistedDomains: ['localhost:3001'],
+              blacklistedRoutes: ['localhost:3001/auth/']
+            }
+          })
     ],
     providers:[
         AuthService,
         UtilService,
-        JwtHelper,
-        AuthGuard
+        AuthGuard,
+        JwtHelperService
     ]
 })
 export class AppModuleShared {
 }
+export function tokenGetter() {
+    return localStorage.getItem('token');
+  }

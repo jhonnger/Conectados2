@@ -7,18 +7,8 @@ import { AdminComponent } from './admin/admin.component';
 
 const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
-    {
-        path: 'admin',
-        component: AdminComponent,   
-        canActivate: [ AuthGuard ],
-        loadChildren: './admin/admin.module#AdminModule'
-    },
-    {
-        path: '',
-        component: UsuarioMuniComponent,
-        canActivate: [ AuthGuard ],
-        loadChildren: './usuariomuni/usuariomuni.module#UsuarioMuniModule'
-    },
+    
+    
     { path: '**', redirectTo: '/login', pathMatch: 'full' }
 ];
 

@@ -16,6 +16,7 @@ import { SectorService } from '../services/sector.service';
 import { TipoSectorService } from '../services/tipo-sector.service';
 import { FormsModule } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
+import { AdminComponent } from './admin.component';
 
 @NgModule({
     declarations: [
@@ -23,6 +24,7 @@ import { AgmCoreModule } from '@agm/core';
         MunicipalidadBuscadorComponent,
         MunicipalidadFormularioComponent,
         SectorComponent,
+        AdminComponent,
         SectorBuscadorComponent,
         SectorFormularioComponent,
     ], entryComponents:[],
