@@ -34,9 +34,16 @@
       <form [formGroup]="secondFormGroup">
         <ng-template matStepLabel>Ubicacion</ng-template>
         <div class="mapa-nuevo-caso">
-          <agm-map  #mapUnidades [zoom]="13" [latitude]="lat" [longitude]="lng">
-            <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+          <div>
+              <mat-form-field class="full-width">
+                  <input matInput formControlName="direccionIncidente"  placeholder="Direccion del incidente" />
+                  <mat-error>Debe especificar el lugar donde ocurrió del incidente</mat-error>
+                </mat-form-field>
+          </div>
+          <agm-map  #mapNuevoCaso [zoom]="13" [latitude]="lat" [longitude]="lng" (idle)="idleFunction($event)">
+            <!--<agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>-->
           </agm-map>
+          <div class="markerCenter"></div>
         </div>
         <div>
           <button mat-button matStepperPrevious>Back</button>

@@ -17,20 +17,18 @@ namespace Conectados2.Controllers
     public class TipoDenunciaController : Controller
     {
         private readonly conectaDBContext _context;
-        private readonly TipoDenunciaServicio tipoDenunciaServicioImpl;
+        private readonly TipoDenunciaServicio tipoDenunciaServicio;
 
-         public TipoDenunciaController(TipoDenunciaServicio tipoDenunciaServicioImpl,
-                                        conectaDBContext conectaDBContext)
+         public TipoDenunciaController(TipoDenunciaServicio tipoDenunciaServicio)
         {
-            this.tipoDenunciaServicioImpl = tipoDenunciaServicioImpl;
-            this._context = conectaDBContext;
+            this.tipoDenunciaServicio = tipoDenunciaServicio;
         }
 
         // GET: api/TipoDenuncia
         [HttpGet]
         public RespuestaControlador GetTipoDenuncia()
         {
-            return RespuestaControlador.respuestaExito( tipoDenunciaServicioImpl.obtenerTodos());
+            return RespuestaControlador.respuestaExito( tipoDenunciaServicio.obtenerTodos());
         }
 
         // GET: api/TipoDenuncia/5

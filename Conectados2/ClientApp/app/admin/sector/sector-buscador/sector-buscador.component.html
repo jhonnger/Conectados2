@@ -1,0 +1,37 @@
+<div class="example-container">
+    <div class="inline">
+      <div class="input-search-muni">
+          <mat-form-field class="full-width">
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar...">
+            </mat-form-field>
+      </div>
+      <div>
+          <button mat-fab color="primary">
+              <mat-icon aria-label="Search icon">&#xE8B6;</mat-icon>
+            </button>
+      </div>
+    </div>
+  
+    <mat-table #table [dataSource]="dataSource">
+  
+      <!-- Position Column -->
+      <ng-container matColumnDef="pos">
+        <mat-header-cell class="pos-col" *matHeaderCellDef> No. </mat-header-cell>
+        <mat-cell class="pos-col" *matCellDef="let pos = index"> {{pos + 1}} </mat-cell>
+      </ng-container>
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="nombre">
+        <mat-header-cell class="nombre-col" *matHeaderCellDef> Nombre </mat-header-cell>
+        <mat-cell class="nombre-col" *matCellDef="let element"> {{element.nombre}} </mat-cell>
+      </ng-container>
+      <ng-container  matColumnDef="tipo">
+        <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.tipoSector.nombre}} </mat-cell>
+      </ng-container>
+  
+      <mat-header-row class="azul" *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;let pos = index;"
+      (click)="selecciona(row.idSector)"></mat-row>
+    </mat-table>
+  </div>

@@ -10,11 +10,9 @@ namespace Conectados2.Servicio.impl
 {
     public class TipoDenunciaServicioImpl: BaseServicioImpl<TipoDenuncia, int>, TipoDenunciaServicio
     {
-         public TipoDenunciaServicioImpl(TipoDenunciaRepositorio tipoDenunciaRepositorioImpl) 
-            : base(tipoDenunciaRepositorioImpl)
+         public TipoDenunciaServicioImpl(TipoDenunciaRepositorio tipoDenunciaRepositorio) 
+            : base(tipoDenunciaRepositorio)
         {
         }
-
-        
     }
 }

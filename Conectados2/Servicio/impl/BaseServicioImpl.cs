@@ -39,7 +39,7 @@ namespace Conectados2.Servicio.impl
 
         public Entidad obtener(key id)
         {
-            throw new NotImplementedException();
+            return this.baseRepositorio.obtener(id);
         }
 
         public List<Entidad> obtenerTodos()

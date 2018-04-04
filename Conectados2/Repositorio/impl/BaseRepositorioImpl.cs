@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Conectados2.Repositorio.impl
 {
-    public class BaseRepositorioImpl<Entidad, key> : BaseRepositorio<Entidad, key> where Entidad : class
+    public abstract class BaseRepositorioImpl<Entidad, key> : BaseRepositorio<Entidad, key> where Entidad : class
     {
-        private readonly conectaDBContext _context;
+        public readonly conectaDBContext _context;
 
         
         public BaseRepositorioImpl(conectaDBContext context)
@@ -32,12 +32,10 @@ namespace Conectados2.Repositorio.impl
             throw new NotImplementedException();
         }
 
-        public Entidad obtener(key id)
-        {
-            throw new NotImplementedException();
-        }
+         public abstract Entidad obtener(key id);
+        
 
-        public List<Entidad> obtenerTodos()
+        public virtual List<Entidad> obtenerTodos()
         {
 
             var a= _context.Set<Entidad> ();

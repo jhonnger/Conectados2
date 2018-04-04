@@ -12,6 +12,11 @@ body {
 .home-map agm-map {
     height: 700px;
 }
+.sector-mapa agm-map {
+    height: 400px;
+    opacity: 0;
+    display: none;
+}
 .mapa-nuevo-caso agm-map {
     height: 300px;
 }
@@ -24,4 +29,34 @@ body {
 
 .mat-tab-label {
     width: 25%;
+}
+.mitad-section{
+    width: 50%;
+    padding: 55px
+}
+.flex{
+    display: flex;
+    display: -webkit-flex;
+}
+mat-header-row{
+    min-height: 40px !important;
+}
+mat-header-row .mat-header-cell{
+    color: #FFF !important;
+}
+.azul{
+    background: #3f51b5 !important;
+    color: #FFF !important; 
+}
+.inline{
+    display: flex;
+}
+.inline > div{
+    display: inline-block;
+}
+.text-center{
+    text-align: center;
+}
+.mat-raised-button{
+    margin: 5px !important;
 }

@@ -8,7 +8,7 @@ namespace Conectados2.Repositorio
     public interface BaseRepositorio<Entidad, key>
     {
         Entidad obtener(key id);
-       
+
         List<Entidad> obtenerTodos();
 
         void actualizar(Entidad entidad);

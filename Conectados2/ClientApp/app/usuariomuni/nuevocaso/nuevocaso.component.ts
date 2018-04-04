@@ -1,9 +1,13 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {TipoDenunciaService} from '../../services/tipo-denuncia.service';
 import {TipoDenuncia} from '../../interfaces/TipoDenuncia';
 import {UtilService} from "../../services/util.service";
+import {AgmMap} from "@agm/core";
 
+
+//declare var geocoder: any;
+declare var google: any;
 @Component({
   selector: 'app-nuevocaso',
   templateUrl: './nuevocaso.component.html',
@@ -13,8 +17,11 @@ export class NuevocasoComponent implements OnInit, AfterViewInit {
     
 
   firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
+  secondFormGroup: FormGroup; 
+  thirdFormGroup: FormGroup;
+
   tipoDenuncia: TipoDenuncia[] = [];
+    @ViewChild('mapNuevoCaso') mapNuevoCaso: any;
   lat = 40.7786232;
   lng = -74.0007019;
   date = new FormControl(new Date());
@@ -30,7 +37,7 @@ export class NuevocasoComponent implements OnInit, AfterViewInit {
       horaIncidente: ['', Validators.required]
     });
     this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
+      direccionIncidente: ['', Validators.required]
     });
 
     const horaActual = this.obtenerHoraActual();
@@ -41,7 +48,7 @@ export class NuevocasoComponent implements OnInit, AfterViewInit {
     });
   }
     ngAfterViewInit(){
-      setTimeout( () =>{
+     
           this._utilService.showLoading();
           this._tipoDenunciaService.listar().subscribe(
               data => {
@@ -49,11 +56,11 @@ export class NuevocasoComponent implements OnInit, AfterViewInit {
                   if(data.success){
                       this.tipoDenuncia = (data.data);
                   }
-                  this._utilService.hideLoading();
+                  
+                      this._utilService.hideLoading();
+                  //
               }
-          );     
-      }, 200);
-        
+          );       
     }
 
   obtenerHoraActual() {
@@ -68,5 +75,37 @@ export class NuevocasoComponent implements OnInit, AfterViewInit {
       + currentdate.getFullYear();
     return date;
   }
+    idleFunction(){
+      
+      let lat = this.mapNuevoCaso.latitude;
+      let lng = this.mapNuevoCaso.longitude;
+      
+      this.geoDecoder(lat, lng);
+        
+        console.log(this.mapNuevoCaso.latitude);
+        console.log(this.mapNuevoCaso.longitude);
+       
+    }
+    geoDecoder(lat: number, lng: number){
+      
+        let latlng = new google.maps.LatLng(lat, lng);
+        let request = {
+            latLng: latlng
+        };
+        let geocoder = new google.maps.Geocoder();
+        geocoder.geocode(request, (results: any, status: any) => {
+            let direccion = "";
+            if (status == google.maps.GeocoderStatus.OK) {
+                if (results[0] != null) {
 
+                  direccion = results[0].formatted_address;                    
+                } else {
+                    direccion = "";
+                }
+            }
+            this.secondFormGroup.patchValue({
+              direccionIncidente: direccion
+            });
+        });
+    }
 }

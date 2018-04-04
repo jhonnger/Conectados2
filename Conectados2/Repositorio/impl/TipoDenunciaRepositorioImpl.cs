@@ -11,5 +11,10 @@ namespace Conectados2.Repositorio.impl
         public TipoDenunciaRepositorioImpl(conectaDBContext context) : base(context)
         {
         }
+
+        public override TipoDenuncia obtener(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
