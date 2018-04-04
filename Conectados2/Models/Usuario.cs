@@ -24,6 +24,7 @@ namespace Conectados2.Models
         public string UsuarioMod { get; set; }
         public bool Estado { get; set; }
         public string PasswordSalt { get; set; }
+        public string Username { get; set; }
 
         public Persona IdPersonaNavigation { get; set; }
         public UsuarioMuni UsuarioMuni { get; set; }

@@ -28,7 +28,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {ReactiveFormsModule} from '@angular/forms';
 import { MatNativeDateModule} from '@angular/material';
 import { LoadingComponent } from "./components/Loading/loading.component";
-
+import { AsyncLocalStorageModule } from "angular-async-local-storage";
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {LoginComponent} from './components/login/login.component';
@@ -74,6 +74,7 @@ import {JwtHelper} from "angular2-jwt/angular2-jwt";
         MatDatepickerModule,
         MatSelectModule,
         MatStepperModule,
+        AsyncLocalStorageModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyD6l0Wq6cXBaDqF7I03FxvG-6-Py0Ib0F4',
             libraries: ['places']
