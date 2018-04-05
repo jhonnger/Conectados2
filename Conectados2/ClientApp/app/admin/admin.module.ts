@@ -14,10 +14,13 @@ import { SectorBuscadorComponent } from './sector/sector-buscador/sector-buscado
 import { SectorFormularioComponent } from './sector/sector-formulario/sector-formulario.component';
 import { SectorService } from '../services/sector.service';
 import { TipoSectorService } from '../services/tipo-sector.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
 import { AdminComponent } from './admin.component';
-
+import { AuthService } from '../services/auth.service';
+import {
+    AuthGuardService as AuthGuard} from '../services/auth-guard.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 @NgModule({
     declarations: [
         MunicipalidadComponent,
@@ -50,7 +53,10 @@ import { AdminComponent } from './admin.component';
         MunicipalidadService,
         TipoMuniService,
         SectorService,
-        TipoSectorService
+        TipoSectorService,
+        AuthService,
+        AuthGuard,
+        JwtHelperService
     ],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

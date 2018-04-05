@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import  'rxjs/add/operator/map';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { JwtHelper } from 'angular2-jwt';
 
 
 @Injectable()
 export class AuthService {
 
     constructor(private http: Http,
-                public jwtHelper: JwtHelperService) {
+                public jwtHelper: JwtHelper) {
     }
 
     login(user: string, password: string){

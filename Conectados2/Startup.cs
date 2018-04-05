@@ -40,7 +40,7 @@ namespace Conectados2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            var connection = @"data source=JHONGGER-PC;initial catalog=conectaDB;;user id=sa;password=root;integrated security=True;MultipleActiveResultSets=True";
+            var connection = @"Server=tcp:conectados220180403104748dbserver.database.windows.net,1433;Initial Catalog=conectaDB;Persist Security Info=False;User ID=jhongger;Password=Cotos123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             services.AddDbContext<AuthContext>(options => options.UseSqlServer(connection));
             services.AddDbContext<conectaDBContext>(options => options.UseSqlServer(connection));
 

@@ -11,7 +11,7 @@ const usuarioMuniRoutes: Routes = [
         canActivate: [ AuthGuard ],
         children: [
             { path: 'home', component: HomeComponent},
-            { path: '**', redirectTo: '/home', pathMatch: 'full' }
+            { path: '**', redirectTo: '/login', pathMatch: 'full' }
         ]
     }
 ];

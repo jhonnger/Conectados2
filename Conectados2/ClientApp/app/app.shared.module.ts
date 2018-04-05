@@ -29,7 +29,7 @@ import { LoadingComponent } from "./components/Loading/loading.component";
 import {LoginComponent} from './components/login/login.component';
 import {UtilService} from './services/util.service';
 import {AuthService} from './services/auth.service';
-import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { JwtHelper } from 'angular2-jwt';
 import {
     AuthGuardService as AuthGuard} from './services/auth-guard.service';
 
@@ -40,6 +40,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you need
 import { UsuarioMuniModule } from './usuariomuni/usuariomuni.module';
 import { AdminModule } from './admin/admin.module';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
     declarations: [
         AppComponent,
@@ -47,6 +48,8 @@ import { AdminModule } from './admin/admin.module';
         LoadingComponent
     ], entryComponents:[LoadingComponent],
     imports: [
+        
+        APP_ROUTES,
         CommonModule,
         HttpModule,
         FormsModule,
@@ -65,21 +68,14 @@ import { AdminModule } from './admin/admin.module';
         MatCheckboxModule,
         MatInputModule,   
         AdminModule, 
-        UsuarioMuniModule,    
-        APP_ROUTES,
-        JwtModule.forRoot({
-            config: {
-              tokenGetter: tokenGetter,
-              whitelistedDomains: ['localhost:3001'],
-              blacklistedRoutes: ['localhost:3001/auth/']
-            }
-          })
+        UsuarioMuniModule,   
+        HttpClientModule
     ],
     providers:[
         AuthService,
         UtilService,
         AuthGuard,
-        JwtHelperService
+        JwtHelper
     ]
 })
 export class AppModuleShared {

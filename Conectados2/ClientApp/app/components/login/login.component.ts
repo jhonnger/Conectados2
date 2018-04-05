@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
                 if (data != null){
                     console.log(data)
                     localStorage.setItem('token', (data.token));
-                    this._router.navigateByUrl('/inicio');
+                    this._router.navigateByUrl('/home');
                 }else {
                     this.openSnackBar();
                 }

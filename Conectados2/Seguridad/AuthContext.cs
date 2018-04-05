@@ -20,7 +20,7 @@ namespace Conectados2.Seguridad
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseSqlServer(@"data source=JHONGGER-PC;initial catalog=conectaDB;;user id=sa;password=root;integrated security=True;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer(@"Server=tcp:conectados220180403104748dbserver.database.windows.net,1433;Initial Catalog=conectaDB;Persist Security Info=False;User ID=jhongger;Password=Cotos123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
