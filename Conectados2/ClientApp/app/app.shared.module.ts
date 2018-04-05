@@ -26,18 +26,21 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { MatNativeDateModule} from '@angular/material/core';
 import { LoadingComponent } from "./components/Loading/loading.component";
 
+import { AsyncLocalStorageModule } from "angular-async-local-storage";
+import { AmazingTimePickerModule } from 'amazing-time-picker';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+
 import {LoginComponent} from './components/login/login.component';
 import {UtilService} from './services/util.service';
 import {AuthService} from './services/auth.service';
+
 import { JwtHelper } from 'angular2-jwt';
-import {
-    AuthGuardService as AuthGuard} from './services/auth-guard.service';
+import {AuthGuardService as AuthGuard} from './services/auth-guard.service';
 
 import { APP_ROUTES } from './app.routes';
 import { UsuarioMuniComponent } from './usuariomuni/usuario-muni.component';
 import { AdminComponent } from './admin/admin.component';
 
-import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you need
 import { UsuarioMuniModule } from './usuariomuni/usuariomuni.module';
 import { AdminModule } from './admin/admin.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -66,10 +69,12 @@ import { HttpClientModule } from '@angular/common/http';
         MatListModule,
         MatGridListModule,
         MatCheckboxModule,
-        MatInputModule,   
         AdminModule, 
         UsuarioMuniModule,   
-        HttpClientModule
+        HttpClientModule,
+        MatInputModule,
+        MatDatepickerModule,
+        AsyncLocalStorageModule
     ],
     providers:[
         AuthService,

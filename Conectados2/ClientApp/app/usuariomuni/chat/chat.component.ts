@@ -1,6 +1,8 @@
+import { Chat,Mensaje } from '../../interfaces/chat.interface';
 import { Component, OnInit } from '@angular/core';
 import { NgStyle, NgForOf } from '@angular/common';
 import { ChatService } from '../../services/chat.service';
+
 
 @Component({
   selector: 'app-chat',
@@ -9,190 +11,133 @@ import { ChatService } from '../../services/chat.service';
 })
 export class ChatComponent implements OnInit {
 
-
+  //lo utilizo en el chat
+  contador: number = 0;
   // tslint:disable-next-line:no-inferrable-types
-  tam_chat: number = 530;
+  tam_chat: number = 200;
   // tslint:disable-next-line:no-inferrable-types
-  flagChat: boolean = true;
+  flagChat: boolean = false;
 
   contactos: any = [];
 
   mensajes: any = [
-    {
-      'usuario': 'Jhon',
-      'bandera': true,
-      'conversacion': [
-        {
-          'user': 'tu',
-          'text': 'hola!!',
-          'hora': '14:00'
-        },
-        {
-          'user': 'Jhon',
-          'text': 'hola que tal!!',
-          'hora': '14:03'
-        }
-      ],
-      'ultimo_mensaje': {
-        'text': 'hola que tal!!',
-        'hora': '14:03'
-      }
-    },
-    {
-      'usuario': 'Jose',
-      'bandera': true,
-      'conversacion': [
-        {
-          'user': 'tu',
-          'text': 'hola!!',
-          'hora': '14:00'
-        },
-        {
-          'user': 'Jose',
-          'text': 'Constesta el telefono',
-          'hora': '14:03'
-        }
-      ],
-      'ultimo_mensaje': {
-        'text': 'Constesta el telefono',
-        'hora': '14:03'
-      }
-    },
-    {
-      'usuario': 'Luis',
-      'bandera': true,
-      'conversacion': [
-        {
-          'user': 'tu',
-          'text': 'hola!!',
-          'hora': '14:00'
-        },
-        {
-          'user': 'Luis',
-          'text': 'La reunion es el sabado',
-          'hora': '14:03'
-        }
-      ],
-      'ultimo_mensaje': {
-        'text': 'La reunion es el sabado',
-        'hora': '14:03'
-      }
-    },
-    {
-      'usuario': 'Johhny',
-      'bandera': true,
-      'conversacion': [
-        {
-          'user': 'tu',
-          'text': 'hola!!',
-          'hora': '14:00'
-        },
-        {
-          'user': 'Johhny',
-          'text': 'Yara mano que fue!!',
-          'hora': '14:03'
-        }
-      ],
-      'ultimo_mensaje': {
-        'text': 'Yara mano que fue!!',
-        'hora': '14:03'
-      }
-    },
-    {
-      'usuario': 'Rebeca',
-      'bandera': true,
-      'conversacion': [
-        {
-          'user': 'tu',
-          'text': 'hola!!',
-          'hora': '14:00'
-        },
-        {
-          'user': 'Rebeca',
-          'text': 'Luis dio positivo',
-          'hora': '14:03'
-        }
-      ],
-      'ultimo_mensaje': {
-        'text': 'Luis dio positivo',
-        'hora': '14:03'
-      }
-    }
-  ];
+    {descripcion: '',
+    idConversacion: '',
+    idUsuairo: '',
+    ultimoMensaje: '',
+    flag:''}
+   ] ;
 
-  chats: any = [
-    {
-      'usuario': 'Jhon',
-      'bandera': true,
-      'conversacion': [
-        {
-          'user': 'tu',
-          'text': 'hola!!',
-          'hora': '14:00'
-        },
-        {
-          'user': 'Jhon',
-          'text': 'hola que tal!!',
-          'hora': '14:03'
-        }
-      ],
-      'ultimo_mensaje': {
-        'text': 'hola que tal!!',
-        'hora': '14:03'
-      }
-    },
-    {
-      'usuario': 'Jose',
-      'bandera': true,
-      'conversacion': [
-        {
-          'user': 'tu',
-          'text': 'hola!!',
-          'hora': '14:00'
-        },
-        {
-          'user': 'Jose',
-          'text': 'Constesta el telefono',
-          'hora': '14:03'
-        }
-      ],
-      'ultimo_mensaje': {
-        'text': 'Constesta el telefono',
-        'hora': '14:03'
-      }
-    }
-  ];
+  conversaciones: any = [];
+
+  // se coloca en los tabs
+  chats: any = [];
+  // individual de arriba
+  _chat: any = {};
 
   text = '';
 
   constructor(private chatService: ChatService) { }
 
   ngOnInit() {
-
+    
+    // se debe tener el id de la municipalidad
+    this.listarContactos(2);
+   
+    if (this.chatService.getMemoria('chats')) {
+      this.chats = JSON.parse(this.chatService.getMemoria('chats') || '{}');
+    }
+ 
   }
 
 
-  minimizarChat() {
+  minimizarChat() {    
+    if (this.contador==0) {
+      this.listarConversaciones(6);
+    }
     this.flagChat = !this.flagChat;
     if (this.tam_chat === 530) {
       this.tam_chat = 200;
     } else {
       this.tam_chat = 530;
     }
-    console.log(this.tam_chat);
+    this.contador ++;
   }
 
-  elegirMensaje(mensaje: any) {
-    this.chats.splice(0, 0, mensaje);
-    this.chats.pop();
+  elegirMensaje(value: any) {
+    let estado = 0;
+    for (let i in this.chats) {
+      if (value.idConversacion === this.chats[i].idConversacion) {
+        estado ++;
+      }     
+    }
+
+    if ( estado == 0){
+      this._chat.descripcion = value.descripcion;
+    this._chat.idConversacion = value.idConversacion;
+    this._chat.idUsuario = value.idUsuario;
+    
+    this.listarMensajes(value.idConversacion);
+
+    if (this.chats.length < 2){
+      console.log(this.chats.length);
+      this.chats.push(this._chat);
+    }else {            
+      this.chats.splice(0, 0, this._chat);
+      this.chats.pop();
+    }
+    this._chat = {};
+    this.chatService.setMemoria(JSON.stringify(this.chats) ,'chats');
+    }
   }
 
-  onEnter(event: any, value: any, text: any) {
-    const mensaje = {'user': 'tu', 'text': '', 'hora': new Date().getHours()};
+  onEnter(event: any, value: any, texto: any) {
+    const mensaje = {'user': 'tu', 'texto': '', 'hora': new Date().getHours()};
     if (event.key === 'Enter') {
-      mensaje.text = text;
+      mensaje.texto = texto;
       value.conversacion.push(mensaje);
       this.text = '';
     }
+  }
+
+
+  // Se envie el id de la municipalidad para listar todos los contactos
+  // ejemplo id: 2
+  listarContactos(id_municipalidad:number){
+    this.chatService.listarContactos(id_municipalidad).subscribe( res => {
+      console.log(res);
+      return res;
+    });
+  }
+
+
+  // no me juzguen pero en el for html mensajes van estos datos si es confuso lo se pero ahi van
+  // un wpps y te explico el porque?
+  // se debe enviar el id del usuario ejemplo = 6
+  listarConversaciones(id_usuario:number){
+   
+    if (this.chatService.getMemoria('conversaciones')) {
+      this.mensajes = JSON.parse(this.chatService.getMemoria('conversaciones') || '{}');
+      
+    }else{
+      this.chatService.listarConversaciones(id_usuario).subscribe( res => {
+        
+        this.mensajes = res;        
+        this.chatService.setMemoria(JSON.stringify(this.mensajes) ,'conversaciones');
+      });
+    }
+    return this.mensajes;
+  }
+
+  // no me juzguen pero en el for html conversacion van estos datos si es confuso lo se pero ahi van
+  // un wpps y te explico el porque?
+  // se debe enviar el id de la conversacion ejemplo
+  listarMensajes(id_conversacion:number){   
+    
+    this.chatService.listarMensajes(id_conversacion).subscribe( res => {
+      
+      this._chat.conversaciones = res;        
+    });
+    return this._chat.conversaciones;
   }
 }

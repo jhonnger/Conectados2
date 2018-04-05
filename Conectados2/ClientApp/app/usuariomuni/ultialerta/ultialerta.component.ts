@@ -17,7 +17,7 @@ export class UltialertaComponent implements OnInit {
     // tslint:disable-next-line:no-inferrable-types
     tam_chat: number = 200;
     // tslint:disable-next-line:no-inferrable-types
-    flagChat: boolean = true;
+    flagChat: boolean = false;
 
     contactos: any = [];
 

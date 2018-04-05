@@ -5,13 +5,13 @@
     <div class="chatboxhead">
         <div class="chatboxtitle">Alertas</div>
         <div class="chatboxoptions">
-            <a>+</a>
-            <a (click)="minimizarChat()">-</a>
+            <a *ngIf="!flagChat" (click)="minimizarChat()">v</a>
+            <a *ngIf="flagChat" (click)="minimizarChat()">ʌ</a>
         </div><br clear="all">
     </div>
     <!--If para Ocultar o minimiizar el chat-->
     <div *ngIf="flagChat">
-        <div class="chatboxcontent">            
+        <div class="chatboxcontent">
             <div class="col" style="padding-left:10px;padding-right: 5px;">
                 <mat-tab-group>
                     <mat-tab label="Mensajes">
@@ -24,7 +24,7 @@
                             </mat-list>
                         </div>
                     </mat-tab>
-                </mat-tab-group>              
+                </mat-tab-group>
             </div>
         </div>
     </div>

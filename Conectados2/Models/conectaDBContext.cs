@@ -43,7 +43,7 @@ namespace Conectados2.Models
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseSqlServer(@""+_appSettings.ConexionJohhny);
+                optionsBuilder.UseSqlServer(@""+_appSettings.ConexionMarthin);
             }
         }
 

@@ -17,32 +17,32 @@ namespace Conectados2.Servicio.impl
             this.baseRepositorio = baseRepositorio;
         }
 
-        public RespuestaControlador actualizar(Entidad entidad)
+        public virtual RespuestaControlador actualizar(Entidad entidad)
         {
             throw new NotImplementedException();
         }
 
-        public RespuestaControlador crear(Entidad entidad)
+        public virtual RespuestaControlador crear(Entidad entidad)
         {
             throw new NotImplementedException();
         }
 
-        public RespuestaControlador eliminar(key entidadId)
+        public virtual RespuestaControlador eliminar(key entidadId)
         {
             throw new NotImplementedException();
         }
 
-        public void grabarTodos(List<Entidad> list)
+        public virtual void grabarTodos(List<Entidad> list)
         {
             throw new NotImplementedException();
         }
 
-        public Entidad obtener(key id)
+        public virtual Entidad obtener(key id)
         {
             return this.baseRepositorio.obtener(id);
         }
 
-        public List<Entidad> obtenerTodos()
+        public virtual List<Entidad> obtenerTodos()
         {
             return this.baseRepositorio.obtenerTodos();
         }

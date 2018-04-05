@@ -82,8 +82,10 @@
     "@ngtools/webpack": "1.9.0",
     "@types/jwt-decode": "^2.2.1",
     "amazing-time-picker": "^1.5.3",
+    "angular-async-local-storage": "^4.0.0",
     "angular2-jwt": "^0.2.3",
     "extract-text-webpack-plugin": "^2.1.2",
     "jwt-decode": "^2.2.0"
   }
 }
+
