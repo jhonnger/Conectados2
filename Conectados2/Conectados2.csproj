@@ -25,14 +25,20 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+    <Compile Remove="ClientApp\app\components\counter\**" />
+    <Compile Remove="ClientApp\app\components\fetchdata\**" />
     <Compile Remove="ClientApp\app\components\NewFolder1\**" />
     <Compile Remove="ClientApp\app\components\NewFolder\**" />
     <Compile Remove="nuevos\**" />
     <Content Remove="ClientApp\**" />
     <Content Remove="nuevos\**" />
+    <EmbeddedResource Remove="ClientApp\app\components\counter\**" />
+    <EmbeddedResource Remove="ClientApp\app\components\fetchdata\**" />
     <EmbeddedResource Remove="ClientApp\app\components\NewFolder1\**" />
     <EmbeddedResource Remove="ClientApp\app\components\NewFolder\**" />
     <EmbeddedResource Remove="nuevos\**" />
+    <None Remove="ClientApp\app\components\counter\**" />
+    <None Remove="ClientApp\app\components\fetchdata\**" />
     <None Remove="ClientApp\app\components\NewFolder1\**" />
     <None Remove="ClientApp\app\components\NewFolder\**" />
     <None Remove="nuevos\**" />
@@ -85,9 +91,9 @@
   </Target>
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec Command="npm install" />
-    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod" />
-    <Exec Command="node node_modules/webpack/bin/webpack.js --env.prod" />
+   
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js  --env.prod" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js  --env.prod" />
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
       <DistFiles Include="wwwroot\dist\**; ClientApp\dist\**" />

@@ -25,8 +25,6 @@ import { AppComponent } from './components/app/app.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { MatNativeDateModule} from '@angular/material/core';
 import { LoadingComponent } from "./components/Loading/loading.component";
-
-import { AsyncLocalStorageModule } from "angular-async-local-storage";
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 
@@ -34,27 +32,32 @@ import {LoginComponent} from './components/login/login.component';
 import {UtilService} from './services/util.service';
 import {AuthService} from './services/auth.service';
 
-import { AuthGuardService as AuthGuard} from './services/auth-guard.service';
-import {JwtHelper} from "angular2-jwt/angular2-jwt";
+import { JwtHelper } from 'angular2-jwt';
+import {AuthGuardService as AuthGuard} from './services/auth-guard.service';
+
 import { APP_ROUTES } from './app.routes';
 import { UsuarioMuniComponent } from './usuariomuni/usuario-muni.component';
 import { AdminComponent } from './admin/admin.component';
 import { MatTableModule } from '@angular/material';
 
+import { UsuarioMuniModule } from './usuariomuni/usuariomuni.module';
+import { AdminModule } from './admin/admin.module';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
     declarations: [
         AppComponent,
-        UsuarioMuniComponent,
         LoginComponent,
-        LoadingComponent,
-        AdminComponent
+        LoadingComponent
     ], entryComponents:[LoadingComponent],
     imports: [
+        
+        APP_ROUTES,
         CommonModule,
         HttpModule,
         FormsModule,
         MatProgressSpinnerModule,
         ReactiveFormsModule,
+        AmazingTimePickerModule,
         MatCardModule,
         MatIconModule,
         MatToolbarModule,
@@ -65,19 +68,21 @@ import { MatTableModule } from '@angular/material';
         MatListModule,
         MatGridListModule,
         MatCheckboxModule,
+        AdminModule, 
+        UsuarioMuniModule,   
+        HttpClientModule,
         MatInputModule,
-        MatDatepickerModule,
-        AsyncLocalStorageModule,
-        MatInputModule,     
-        MatTableModule,   
-        APP_ROUTES,
+        MatDatepickerModule
     ],
     providers:[
         AuthService,
         UtilService,
-        JwtHelper,
-        AuthGuard
+        AuthGuard,
+        JwtHelper
     ]
 })
 export class AppModuleShared {
 }
+export function tokenGetter() {
+    return localStorage.getItem('token');
+  }

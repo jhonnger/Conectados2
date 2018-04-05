@@ -75,7 +75,7 @@ namespace Conectados2.Models
                     .HasMaxLength(80)
                     .IsUnicode(false);
 
-                entity.Property(e => e.IdJurisdiccion).HasColumnName("id_jurisdiccion");
+                entity.Property(e => e.IdSector).HasColumnName("id_sector");
 
                 
 
@@ -91,7 +91,7 @@ namespace Conectados2.Models
 
                 entity.HasOne(d => d.IdSectorNavigation)
                     .WithMany(p => p.ComiMuni)
-                    .HasForeignKey(d => d.IdJurisdiccion)
+                    .HasForeignKey(d => d.IdSector)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_comi_muni_jurisdiccion");
 

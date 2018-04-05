@@ -16,17 +16,17 @@ namespace Conectados2.Servicio.impl
         {
         }
 
-        public RespuestaControlador actualizar(Conversacion entidad)
+        public override RespuestaControlador actualizar(Conversacion entidad)
         {
             throw new NotImplementedException();
         }
 
-        public RespuestaControlador crear(Conversacion entidad)
+        public override RespuestaControlador crear(Conversacion entidad)
         {
             throw new NotImplementedException();
         }
 
-        public void grabarTodos(List<Conversacion> list)
+        public override void grabarTodos(List<Conversacion> list)
         {
             throw new NotImplementedException();
         }

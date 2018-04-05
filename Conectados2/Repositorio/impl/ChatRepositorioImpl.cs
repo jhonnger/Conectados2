@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace Conectados2.Repositorio.impl
 {
-    //public class ChatRepositorioImpl : BaseRepositorioImpl<Conversacion, int>, ChatRepositorio
-    //{
-    //    public ChatRepositorioImpl(conectaDBContext context) : base(context)
-    //    {
-    //    }
-    //}
+    public class ChatRepositorioImpl : BaseRepositorioImpl<Conversacion, int>, ChatRepositorio
+    {
+        public ChatRepositorioImpl(conectaDBContext context) : base(context)
+        {
+        }
+
+        public override Conversacion obtener(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

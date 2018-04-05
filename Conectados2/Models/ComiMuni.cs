@@ -15,7 +15,7 @@ namespace Conectados2.Models
 
         public int IdComiMuni { get; set; }
         public int IdTipoComiMuni { get; set; }
-        public int IdJurisdiccion { get; set; }
+        public int IdSector { get; set; }
         public int IdUbicacion { get; set; }
         
         public DateTime FecCreacion { get; set; }
