@@ -20,16 +20,12 @@ export class ChatComponent implements OnInit {
 
   contactos: any = [];
 
-  mensajes: any = [
-    {descripcion: '',
-    idConversacion: '',
-    idUsuairo: '',
-    ultimoMensaje: '',
-    flag:''}
-   ] ;
+  mensajes: any = [] ;
 
   conversaciones: any = [];
 
+  _label: string = 'Mensaje';
+  flag_msg_cont: boolean = false;
   // se coloca en los tabs
   chats: any = [];
   // individual de arriba
@@ -41,9 +37,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
     
-    // se debe tener el id de la municipalidad
-    this.listarContactos(2);
-   
+    
     if (this.chatService.getMemoria('chats')) {
       this.chats = JSON.parse(this.chatService.getMemoria('chats') || '{}');
     }
@@ -53,7 +47,8 @@ export class ChatComponent implements OnInit {
 
   minimizarChat() {    
     if (this.contador==0) {
-      this.listarConversaciones(6);
+      // se debe tener el id de la municipalidad
+      this.listarContactos(2);
     }
     this.flagChat = !this.flagChat;
     if (this.tam_chat === 530) {
@@ -64,7 +59,7 @@ export class ChatComponent implements OnInit {
     this.contador ++;
   }
 
-  elegirMensaje(value: any) {
+  elegirContacto(value: any) {
     let estado = 0;
     for (let i in this.chats) {
       if (value.idConversacion === this.chats[i].idConversacion) {
@@ -73,7 +68,7 @@ export class ChatComponent implements OnInit {
     }
 
     if ( estado == 0){
-      this._chat.descripcion = value.descripcion;
+    this._chat.descripcion = value.descripcion;
     this._chat.idConversacion = value.idConversacion;
     this._chat.idUsuario = value.idUsuario;
     
@@ -104,10 +99,24 @@ export class ChatComponent implements OnInit {
   // Se envie el id de la municipalidad para listar todos los contactos
   // ejemplo id: 2
   listarContactos(id_municipalidad:number){
-    this.chatService.listarContactos(id_municipalidad).subscribe( res => {
-      console.log(res);
-      return res;
-    });
+    if (this.chatService.getMemoria('contactos')) {
+      this.contactos = JSON.parse(this.chatService.getMemoria('contactos') || '');
+      
+    }else{
+      this.chatService.listarContactos(id_municipalidad).subscribe( res => {
+        for (const cont of res) {
+          if (cont.idUsuario != 6) {
+            this.contactos.push(cont);
+          }
+        }
+        if (this.contactos) {
+          this.chatService.setMemoria(JSON.stringify(this.contactos) ,'contactos');
+        }else{
+          this.contactos = '';
+        }        
+        return this.contactos;
+      });
+    }
   }
 
 
@@ -122,8 +131,13 @@ export class ChatComponent implements OnInit {
     }else{
       this.chatService.listarConversaciones(id_usuario).subscribe( res => {
         
-        this.mensajes = res;        
-        this.chatService.setMemoria(JSON.stringify(this.mensajes) ,'conversaciones');
+        this.mensajes = res;     
+        if (this.mensajes) {
+          this.chatService.setMemoria(JSON.stringify(this.mensajes) ,'conversaciones');
+        }else{
+          this.mensajes = '';
+        }   
+        
       });
     }
     return this.mensajes;
@@ -136,8 +150,17 @@ export class ChatComponent implements OnInit {
     
     this.chatService.listarMensajes(id_conversacion).subscribe( res => {
       
-      this._chat.conversaciones = res;        
+      this._chat.conversaciones = res;   
+      if (this._chat.conversaciones === 0) {
+        this._chat.conversacioness = '';
+      }        
     });
     return this._chat.conversaciones;
+  }
+
+  // Conversacion
+  iniciarConversacion(id_us,id_cont){
+  
+  
   }
 }

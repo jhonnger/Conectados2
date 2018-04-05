@@ -4,7 +4,6 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/Rx';
 //import { map } ;
 import  'rxjs/add/operator/map';
-import { AsyncLocalStorage } from 'angular-async-local-storage';
 
 @Injectable()
 export class ChatService {
@@ -12,7 +11,7 @@ export class ChatService {
   UrlChat: string = 'http://localhost:5000/api/chat';
   res:any = [];
 
-  constructor(private http: Http,protected localStorage: AsyncLocalStorage) { }
+  constructor(private http: Http) { }
   
   
   //contactos/2 
@@ -60,3 +59,6 @@ export class ChatService {
 
 
 }
+
+
+

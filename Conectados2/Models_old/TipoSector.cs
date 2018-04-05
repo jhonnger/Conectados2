@@ -7,8 +7,9 @@ namespace Conectados2.Models
     {
         public TipoSector()
         {
-            Sector = new HashSet<Sector>();           
+            Sector = new HashSet<Sector>();
         }
+
         public int IdTipoSector { get; set; }
         public string Nombre { get; set; }
 

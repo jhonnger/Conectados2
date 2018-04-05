@@ -17,7 +17,6 @@ namespace Conectados2.Models
         public int IdTipoComiMuni { get; set; }
         public int IdSector { get; set; }
         public int IdUbicacion { get; set; }
-        
         public DateTime FecCreacion { get; set; }
         public DateTime FecModificacion { get; set; }
         public string UsuarioMod { get; set; }
@@ -25,7 +24,8 @@ namespace Conectados2.Models
         public string Nombre { get; set; }
 
         public Sector IdSectorNavigation { get; set; }
-        public TipoMuni TipoComiMuni { get; set; }
+        public TipoMuni IdTipoComiMuniNavigation { get; set; }
+        public Ubicacion IdUbicacionNavigation { get; set; }
         public ICollection<ComiMuniMembresia> ComiMuniMembresia { get; set; }
         public ICollection<Configuracion> Configuracion { get; set; }
         public ICollection<Patrullero> Patrullero { get; set; }

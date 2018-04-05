@@ -174,15 +174,13 @@ namespace Conectados2.Models
                     .HasConstraintName("FK_configuracion_comi_muni");
             });
 
-            modelBuilder.Entity<Conversacion>(entity =>
+             modelBuilder.Entity<Conversacion>(entity =>
             {
                 entity.HasKey(e => e.IdConversacion);
 
                 entity.ToTable("conversacion");
 
-                entity.Property(e => e.IdConversacion)
-                    .HasColumnName("id_conversacion")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.IdConversacion).HasColumnName("id_conversacion");
 
                 entity.Property(e => e.Descripcion)
                     .IsRequired()
@@ -404,9 +402,7 @@ namespace Conectados2.Models
 
                 entity.ToTable("mensaje");
 
-                entity.Property(e => e.IdMensaje)
-                    .HasColumnName("id_mensaje")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.IdMensaje).HasColumnName("id_mensaje");
 
                 entity.Property(e => e.Hora)
                     .HasColumnName("hora")
@@ -482,9 +478,7 @@ namespace Conectados2.Models
 
                 entity.ToTable("participantes");
 
-                entity.Property(e => e.IdParticipantes)
-                    .HasColumnName("id_participantes")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.IdParticipantes).HasColumnName("id_participantes");
 
                 entity.Property(e => e.IdConversacion).HasColumnName("id_conversacion");
 

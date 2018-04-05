@@ -15,14 +15,14 @@ namespace Conectados2.Repositorio.impl
         {
             
             return this._context.Sector
-                .Include(sector => sector.TipoSector)
+                .Include(sector => sector.IdTipoSector)
                 .SingleOrDefault(s => s.IdSector == id);
         }
 
         public override  List<Sector> obtenerTodos(){
             
             List<Sector> sectores = this._context.Sector
-                .Include(sector => sector.TipoSector)
+                .Include(sector => sector.IdTipoSector)
                 .ToList();
 
             return sectores;
