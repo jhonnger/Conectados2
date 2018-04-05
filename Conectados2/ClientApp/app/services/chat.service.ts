@@ -3,7 +3,7 @@ import { Http, Headers } from '@angular/http';
 // tslint:disable-next-line:import-blacklist
 import 'rxjs/Rx';
 //import { map } ;
-import {map} from 'rxjs/operator/map';
+import  'rxjs/add/operator/map';
 import { AsyncLocalStorage } from 'angular-async-local-storage';
 
 @Injectable()

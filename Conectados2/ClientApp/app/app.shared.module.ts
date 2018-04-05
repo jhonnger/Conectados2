@@ -39,6 +39,7 @@ import {JwtHelper} from "angular2-jwt/angular2-jwt";
 import { APP_ROUTES } from './app.routes';
 import { UsuarioMuniComponent } from './usuariomuni/usuario-muni.component';
 import { AdminComponent } from './admin/admin.component';
+import { MatTableModule } from '@angular/material';
 
 @NgModule({
     declarations: [
@@ -67,7 +68,8 @@ import { AdminComponent } from './admin/admin.component';
         MatInputModule,
         MatDatepickerModule,
         AsyncLocalStorageModule,
-        MatInputModule,        
+        MatInputModule,     
+        MatTableModule,   
         APP_ROUTES,
     ],
     providers:[
