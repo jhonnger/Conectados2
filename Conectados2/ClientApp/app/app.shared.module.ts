@@ -25,8 +25,6 @@ import { AppComponent } from './components/app/app.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { MatNativeDateModule} from '@angular/material/core';
 import { LoadingComponent } from "./components/Loading/loading.component";
-
-import { AsyncLocalStorageModule } from "angular-async-local-storage";
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 
@@ -40,6 +38,7 @@ import {AuthGuardService as AuthGuard} from './services/auth-guard.service';
 import { APP_ROUTES } from './app.routes';
 import { UsuarioMuniComponent } from './usuariomuni/usuario-muni.component';
 import { AdminComponent } from './admin/admin.component';
+import { MatTableModule } from '@angular/material';
 
 import { UsuarioMuniModule } from './usuariomuni/usuariomuni.module';
 import { AdminModule } from './admin/admin.module';
@@ -73,8 +72,7 @@ import { HttpClientModule } from '@angular/common/http';
         UsuarioMuniModule,   
         HttpClientModule,
         MatInputModule,
-        MatDatepickerModule,
-        AsyncLocalStorageModule
+        MatDatepickerModule
     ],
     providers:[
         AuthService,
