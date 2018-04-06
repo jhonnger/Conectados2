@@ -19,12 +19,14 @@ namespace Conectados2.Repositorio.impl
 
         public void actualizar(Entidad entidad)
         {
-            throw new NotImplementedException();
+            _context.Entry(entidad).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
         public void crear(Entidad entidad)
         {
             _context.Add(entidad);
+            _context.SaveChanges();
         }
 
         public void grabarTodos(List<Entidad> list)
@@ -39,6 +41,7 @@ namespace Conectados2.Repositorio.impl
         {
 
             var a= _context.Set<Entidad> ();
+           
 
             return a.ToList<Entidad>();
         }

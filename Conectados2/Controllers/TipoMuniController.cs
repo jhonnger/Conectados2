@@ -12,7 +12,7 @@ namespace Conectados2.Controllers
     [Route("api/TipoMuni")]
     public class TipoMuniController : Controller
     {
-        private readonly conectaDBContext _context;
+
         private readonly TipoMuniServicio tipoMuniServicio;
 
          public TipoMuniController(TipoMuniServicio tipoMuniServicio)

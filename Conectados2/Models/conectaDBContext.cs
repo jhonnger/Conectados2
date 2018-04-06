@@ -328,8 +328,7 @@ namespace Conectados2.Models
                 entity.ToTable("sector");
 
                 entity.Property(e => e.IdSector)
-                    .HasColumnName("id_sector")
-                    .ValueGeneratedNever();
+                    .HasColumnName("id_sector");
 
                 entity.Property(e => e.IdSectorPadre).HasColumnName("id_sector_padre");
 
@@ -599,18 +598,17 @@ namespace Conectados2.Models
                 entity.ToTable("punto_sector");
 
                 entity.Property(e => e.IdPuntoSector)
-                    .HasColumnName("id_punto_sector")
-                    .ValueGeneratedNever();
+                    .HasColumnName("id_punto_sector");
 
                 entity.Property(e => e.IdSector).HasColumnName("id_sector");
 
-                entity.Property(e => e.Latitud)
+                entity.Property(e => e.lat)
                     .HasColumnName("latitud")
-                    .HasColumnType("decimal(10, 6)");
+                    .HasColumnType("decimal(12, 8)");
 
-                entity.Property(e => e.Longitud)
+                entity.Property(e => e.lng)
                     .HasColumnName("longitud")
-                    .HasColumnType("decimal(10, 6)");
+                    .HasColumnType("decimal(12, 8)");
 
                 entity.Property(e => e.Orden).HasColumnName("orden");
 

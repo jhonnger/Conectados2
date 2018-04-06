@@ -19,9 +19,10 @@ namespace Conectados2.Controllers
         private readonly conectaDBContext _context;
         private readonly TipoDenunciaServicio tipoDenunciaServicio;
 
-         public TipoDenunciaController(TipoDenunciaServicio tipoDenunciaServicio)
+         public TipoDenunciaController(TipoDenunciaServicio tipoDenunciaServicio, conectaDBContext conectaDB)
         {
             this.tipoDenunciaServicio = tipoDenunciaServicio;
+             this._context = conectaDB;
         }
 
         // GET: api/TipoDenuncia

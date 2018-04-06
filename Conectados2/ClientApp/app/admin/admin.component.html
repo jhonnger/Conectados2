@@ -1,1 +1,21 @@
+<mat-toolbar >
+    <button mat-button [matMenuTriggerFor]="mantenimientos">Mantenimientos</button>
+
+    <mat-menu #mantenimientos="matMenu" yPosition="below" [overlapTrigger]="false">
+        <button mat-menu-item [matMenuTriggerFor]="munis">Municipalidades</button>
+        <button mat-menu-item [matMenuTriggerFor]="lugares">Lugares</button>
+    </mat-menu>
+
+    <mat-menu #munis="matMenu">
+        <button (click)="irRuta('/admin/muni')" mat-menu-item>Municipalidades</button>
+        <button mat-menu-item>Comisarías</button>
+    </mat-menu>
+
+    <mat-menu #lugares="matMenu">
+        <button (click)="irRuta('/admin/sector')" mat-menu-item>Sectores</button>
+    </mat-menu>
+
+    
+</mat-toolbar>
+
 <router-outlet>  </router-outlet>

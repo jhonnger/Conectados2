@@ -19,9 +19,10 @@ namespace Conectados2.Controllers
         private readonly conectaDBContext _context;
         private readonly MunicipalidadServicio municipalidadServicio;
 
-         public MunicipalidadController(MunicipalidadServicio municipalidadServicio)
+         public MunicipalidadController(MunicipalidadServicio municipalidadServicio, conectaDBContext conectaDB)
         {
             this.municipalidadServicio = municipalidadServicio;
+            this._context = conectaDB;
         }
 
         // GET: api/municipalidad

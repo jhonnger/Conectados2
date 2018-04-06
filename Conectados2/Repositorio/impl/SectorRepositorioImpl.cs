@@ -16,6 +16,7 @@ namespace Conectados2.Repositorio.impl
             
             return this._context.Sector
                 .Include(sector => sector.TipoSector)
+                .Include(sector => sector.PuntoSector)
                 .SingleOrDefault(s => s.IdSector == id);
         }
 

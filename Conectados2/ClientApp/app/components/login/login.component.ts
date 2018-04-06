@@ -40,8 +40,13 @@ export class LoginComponent implements OnInit {
             (data: any) => {
                 this.utilService.hideLoading();
                 if (data != null){
-                    console.log(data)
+                
+                    let usuario : any = {};
+                    usuario.usuario = data.username;
+                    usuario.id = data.id;
+
                     localStorage.setItem('token', (data.token));
+                    localStorage.setItem('usuario', JSON.stringify(usuario));
                     this._router.navigateByUrl('/home');
                 }else {
                     this.openSnackBar();

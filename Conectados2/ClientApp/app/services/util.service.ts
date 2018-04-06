@@ -20,4 +20,13 @@ export class UtilService {
     hideLoading(){
         this.dialogRefe.close();
     }
+
+    cambiarNumeroPuntoPorComa(numero: number){
+        let numeroString: string = numero + "";
+
+        numeroString = numeroString.replace('.', ',');
+
+        console.log(numeroString);
+        return parseFloat(numeroString);
+    }
 }

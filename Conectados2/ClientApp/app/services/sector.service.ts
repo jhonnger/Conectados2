@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Http} from '@angular/http';
 import {AppSettings} from '../endPoint.config';
+import {Sector} from "../interfaces/Sector.interface";
 
 @Injectable()
 export class SectorService {
@@ -22,4 +23,11 @@ export class SectorService {
         return res.json();
       });
   }
+
+    crear(sector: Sector) {
+        return this.http.post(this.url + '/' , sector)
+            .map( res => {
+                return res.json();
+            });
+    }
 }

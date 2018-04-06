@@ -10,7 +10,7 @@ namespace Conectados2.Servicio.impl
 {
     public class BaseServicioImpl<Entidad, key> : BaseServicio<Entidad, key> where Entidad : class
     {
-        BaseRepositorio<Entidad, key> baseRepositorio;
+        protected BaseRepositorio<Entidad, key> baseRepositorio;
 
         public  BaseServicioImpl(BaseRepositorio<Entidad,key> baseRepositorio)
         {
@@ -19,12 +19,14 @@ namespace Conectados2.Servicio.impl
 
         public virtual RespuestaControlador actualizar(Entidad entidad)
         {
-            throw new NotImplementedException();
+            this.baseRepositorio.actualizar(entidad);
+            return RespuestaControlador.respuestaExito(entidad);
         }
 
         public virtual RespuestaControlador crear(Entidad entidad)
         {
-            throw new NotImplementedException();
+            this.baseRepositorio.crear(entidad);
+            return RespuestaControlador.respuestaExito(entidad);
         }
 
         public virtual RespuestaControlador eliminar(key entidadId)
