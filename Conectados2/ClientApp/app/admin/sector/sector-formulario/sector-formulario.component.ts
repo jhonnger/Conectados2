@@ -31,7 +31,9 @@ export class SectorFormularioComponent implements OnInit {
         eliminar: false,
         ver: false
     } ;
+    dibujoSector: any;
     puntosSector: PuntoSector[] = [ ];
+    bounds: any;
 
     dibujoJurisdiccion = false;
     figuraJursdiccion : any = null;
@@ -68,9 +70,10 @@ export class SectorFormularioComponent implements OnInit {
         this.reiniciarFormulario();
     }
     reiniciarFormulario(){
-
+        this.sectorInicial = {};
         this.deshabilitarDibujoMapa();
         this.reiniciarBotones();
+        this.reiniciarMapa();
     }
     reiniciarBotones(){
         this.modificarBotones(true, false, false, false, false, false, true)
@@ -115,37 +118,46 @@ export class SectorFormularioComponent implements OnInit {
 
     intentoCargaMapa = 0;
 
-    llenarCampos(id: number){
-        this._utilService.showLoading();
+    traerSector(id: number){
+    
+       this._utilService.showLoading();
         this._sectorService.leer(id).subscribe(
             data => {
-                console.log(data.data);
-                this.sectorInicial = data.data;
-                this.dibujarFigura(this.sectorInicial.puntoSector);
-                this.deshabilitarDibujoMapa();
+
+                this.llenarCampos(data.data);
                 this._utilService.hideLoading();
             }, err => {
                 console.log(err);
                 this._utilService.hideLoading();
             }
         );
+        
+    }
+    llenarCampos(sector: Sector){
+
+        this.sectorInicial = sector;
+        this.controls = false;
+
+        this.dibujarFigura(this.sectorInicial.puntoSector);
+        this.deshabilitarDibujoMapa();
         this.modificarBotones(false, false, true, true, true, true, true);
     }
     dibujarFigura(puntos: PuntoSector[]){
-        
+        this.puntosSector = puntos;
+        this.dibujoSector.setMap(null);
         if(puntos == null){
+            this.reiniciarMapa();
             return;
         }
-        var bermudaTriangle = new google.maps.Polygon({
-            paths: puntos,
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35
-          });
-          bermudaTriangle.setMap(this.map);
+        this.dibujoSector.setPath(puntos);
+        this.dibujoSector.setMap(this.map);
+        this.posicionarMapaSegunFigura();
     }
+    modificar(){
+        this.controls = true;
+        this.modificarBotones(false, true, false, false, true, false, false)
+    }
+
     cargarMapa(){
         var polygon1 = {
             draggable: true,
@@ -163,7 +175,14 @@ export class SectorFormularioComponent implements OnInit {
         });
 
         
-        
+        this.dibujoSector = new google.maps.Polygon({
+            paths: [],
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+          });
 
         this.drawingManager = new google.maps.drawing.DrawingManager({
             drawingMode: google.maps.drawing.OverlayType.POLYGON,
@@ -175,6 +194,7 @@ export class SectorFormularioComponent implements OnInit {
                 drawingModes: ['polygon', 'rectangle']
             }
         });
+        this.bounds =  new google.maps.LatLngBounds();
         
         let self = this;
 
@@ -201,7 +221,8 @@ export class SectorFormularioComponent implements OnInit {
             self.deshabilitarDibujoMapa();
           });
 
-        this.habiliarDibujoMapa();
+          this.reiniciarMapa();
+       // this.habiliarDibujoMapa();
     }
     deshabilitarDibujoMapa(){
         if(this.drawingManager){
@@ -215,19 +236,73 @@ export class SectorFormularioComponent implements OnInit {
         if (this.figuraJursdiccion){
             this.figuraJursdiccion.setMap(null);
         }
-        this.drawingManager.setMap(this.map);
+        this.deshabilitarDibujoMapa();
+        if(this.dibujoSector){
+            this.dibujoSector.setMap(null);
+        }   
     }
+    reiniciarDibujo(){
+        if (this.figuraJursdiccion){
+            this.figuraJursdiccion.setMap(null);
+        }
+       this.habiliarDibujoMapa();
+        if(this.dibujoSector){
+            this.dibujoSector.setMap(null);
+        }   
+    }
+
+    posicionarMapaSegunFigura(){
+        var i;
+
+        if(this.bounds != null && this.map != null && this.puntosSector.length != 0){
+            this.bounds = this.bounds =  new google.maps.LatLngBounds();
+            for(let punto of this.puntosSector){
+                console.log(punto)
+                this.bounds.extend(new google.maps.LatLng(punto.lat, punto.lng))
+            }
+
+            this.map.fitBounds(this.bounds);
+
+            this.map.setCenter(this.bounds.getCenter());
+            
+            // The Center of the Bermuda Triangle - (25.3939245, -72.473816)
+            console.log(this.bounds.getCenter());
+        }
+    }
+
     guardar(){
         this.sectorInicial.IdTipoSector = 1;
-        this._sectorService.crear(this.sectorInicial).subscribe(
-            data => {
-                console.log(data)
-            }, err => {
-                console.log(err)
-            }
-        );
+        this._utilService.showLoading();
+        if(this.validarFormulario()){
+            
+            this._sectorService.guardar(this.sectorInicial).subscribe(
+                data => {
+                    if(data.success){
+                        this._utilService.hideLoading();
+                        this._utilService.alertMensaje("Sector guardado correctamente");
+                        this.reiniciarFormulario();
+                    }
+                    console.log(data)
+                }, err => {
+                    console.log(err)
+                }
+            );
+        }
+        
     }
     cambio(evento){
 
+    }
+
+    validarFormulario(){
+        if(this.sectorInicial.puntoSector == null || this.sectorInicial.puntoSector.length == 0){
+            this._utilService.alertMensaje("Debe dibujar un sector");
+            return false;
+        }
+        return true;
+    }
+
+    cancelar(){
+        this.reiniciarFormulario();
     }
 }

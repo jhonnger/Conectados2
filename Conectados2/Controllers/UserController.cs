@@ -9,6 +9,7 @@ using AutoMapper;
 using Conectados2.Entities;
 using Conectados2.Helpers;
 using Conectados2.Seguridad;
+using Conectados2.Servicio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,14 +26,18 @@ namespace Conectados2.Controllers
         private IMapper _mapper;
         private readonly AppSettings _appSettings;
 
+        private readonly AuthServicio _authServicio;
+
         public UsersController(
             IUserService userService,
             IMapper mapper,
+            AuthServicio authServicio,
             IOptions<AppSettings> appSettings)
         {
             _userService = userService;
             _mapper = mapper;
             _appSettings = appSettings.Value;
+            _authServicio = authServicio;
         }
 
         [AllowAnonymous]
@@ -43,34 +48,10 @@ namespace Conectados2.Controllers
             {
                 return BadRequest();
             }
-            var user = _userService.Authenticate(userDto.usuario, userDto.password);
+            var user = _authServicio.login(userDto.usuario, userDto.password);
 
-            if (user == null)
-                return Unauthorized();
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.IdUsuario.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-
-            // return basic user info (without password) and token to store client side
-            return Ok(new
-            {
-                Id = user.IdUsuario,
-                Username = user.Username,
-                FirstName = user.FotoPerfil,
-                LastName = user.UsuarioMod,
-                Token = tokenString
-            });
+        
+            return Ok(user);
         }
 
         [AllowAnonymous]

@@ -17,10 +17,13 @@ namespace Conectados2.Repositorio.impl
             _context = context;
         }
 
-        public void actualizar(Entidad entidad)
+        public virtual void actualizar(Entidad entidad)
         {
             _context.Entry(entidad).State = EntityState.Modified;
             _context.SaveChanges();
+        }
+        public void removeTracking(Entidad entidad){
+            _context.Remove(entidad);
         }
 
         public void crear(Entidad entidad)

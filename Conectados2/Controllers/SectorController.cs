@@ -6,6 +6,7 @@ using Conectados2.Helpers;
 using Conectados2.Servicio.impl;
 using Conectados2.Servicio;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Conectados2.Controllers
 {
@@ -28,9 +29,11 @@ namespace Conectados2.Controllers
         }
 
          // GET: api/sector
+         [Authorize(Roles = "Admin")]
         [HttpGet]
         public RespuestaControlador GetSectores()
         {
+            Debug.Write("Holi"+ HttpContext.User.Identity.Name);
             return RespuestaControlador.respuestaExito( sectorServicio.obtenerTodos());
         }
 
@@ -46,8 +49,8 @@ namespace Conectados2.Controllers
             return RespuestaControlador.respuestaExito(sectorServicio.crear(sector));
         }
 
-        // PUT: api/sector/5
-        [HttpPut("{id}")]
+        // PUT: api/sector
+        [HttpPut]
         public  RespuestaControlador PutSector([FromBody] Sector sector)
         {
             if (!ModelState.IsValid)

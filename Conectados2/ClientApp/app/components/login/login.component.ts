@@ -5,7 +5,8 @@ import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {UtilService} from '../../services/util.service';
 import {FormControl, Validators} from '@angular/forms';
-
+import { JwtHelper } from 'angular2-jwt';
+import { Constantes } from '../../util/constantes';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -27,7 +28,8 @@ export class LoginComponent implements OnInit {
                 public dialog: MatDialog,
                 private utilService: UtilService,
                 private authService: AuthService,
-                private _router: Router) {
+                private _router: Router,
+                private _jwtHelper: JwtHelper) {
 
     }
 
@@ -37,17 +39,23 @@ export class LoginComponent implements OnInit {
     submit(){
         this.utilService.showLoading();
         this.authService.login(this.usuario.usuario, this.usuario.password).subscribe(
-            (data: any) => {
+            (response: any) => {
                 this.utilService.hideLoading();
-                if (data != null){
-                
+                if (response.success){
+                    let data = response.data;
                     let usuario : any = {};
+                    let tokenDecode;
                     usuario.usuario = data.username;
                     usuario.id = data.id;
 
                     localStorage.setItem('token', (data.token));
                     localStorage.setItem('usuario', JSON.stringify(usuario));
-                    this._router.navigateByUrl('/home');
+
+                    tokenDecode = this._jwtHelper.decodeToken(data.token);
+                    if(tokenDecode){
+                        this.direccionarSegunRol(tokenDecode.role);
+                    }
+                    
                 }else {
                     this.openSnackBar();
                 }
@@ -60,6 +68,14 @@ export class LoginComponent implements OnInit {
                 console.log('completed');
             }
         );
+    }
+    direccionarSegunRol(rol: string){
+    
+        switch(rol){
+            case Constantes.adminRol:  this._router.navigateByUrl('/admin/muni'); break;
+            case Constantes.municipalRol: this._router.navigateByUrl('/home'); break;
+            default: break;
+        }
     }
 
     openSnackBar() {

@@ -43,7 +43,7 @@ namespace Conectados2.Models
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseSqlServer(@""+_appSettings.ConexionMarthin);
+                optionsBuilder.UseSqlServer(@""+_appSettings.ConexionJohhny);
             }
         }
 
@@ -803,9 +803,9 @@ namespace Conectados2.Models
 
                 entity.ToTable("usuario");
 
-                entity.HasIndex(e => e.IdPersona)
-                    .HasName("IX_usuario")
-                    .IsUnique();
+               // entity.HasIndex(e => e.IdPersona)
+                 //   .HasName("IX_usuario")
+                   // .IsUnique();
 
                 entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
 
@@ -833,9 +833,7 @@ namespace Conectados2.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.IdJurisdiccion).HasColumnName("id_jurisdiccion");
-
-                entity.Property(e => e.IdPersona).HasColumnName("id_persona");
+              //  entity.Property(e => e.IdPersona).HasColumnName("id_persona");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
@@ -856,9 +854,9 @@ namespace Conectados2.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.IdPersonaNavigation)
+                entity.HasOne(d => d.Persona)
                     .WithOne(p => p.Usuario)
-                    .HasForeignKey<Usuario>(d => d.IdPersona)
+                    .HasForeignKey<Usuario>(d => d.IdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_usuario_persona");
             });

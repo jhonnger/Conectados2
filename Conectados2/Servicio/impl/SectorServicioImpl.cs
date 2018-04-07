@@ -3,6 +3,7 @@ using Conectados2.Helpers;
 using Conectados2.Models;
 using Conectados2.Repositorio;
 using Conectados2.Repositorio.impl;
+using System.Linq;
 
 namespace Conectados2.Servicio.impl
 {
@@ -22,7 +23,7 @@ namespace Conectados2.Servicio.impl
         public override RespuestaControlador actualizar(Sector sector){
             
             bool puntosNuevos = false;
-            Sector sectorDB;
+            
 
             if(sector.PuntoSector == null || sector.PuntoSector.Count == 0){
                 return RespuestaControlador.respuetaError("Debe dibujar el perimetro del sector");
@@ -34,15 +35,20 @@ namespace Conectados2.Servicio.impl
                 }
             }
             if(puntosNuevos){
-                sectorDB = this.baseRepositorio.obtener(sector.IdSector);
-
-                foreach(PuntoSector puntoSector in sectorDB.PuntoSector){
+                var puntosDB = ((SectorRepositorio)this.baseRepositorio).obtenerPuntos(sector.IdSector);
+                List<PuntoSector> puntos = new List<PuntoSector>(puntosDB);
+                foreach(PuntoSector puntoSector in puntos){
                     this.puntoSectorRepositorio.eliminar(puntoSector);               
                 }
+//                this.baseRepositorio.removeTracking(sectorDB);
             }
             return base.actualizar(sector);
         }
-
-    
+        public override Sector obtener(int id)
+        {
+            var sector = this.baseRepositorio.obtener(id);
+            sector.PuntoSector = sector.PuntoSector.OrderBy(p => p.Orden).ToList();
+            return sector;
+        }
     }
 }

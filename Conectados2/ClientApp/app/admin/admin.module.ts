@@ -18,7 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
 import { AdminComponent } from './admin.component';
 import { AuthService } from '../services/auth.service';
-import { AuthGuardService as AuthGuard} from '../services/auth-guard.service';
+import { AuthAdminGuardService as AuthGuard} from '../services/auth-guard.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 import {MatMenuModule} from '@angular/material/menu';

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {LoadingComponent} from '../components/Loading/loading.component';
 import {MatDialog} from '@angular/material/dialog';
+import { MensajeAlertComponent } from '../components/mensajeAlert/mensaje-alert.component';
 
 @Injectable()
 export class UtilService {
@@ -14,6 +15,14 @@ export class UtilService {
         this.dialogRefe = this.dialog.open(LoadingComponent, {
             id: "loading", 
             disableClose: true
+        });
+    }
+
+    alertMensaje(mensaje: string){
+        this.dialog.open(MensajeAlertComponent, {
+            id: "mensaje",
+            data: {mensaje}
+            
         });
     }
 

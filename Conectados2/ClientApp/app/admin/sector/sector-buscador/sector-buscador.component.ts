@@ -29,6 +29,7 @@ export class SectorBuscadorComponent implements OnInit {
                 }
                 console.log(this.sectores);
             }, err => {
+                console.log(err)
                 this._utilService.hideLoading();
             }
         );

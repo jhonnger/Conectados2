@@ -12,7 +12,7 @@ export class ChatService {
   UrlChat: string = 'http://localhost:5000/api/chat';
   res:any = [];
 
-  constructor(private http: Http,protected localStorage: AsyncLocalStorage) { }
+  constructor(private http: Http) { }
   
   
   //contactos/2 
