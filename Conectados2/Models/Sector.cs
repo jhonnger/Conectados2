@@ -18,7 +18,7 @@ namespace Conectados2.Models
         public int? IdSectorPadre { get; set; }
 
         public Sector IdSectorPadreNavigation { get; set; }
-        public TipoSector IdTipoSectorNavigation { get; set; }
+        public TipoSector TipoSector { get; set; }
         public ICollection<ComiMuni> ComiMuni { get; set; }
         public ICollection<Sector> InverseIdSectorPadreNavigation { get; set; }
         public ICollection<PuntoSector> PuntoSector { get; set; }

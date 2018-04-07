@@ -7,7 +7,6 @@ namespace Conectados2.Models
     {
         public Ubicacion()
         {
-            ComiMuni = new HashSet<ComiMuni>();
             DenunciaIdPosicionDenunciaNavigation = new HashSet<Denuncia>();
             DenunciaIdPosicionUsuarioNavigation = new HashSet<Denuncia>();
         }
@@ -17,7 +16,6 @@ namespace Conectados2.Models
         public decimal Longitud { get; set; }
         public string Descripcion { get; set; }
 
-        public ICollection<ComiMuni> ComiMuni { get; set; }
         public ICollection<Denuncia> DenunciaIdPosicionDenunciaNavigation { get; set; }
         public ICollection<Denuncia> DenunciaIdPosicionUsuarioNavigation { get; set; }
     }

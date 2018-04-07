@@ -36,14 +36,14 @@ namespace Conectados2.Controllers
 
         // GET: api/chat/contactos/2
         [HttpGet("contactos/{id_usuario}/{id_contacto}/{username}")]
-        public IActionResult ConversacionContacto([FromRoute] int id_usuario,[FromRoute] int id_contacto,[FromRoute] string user_contacto){
+        public IActionResult ConversacionContacto([FromRoute] int id_usuario,[FromRoute] int id_contacto,[FromRoute] string username){
              // ======================================
              // Inicio Buscar conversacion entre dos usuarios
              // ======================================
              var id1 = _context.Participantes.Select( (x) => new {x.IdConversacion, x.IdUsuario} ).Where( y => y.IdUsuario == id_usuario);
              var id2 = _context.Participantes.Select( (x) => new {x.IdConversacion, x.IdUsuario} ).Where( y => y.IdUsuario == id_contacto);
              int res = -1;
-             string username = user_contacto;
+             string user_name = username;
              foreach (var item1 in id1)
              {
                  foreach (var item2 in id2)
@@ -70,9 +70,9 @@ namespace Conectados2.Controllers
              // si es menos a 0 no existe conversacion
              if (res<=0)
              {
-                 return CrearConversacion(id_usuario,id_contacto,username);
+                 return CrearConversacion(id_usuario,id_contacto,user_name);
              }else{
-                 return CrearConversacion(id_usuario,id_contacto,username);
+                 return Getconversacion(res);
              }
              // ======================================
              // Fin Crear Conversacion o Abrir la que existe
@@ -81,16 +81,32 @@ namespace Conectados2.Controllers
         }
 
         public IActionResult CrearConversacion( int id_usuario, int id_contacto, string username){
-            //  var datos =  _context.UsuarioMuni.Join(_context.Usuario, us_mun =>us_mun.IdUsuario,
-            //  us => us.IdUsuario, (us_mun, us) => new { us_mun.IdMuni, us.Email , us.FotoPerfil , us.Estado , us.IdUsuario, us.Username})
-            //  .Where( x => x.IdMuni == id_muni );
+            
+            var Con = new Conversacion();
             var _convesacion = new Conversacion();
-            _convesacion.Descripcion ="usuario1";
+            var _particantes = new Participantes();
+            var _particantes1 = new Participantes();
+            _convesacion.Descripcion =username;
+            
             var datos = _context.Conversacion.Add(_convesacion);
             _context.SaveChanges();
-                        
-            
-            return Ok(datos);
+            if (datos != null){
+                Con = _context.Conversacion.OrderByDescending( x => x.IdConversacion).FirstOrDefault();
+                if ( Con != null)
+                {
+                    _particantes.IdUsuario = id_usuario;
+                    _particantes.IdConversacion = Con.IdConversacion;
+                    var datos1 = _context.Participantes.Add(_particantes);
+                    _particantes1.IdUsuario = id_contacto;
+                    _particantes1.IdConversacion = Con.IdConversacion;
+                    var datos2 = _context.Participantes.Add(_particantes1);
+                    _context.SaveChanges();
+                }
+            }else{
+                return NotFound();
+            }
+
+            return Ok(Con);
         }
 
         // GET: api/chat/contactos/2
@@ -108,13 +124,16 @@ namespace Conectados2.Controllers
             return Ok(datos);
         }
 
-        [HttpGet("conversacion/{id_us}")]
-        public IActionResult Getconversacion([FromRoute] int id_us){
-             var datos =  _context.Mensaje.Join(_context.Conversacion, msj =>msj.IdConversacion,
-             conv => conv.IdConversacion, (msj, conv) => new { msj.IdUsuario , conv.IdConversacion, conv.Descripcion})
-             .Where( x => x.IdUsuario == id_us );
+        public IActionResult Getconversacion(int id_conversacion)
+        {
 
-                        
+            var datos = _context.Conversacion
+                .GroupJoin(_context.Participantes, dt => dt.IdConversacion, dt1 => dt1.IdConversacion, 
+                    (dt ,dt1) => new{dt,dt1})
+                .GroupJoin(_context.Mensaje, dt => dt.dt.IdConversacion, dt2 => dt2.IdConversacion, 
+                    ( dt,dt2) => new{dt,dt2})    
+                .Where( x => x.dt.dt.IdConversacion ==id_conversacion);
+
             if (datos == null)
             {
                 return NotFound();
@@ -122,7 +141,7 @@ namespace Conectados2.Controllers
             return Ok(datos);
         }
 
-        [HttpGet("mensajes/{id_conv}")]
+
         public IActionResult GetMensajes([FromRoute] int id_conv){
              var datos =  _context.Conversacion.Join(_context.Mensaje, conv =>conv.IdConversacion,
              msj => msj.IdConversacion, (conv, msj) => new {conv.IdConversacion, msj.IdUsuario, msj.Texto, msj.Hora })

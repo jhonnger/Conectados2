@@ -59,7 +59,10 @@ export class ChatComponent implements OnInit {
     this.contador ++;
   }
 
-  elegirContacto(value: any) {
+  elegirContacto(value: any) {   
+
+    // Para que no se me olvide sirve para saber si ya existe una 
+    // conversacion con este usuario en las pestañas de chat   
     let estado = 0;
     for (let i in this.chats) {
       if (value.idConversacion === this.chats[i].idConversacion) {
@@ -67,13 +70,10 @@ export class ChatComponent implements OnInit {
       }     
     }
 
-    if ( estado == 0){
-    this._chat.descripcion = value.descripcion;
-    this._chat.idConversacion = value.idConversacion;
-    this._chat.idUsuario = value.idUsuario;
-    
-    this.listarMensajes(value.idConversacion);
+    if ( estado == 0){   
 
+     this.iniciarConversacion(6,value.idUsuario,value.username);
+    
     if (this.chats.length < 2){
       console.log(this.chats.length);
       this.chats.push(this._chat);
@@ -159,8 +159,14 @@ export class ChatComponent implements OnInit {
   }
 
   // Conversacion
-  iniciarConversacion(id_us,id_cont){
-  
-  
+  iniciarConversacion(id_us,id_cont,username){
+    this.chatService.iniciarConversacion(id_us,id_cont,username)
+    .subscribe( (resp)=>{
+      console.log(resp[0].dt.dt);
+      this._chat = resp[0].dt.dt;
+    });  
+    console.log(this._chat);
+    return this._chat;
   }
 }
+
