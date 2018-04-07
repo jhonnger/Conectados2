@@ -31,7 +31,8 @@ import {UtilService} from './services/util.service';
 import {AuthService} from './services/auth.service';
 
 import { JwtHelper } from 'angular2-jwt';
-import {AuthGuardService as AuthGuard} from './services/auth-guard.service';
+import {AuthAdminGuardService as AdminGuard} from './services/auth-guard.service';
+import { AuthMunicipalGuardService as MunicipalGuard } from "./services/auth-municipal.service";
 
 import { APP_ROUTES } from './app.routes';
 import { UsuarioMuniComponent } from './usuariomuni/usuario-muni.component';
@@ -41,12 +42,14 @@ import {MatMenuModule} from '@angular/material/menu';
 import { UsuarioMuniModule } from './usuariomuni/usuariomuni.module';
 import { AdminModule } from './admin/admin.module';
 import { HttpClientModule } from '@angular/common/http';
+import { MensajeAlertComponent } from './components/mensajeAlert/mensaje-alert.component';
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
-        LoadingComponent
-    ], entryComponents:[LoadingComponent],
+        LoadingComponent,
+        MensajeAlertComponent
+    ], entryComponents:[LoadingComponent, MensajeAlertComponent],
     imports: [
         
         APP_ROUTES,
@@ -77,12 +80,10 @@ import { HttpClientModule } from '@angular/common/http';
     providers:[
         AuthService,
         UtilService,
-        AuthGuard,
-        JwtHelper
+        AdminGuard,
+        JwtHelper,
+        MunicipalGuard
     ]
 })
 export class AppModuleShared {
 }
-export function tokenGetter() {
-    return localStorage.getItem('token');
-  }

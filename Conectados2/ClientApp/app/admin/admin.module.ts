@@ -2,7 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MunicipalidadComponent } from './municipalidad/municipalidad.component';
 import { ADMIN_ROUTES } from './admin.routes';
 import {MatTableModule} from '@angular/material/table';
-import { MatInputModule, MatSelectModule, MatButtonModule, MatIconModule } from '@angular/material';
+import { MatInputModule, MatSelectModule, MatButtonModule, MatIconModule, MatToolbarModule, MatTabsModule } from '@angular/material';
 import {MatCardModule} from '@angular/material/card';
 import { MunicipalidadBuscadorComponent } from './municipalidad/municipalidad-buscador/municipalidad-buscador.component';
 import { MunicipalidadService } from '../services/municipalidad.service';
@@ -18,9 +18,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
 import { AdminComponent } from './admin.component';
 import { AuthService } from '../services/auth.service';
-import {
-    AuthGuardService as AuthGuard} from '../services/auth-guard.service';
+import { AuthAdminGuardService as AuthGuard} from '../services/auth-guard.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+
+import {MatMenuModule} from '@angular/material/menu';
 @NgModule({
     declarations: [
         MunicipalidadComponent,
@@ -37,10 +38,13 @@ import { JwtHelperService } from '@auth0/angular-jwt';
     imports: [
         FormsModule,
         MatTableModule,
+        MatMenuModule,
         CommonModule ,
+        MatTabsModule,
         MatCardModule,
         MatButtonModule,
         MatIconModule,
+        MatToolbarModule,
         MatSelectModule,
         MatInputModule,
         AgmCoreModule.forRoot({

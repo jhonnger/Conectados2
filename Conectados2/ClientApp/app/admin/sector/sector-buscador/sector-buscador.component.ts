@@ -2,6 +2,7 @@ import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import { SectorService } from '../../../services/sector.service';
 import { Sector } from '../../../interfaces/sector.interface';
 import { MatTableDataSource } from '@angular/material';
+import { UtilService } from '../../../services/util.service';
 
 @Component({
     selector: 'app-sector-buscador',
@@ -15,16 +16,21 @@ export class SectorBuscadorComponent implements OnInit {
     sectores: Sector[] = [{nombre: '', tipoSector: {}}];
     dataSource = new MatTableDataSource(this.sectores);
     
-    constructor(private _sectorService: SectorService){
+    constructor(private _sectorService: SectorService,
+                private _utilService: UtilService){
+
+        this._utilService.showLoading();
         this._sectorService.listar().subscribe(
             data => {
+                this._utilService.hideLoading();
                 if(data.success){
                     this.sectores = data.data;
                     this.dataSource = new MatTableDataSource(this.sectores);
                 }
                 console.log(this.sectores);
             }, err => {
-
+                console.log(err)
+                this._utilService.hideLoading();
             }
         );
     }

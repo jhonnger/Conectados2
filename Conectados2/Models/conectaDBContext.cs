@@ -43,7 +43,7 @@ namespace Conectados2.Models
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseSqlServer(@""+_appSettings.ConexionMarthin);
+                optionsBuilder.UseSqlServer(@""+_appSettings.ConexionJohhny);
             }
         }
 
@@ -327,8 +327,7 @@ namespace Conectados2.Models
                 entity.ToTable("sector");
 
                 entity.Property(e => e.IdSector)
-                    .HasColumnName("id_sector")
-                    .ValueGeneratedNever();
+                    .HasColumnName("id_sector");
 
                 entity.Property(e => e.IdSectorPadre).HasColumnName("id_sector_padre");
 
@@ -596,18 +595,17 @@ namespace Conectados2.Models
                 entity.ToTable("punto_sector");
 
                 entity.Property(e => e.IdPuntoSector)
-                    .HasColumnName("id_punto_sector")
-                    .ValueGeneratedNever();
+                    .HasColumnName("id_punto_sector");
 
                 entity.Property(e => e.IdSector).HasColumnName("id_sector");
 
-                entity.Property(e => e.Latitud)
+                entity.Property(e => e.lat)
                     .HasColumnName("latitud")
-                    .HasColumnType("decimal(10, 6)");
+                    .HasColumnType("decimal(12, 8)");
 
-                entity.Property(e => e.Longitud)
+                entity.Property(e => e.lng)
                     .HasColumnName("longitud")
-                    .HasColumnType("decimal(10, 6)");
+                    .HasColumnType("decimal(12, 8)");
 
                 entity.Property(e => e.Orden).HasColumnName("orden");
 
@@ -802,9 +800,9 @@ namespace Conectados2.Models
 
                 entity.ToTable("usuario");
 
-                entity.HasIndex(e => e.IdPersona)
-                    .HasName("IX_usuario")
-                    .IsUnique();
+               // entity.HasIndex(e => e.IdPersona)
+                 //   .HasName("IX_usuario")
+                   // .IsUnique();
 
                 entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
 
@@ -832,9 +830,7 @@ namespace Conectados2.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.IdJurisdiccion).HasColumnName("id_jurisdiccion");
-
-                entity.Property(e => e.IdPersona).HasColumnName("id_persona");
+              //  entity.Property(e => e.IdPersona).HasColumnName("id_persona");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
@@ -855,9 +851,9 @@ namespace Conectados2.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.IdPersonaNavigation)
+                entity.HasOne(d => d.Persona)
                     .WithOne(p => p.Usuario)
-                    .HasForeignKey<Usuario>(d => d.IdPersona)
+                    .HasForeignKey<Usuario>(d => d.IdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_usuario_persona");
             });

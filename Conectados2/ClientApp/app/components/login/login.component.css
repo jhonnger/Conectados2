@@ -4,9 +4,9 @@
     min-height: 500px;
 }
 .loginBox {
-    max-width:  90%;
-    width: 500px;
+    max-width: 500px;
     margin: 0 auto;
+    padding: 0px 15px;
 }
 .outer {
     display: table;

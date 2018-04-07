@@ -18,7 +18,7 @@ export class SectorComponent implements OnInit {
     
     salida(entrada: number){
         console.log(entrada);
-        this.sectorFormularioComponent.llenarCampos(entrada);
+        this.sectorFormularioComponent.traerSector(entrada);
     }
     
 }

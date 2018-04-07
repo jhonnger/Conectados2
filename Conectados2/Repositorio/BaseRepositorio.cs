@@ -17,5 +17,7 @@ namespace Conectados2.Repositorio
 
         void grabarTodos(List<Entidad> list);
 
+        void removeTracking(Entidad entidad);
+
     }
 }

@@ -63,6 +63,13 @@ namespace Conectados2
             services.AddTransient<TipoSectorServicio, TipoSectorServicioImpl>();
             services.AddTransient<TipoSectorRepositorio, TipoSectorRepositorioImpl>();
 
+            services.AddTransient<PuntoSectorRepositorio, PuntoSectorRepositorioImpl>();
+
+            services.AddTransient<UsuarioRepositorio, UsuarioRepositorioImpl>();
+            services.AddTransient<UsuarioServicio, UsuarioServicioImpl>();
+
+            services.AddTransient<AuthServicio, AuthServicioImpl>();
+
             services.AddMvc().AddJsonOptions(options => {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -83,7 +90,7 @@ namespace Conectados2
             })
             .AddJwtBearer(x =>
             {
-                x.RequireHttpsMetadata = false;
+                x.RequireHttpsMetadata = true;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -113,7 +120,14 @@ namespace Conectados2
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
 
+            app.UseAuthentication();
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
@@ -134,16 +148,7 @@ namespace Conectados2
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            // global cors policy
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
-
-            app.UseAuthentication();
-
-            app.UseMvc();
+            
         }
     }
 }

@@ -7,8 +7,8 @@ namespace Conectados2.Models
     {
         public int IdPuntoSector { get; set; }
         public int IdSector { get; set; }
-        public decimal Longitud { get; set; }
-        public decimal Latitud { get; set; }
+        public decimal lng { get; set; }
+        public decimal lat { get; set; }
         public int Orden { get; set; }
 
         public Sector IdSectorNavigation { get; set; }

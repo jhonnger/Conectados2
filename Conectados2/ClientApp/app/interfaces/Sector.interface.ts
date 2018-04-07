@@ -1,7 +1,10 @@
 import { TipoSector } from "./TipoSector.interface";
+import { PuntoSector } from "./PuntoSector.interface";
 
 export interface Sector{
-    IdSector?: number;
+    idSector?: number;
     nombre?: string;
-    tipoSector: TipoSector;
+    IdTipoSector?: number;
+    tipoSector?: TipoSector;
+    puntoSector?: PuntoSector[];
 }
