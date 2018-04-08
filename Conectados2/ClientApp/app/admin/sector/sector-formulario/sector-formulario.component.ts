@@ -5,7 +5,6 @@ import { SectorService } from '../../../services/sector.service';
 import { UtilService } from '../../../services/util.service';
 import { Sector } from '../../../interfaces/sector.interface';
 import { LatLngLiteral } from '@agm/core';
-import {} from '@types/googlemaps';
 import { PuntoSector } from '../../../interfaces/PuntoSector.interface';
 
 declare var google: any;
@@ -47,13 +46,7 @@ export class SectorFormularioComponent implements OnInit {
 
    
     zoom: number = 10;
-    paths: Array<LatLngLiteral> = [
-      { lat: 0,  lng: 10 },
-      { lat: 0,  lng: 20 },
-      { lat: 10, lng: 20 },
-      { lat: 10, lng: 10 },
-      { lat: 0,  lng: 10 }
-    ]
+    
     tiposSector: TipoSector[] = [];
     constructor(private _tipoSectorService: TipoSectorService,
                 private _sectorService: SectorService,
@@ -96,9 +89,7 @@ export class SectorFormularioComponent implements OnInit {
         this.buttons.ver = ver;
         this.buttons.imprimir = imprimir;
     }
-    iniciarCargaMapa(){
-        console.log("holi");
-       
+    iniciarCargaMapa(){       
 
         setTimeout( () => {
            
@@ -123,7 +114,6 @@ export class SectorFormularioComponent implements OnInit {
        this._utilService.showLoading();
         this._sectorService.leer(id).subscribe(
             data => {
-
                 this.llenarCampos(data.data);
                 this._utilService.hideLoading();
             }, err => {
@@ -131,7 +121,6 @@ export class SectorFormularioComponent implements OnInit {
                 this._utilService.hideLoading();
             }
         );
-        
     }
     llenarCampos(sector: Sector){
 
@@ -264,9 +253,7 @@ export class SectorFormularioComponent implements OnInit {
             this.map.fitBounds(this.bounds);
 
             this.map.setCenter(this.bounds.getCenter());
-            
-            // The Center of the Bermuda Triangle - (25.3939245, -72.473816)
-            console.log(this.bounds.getCenter());
+          
         }
     }
 
