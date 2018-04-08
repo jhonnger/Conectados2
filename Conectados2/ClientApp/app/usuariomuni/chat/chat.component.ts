@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit {
   contactos: any = [];
 
   mensajes: any = [] ;
-
+  
   conversaciones: any = [];
 
   _label: string = 'Mensaje';
@@ -41,14 +41,14 @@ export class ChatComponent implements OnInit {
     if (this.chatService.getMemoria('chats')) {
       this.chats = JSON.parse(this.chatService.getMemoria('chats') || '{}');
     }
- 
+
   }
 
 
   minimizarChat() {    
     if (this.contador==0) {
       // se debe tener el id de la municipalidad
-      this.listarContactos(2);
+      this.listarContactos();
     }
     this.flagChat = !this.flagChat;
     if (this.tam_chat === 530) {
@@ -60,37 +60,28 @@ export class ChatComponent implements OnInit {
   }
 
   elegirContacto(value: any) {   
-
+    console.log(value);
     // Para que no se me olvide sirve para saber si ya existe una 
     // conversacion con este usuario en las pestañas de chat   
     let estado = 0;
-    for (let i in this.chats) {
-      if (value.idConversacion === this.chats[i].idConversacion) {
-        estado ++;
-      }     
+    if(this.chats){
+      for (let i in this.chats) {
+        if (value.idUsuario === this.chats[i].idUsuario) {
+          console.log('for');
+          estado ++;
+        }     
+      }
+  
     }
+    this.iniciarConversacion(value.idUsuario,value.username,estado);
 
-    if ( estado == 0){   
-
-     this.iniciarConversacion(6,value.idUsuario,value.username);
-    
-    if (this.chats.length < 2){
-      console.log(this.chats.length);
-      this.chats.push(this._chat);
-    }else {            
-      this.chats.splice(0, 0, this._chat);
-      this.chats.pop();
-    }
-    this._chat = {};
-    this.chatService.setMemoria(JSON.stringify(this.chats) ,'chats');
-    }
   }
 
   onEnter(event: any, value: any, texto: any) {
     const mensaje = {'user': 'tu', 'texto': '', 'hora': new Date().getHours()};
     if (event.key === 'Enter') {
       mensaje.texto = texto;
-      value.conversacion.push(mensaje);
+      value.mensaje.push(mensaje);
       this.text = '';
     }
   }
@@ -98,18 +89,21 @@ export class ChatComponent implements OnInit {
 
   // Se envie el id de la municipalidad para listar todos los contactos
   // ejemplo id: 2
-  listarContactos(id_municipalidad:number){
-    if (this.chatService.getMemoria('contactos')) {
+  listarContactos(){
+    let usuario_id = JSON.parse(this.chatService.getMemoria('usuario') || '');
+    if (this.chatService.getMemoria('contactos') == '' || this.chatService.getMemoria('contactos')) {
+      
       this.contactos = JSON.parse(this.chatService.getMemoria('contactos') || '');
       
     }else{
-      this.chatService.listarContactos(id_municipalidad).subscribe( res => {
+      this.chatService.listarContactos().subscribe( res => {
+        console.log(res);
         for (const cont of res) {
-          if (cont.idUsuario != 6) {
+          if (cont.idUsuario != usuario_id.id) {
             this.contactos.push(cont);
           }
         }
-        if (this.contactos) {
+        if (this.contactos != '') {
           this.chatService.setMemoria(JSON.stringify(this.contactos) ,'contactos');
         }else{
           this.contactos = '';
@@ -123,50 +117,74 @@ export class ChatComponent implements OnInit {
   // no me juzguen pero en el for html mensajes van estos datos si es confuso lo se pero ahi van
   // un wpps y te explico el porque?
   // se debe enviar el id del usuario ejemplo = 6
-  listarConversaciones(id_usuario:number){
+  // listarConversaciones(){
    
-    if (this.chatService.getMemoria('conversaciones')) {
-      this.mensajes = JSON.parse(this.chatService.getMemoria('conversaciones') || '{}');
+  //   if (this.chatService.getMemoria('conversaciones')) {
+  //     this.mensajes = JSON.parse(this.chatService.getMemoria('conversaciones') || '{}');
       
-    }else{
-      this.chatService.listarConversaciones(id_usuario).subscribe( res => {
+  //   }else{
+  //     this.chatService.listarConversaciones().subscribe( res => {
         
-        this.mensajes = res;     
-        if (this.mensajes) {
-          this.chatService.setMemoria(JSON.stringify(this.mensajes) ,'conversaciones');
-        }else{
-          this.mensajes = '';
-        }   
+  //       this.mensajes = res;     
+  //       if (this.mensajes) {
+  //         this.chatService.setMemoria(JSON.stringify(this.mensajes) ,'conversaciones');
+  //       }else{
+  //         this.mensajes = '';
+  //       }   
         
-      });
-    }
-    return this.mensajes;
-  }
+  //     });
+  //   }
+  //   return this.mensajes;
+  // }
 
   // no me juzguen pero en el for html conversacion van estos datos si es confuso lo se pero ahi van
   // un wpps y te explico el porque?
   // se debe enviar el id de la conversacion ejemplo
-  listarMensajes(id_conversacion:number){   
+  // listarMensajes(id_conversacion:number){   
     
-    this.chatService.listarMensajes(id_conversacion).subscribe( res => {
+  //   this.chatService.listarMensajes(id_conversacion).subscribe( res => {
       
-      this._chat.conversaciones = res;   
-      if (this._chat.conversaciones === 0) {
-        this._chat.conversacioness = '';
-      }        
-    });
-    return this._chat.conversaciones;
-  }
+  //     this._chat.conversaciones = res;   
+  //     if (this._chat.conversaciones === 0) {
+  //       this._chat.conversacioness = '';
+  //     }        
+  //   });
+  //   return this._chat.conversaciones;
+  // }
 
   // Conversacion
-  iniciarConversacion(id_us,id_cont,username){
-    this.chatService.iniciarConversacion(id_us,id_cont,username)
+  iniciarConversacion(id_cont,username,estado){
+    
+    this.chatService.iniciarConversacion(id_cont,username)
     .subscribe( (resp)=>{
-      console.log(resp[0].dt.dt);
-      this._chat = resp[0].dt.dt;
+      console.log(resp);      
+      if(resp){
+        if(resp.length == 1){
+          this._chat = resp[0].dt.dt;
+          this._chat.idUsuario = id_cont;
+        }else{          
+          this._chat = resp;
+          this._chat.idUsuario = id_cont;
+        }
+        
+        if ( estado == 0){   
+          console.log('if-estado');
+              
+          if (this.chats.length < 2){
+            console.log('if');
+            this.chats.push(this._chat);
+          }else {            
+            console.log('else');
+            this.chats.splice(0, 0, this._chat);
+            this.chats.pop();
+          }
+    
+        this._chat = {};
+        this.chatService.setMemoria(JSON.stringify(this.chats) ,'chats');
+        }
+      }       
+      return   this._chat; 
     });  
-    console.log(this._chat);
-    return this._chat;
   }
 }
 

@@ -110,11 +110,14 @@ namespace Conectados2.Controllers
         }
 
         // GET: api/chat/contactos/2
-        [HttpGet("contactos/{id_muni}")]
-        public IActionResult Getcontactos([FromRoute] int id_muni){
+        [HttpGet("contactos/{id_usuario}")]
+        public IActionResult Getcontactos([FromRoute] int id_usuario){
+
+            var muni = _context.UsuarioMuni.FirstOrDefault(x=> x.IdUsuario == id_usuario);
+
              var datos =  _context.UsuarioMuni.Join(_context.Usuario, us_mun =>us_mun.IdUsuario,
-             us => us.IdUsuario, (us_mun, us) => new { us_mun.IdMuni, us.Email , us.FotoPerfil , us.Estado , us.IdUsuario, us.Username})
-             .Where( x => x.IdMuni == id_muni );
+             us => us.IdUsuario, (us_mun, us) => new { us_mun.IdMuni,us_mun.IdUsuario,us.Email, us.FotoPerfil, us.Estado,us.Username})
+             .Where( x => x.IdMuni == muni.IdMuni );
 
                         
             if (datos == null)
