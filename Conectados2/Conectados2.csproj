@@ -29,18 +29,22 @@
     <Compile Remove="ClientApp\app\components\fetchdata\**" />
     <Compile Remove="ClientApp\app\components\NewFolder1\**" />
     <Compile Remove="ClientApp\app\components\NewFolder\**" />
+    <Compile Remove="Modelas_old\**" />
     <Compile Remove="nuevos\**" />
     <Content Remove="ClientApp\**" />
+    <Content Remove="Modelas_old\**" />
     <Content Remove="nuevos\**" />
     <EmbeddedResource Remove="ClientApp\app\components\counter\**" />
     <EmbeddedResource Remove="ClientApp\app\components\fetchdata\**" />
     <EmbeddedResource Remove="ClientApp\app\components\NewFolder1\**" />
     <EmbeddedResource Remove="ClientApp\app\components\NewFolder\**" />
+    <EmbeddedResource Remove="Modelas_old\**" />
     <EmbeddedResource Remove="nuevos\**" />
     <None Remove="ClientApp\app\components\counter\**" />
     <None Remove="ClientApp\app\components\fetchdata\**" />
     <None Remove="ClientApp\app\components\NewFolder1\**" />
     <None Remove="ClientApp\app\components\NewFolder\**" />
+    <None Remove="Modelas_old\**" />
     <None Remove="nuevos\**" />
   </ItemGroup>
   <ItemGroup>
@@ -62,20 +66,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Update="Models\Database.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Database.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Models\Database.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Database.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
     <!-- Ensure Node.js is installed -->

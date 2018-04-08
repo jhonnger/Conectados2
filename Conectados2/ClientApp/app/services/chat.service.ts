@@ -4,7 +4,6 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/Rx';
 //import { map } ;
 import  'rxjs/add/operator/map';
-import { AsyncLocalStorage } from 'angular-async-local-storage';
 
 @Injectable()
 export class ChatService {
@@ -15,6 +14,15 @@ export class ChatService {
   constructor(private http: Http) { }
   
   
+
+  // Iniciar Conversacion usuario id = 6 contactos id =7 (alias usuario1)
+  iniciarConversacion(id_usuario,id_contacto,username_contacto){
+    return this.http.get( this.UrlChat + '/contactos/' + id_usuario+"/"+ id_contacto+"/"+ username_contacto+"/" )
+    .map( res => {
+      return res.json();
+    });
+  }
+
   //contactos/2 
   // se debe enviar el id de la municipalidad ejemplo = 2
   listarContactos(id_municipalidad:number) {
@@ -60,3 +68,6 @@ export class ChatService {
 
 
 }
+
+
+

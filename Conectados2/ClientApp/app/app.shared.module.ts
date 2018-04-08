@@ -18,9 +18,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatGridListModule } from "@angular/material/grid-list";
 import {  MatCardModule } from '@angular/material/card';
 
-
 import { AppComponent } from './components/app/app.component';
-
 
 import {ReactiveFormsModule} from '@angular/forms';
 import { MatNativeDateModule} from '@angular/material/core';
@@ -40,7 +38,7 @@ import { APP_ROUTES } from './app.routes';
 import { UsuarioMuniComponent } from './usuariomuni/usuario-muni.component';
 import { AdminComponent } from './admin/admin.component';
 import { MatTableModule } from '@angular/material';
-
+import {MatMenuModule} from '@angular/material/menu';
 import { UsuarioMuniModule } from './usuariomuni/usuariomuni.module';
 import { AdminModule } from './admin/admin.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -74,6 +72,8 @@ import { MensajeAlertComponent } from './components/mensajeAlert/mensaje-alert.c
         AdminModule, 
         UsuarioMuniModule,   
         HttpClientModule,
+        MatMenuModule,
+        MatTableModule,
         MatInputModule,
         MatDatepickerModule
     ],

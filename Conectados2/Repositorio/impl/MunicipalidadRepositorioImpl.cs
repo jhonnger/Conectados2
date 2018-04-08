@@ -19,7 +19,7 @@ namespace Conectados2.Repositorio.impl
         public override  List<ComiMuni> obtenerTodos(){
             
             List<ComiMuni> munis = this._context.ComiMuni
-                .Include(muni => muni.TipoComiMuni)
+                .Include(muni => muni.IdTipoComiMuni)
                 .ToList();
 
             return munis;
