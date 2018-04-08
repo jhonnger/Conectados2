@@ -20,28 +20,12 @@ namespace Conectados2.Servicio.impl
             this.puntoSectorRepositorio = puntoSectorRepositorio;
         }
 
-        public override RespuestaControlador actualizar(Sector sector){
-            
-            bool puntosNuevos = false;
-            
+        public override RespuestaControlador actualizar(Sector sector){   
 
             if(sector.PuntoSector == null || sector.PuntoSector.Count == 0){
                 return RespuestaControlador.respuetaError("Debe dibujar el perimetro del sector");
             }
-            foreach(PuntoSector puntoSector in sector.PuntoSector){
-                if(puntoSector.IdPuntoSector == 0){
-                    puntosNuevos = true;
-                    break;
-                }
-            }
-            if(puntosNuevos){
-                var puntosDB = ((SectorRepositorio)this.baseRepositorio).obtenerPuntos(sector.IdSector);
-                List<PuntoSector> puntos = new List<PuntoSector>(puntosDB);
-                foreach(PuntoSector puntoSector in puntos){
-                    this.puntoSectorRepositorio.eliminar(puntoSector);               
-                }
-//                this.baseRepositorio.removeTracking(sectorDB);
-            }
+            
             return base.actualizar(sector);
         }
         public override Sector obtener(int id)

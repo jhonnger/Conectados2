@@ -38,23 +38,33 @@ namespace Conectados2.Repositorio.impl
         }
          public override void actualizar(Sector sector)
         {
+            bool puntosNuevos = false;
             var sectorDB = _context.Sector
                             .Include(e => e.PuntoSector)
                             .Single(c => c.IdSector == sector.IdSector);
 
             
-            _context.Entry(sector).CurrentValues.SetValues(sector);
+            _context.Entry(sectorDB).CurrentValues.SetValues(sector);
 
-             foreach (var puntos in sectorDB.PuntoSector.ToList()){
-                 if (!sector.PuntoSector.Any(s => s.IdPuntoSector == puntos.IdPuntoSector))
-                    _context.PuntoSector.Remove(puntos);
-             }
-             foreach (var newPuntos in sector.PuntoSector){
+            foreach (var puntos in sectorDB.PuntoSector.ToList()){
+                 if (!sector.PuntoSector.Any(s => s.IdPuntoSector == puntos.IdPuntoSector)){
+                     puntosNuevos = true;
+                     _context.PuntoSector.Remove(puntos);
+                 }
+            }
+
+            if(puntosNuevos){
+                foreach (var newPuntos in sector.PuntoSector){
                
                     // Insert subFoos into the database that are not
                     // in the dbFoo.subFoo collection
-                    sectorDB.PuntoSector.Add(newPuntos);
-            }
+                  
+                       sectorDB.PuntoSector.Add(newPuntos);
+                  
+                        // Update subFoos that are in the newFoo.SubFoo collection                               
+                }
+            } 
+            
             _context.SaveChanges();
         }
     }
