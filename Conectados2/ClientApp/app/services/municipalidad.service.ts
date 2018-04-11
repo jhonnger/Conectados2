@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Http} from '@angular/http';
 import {AppSettings} from '../endPoint.config';
+import {Municipalidad} from '../interfaces/Municipalidad.interface';
 
 @Injectable()
 export class MunicipalidadService {
@@ -17,9 +18,22 @@ export class MunicipalidadService {
       });
   }
   listar() {
-    return this.http.get(this.url + '/' )
+    return this.http.get(this.url + '/pagina/1/cant/10' )
       .map( res => {
         return res.json();
       });
   }
+    guardar(muni: Municipalidad) {
+        if(muni.idComiMuni){
+
+            return this.http.put(this.url + '/' , muni)
+                .map( res => {
+                    return res.json();
+                });
+        }
+        return this.http.post(this.url + '/' , muni)
+            .map( res => {
+                return res.json();
+            });
+    }
 }

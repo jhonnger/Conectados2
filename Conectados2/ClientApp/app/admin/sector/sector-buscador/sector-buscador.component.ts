@@ -19,33 +19,37 @@ export class SectorBuscadorComponent implements OnInit {
     constructor(private _sectorService: SectorService,
                 private _utilService: UtilService){
 
+        this.listar();
+
+    }
+
+    ngOnInit() {} 
+
+    listar(pagina: number = 1){
         this._utilService.showLoading();
-        this._sectorService.listar().subscribe(
+        this._sectorService.listarJurisdiccion(pagina).subscribe(
             data => {
                 this._utilService.hideLoading();
                 if(data.success){
                     this.sectores = data.data;
                     this.dataSource = new MatTableDataSource(this.sectores);
                 }
-                console.log(this.sectores);
             }, err => {
-                console.log(err)
                 this._utilService.hideLoading();
             }
         );
     }
-    ngOnInit() {} 
-    
     applyFilter(filterValue: string) {
         filterValue = filterValue.trim(); // Remove whitespace
         filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
         this.dataSource.filter = filterValue;
-        console.log("holi");
       }
 
       selecciona(id: any){
       
         this.seleccionaFila.emit(id);
       }
-    
+      consultar(pagina: number){
+          this.listar(pagina);
+      }
 }

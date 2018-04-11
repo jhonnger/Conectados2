@@ -29,9 +29,13 @@
         <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.tipoSector.nombre}} </mat-cell>
       </ng-container>
-  
+
+
       <mat-header-row class="azul" *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;let pos = index;"
       (click)="selecciona(row.idSector)"></mat-row>
     </mat-table>
+    <div class="text-center">
+        <app-navegacion [] (consultar)="consultar($event)"></app-navegacion>
+    </div>
   </div>

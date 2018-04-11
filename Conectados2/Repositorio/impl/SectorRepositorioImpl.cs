@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Conectados2.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Conectados2.Helpers;
 
 namespace Conectados2.Repositorio.impl
 {
@@ -13,12 +14,14 @@ namespace Conectados2.Repositorio.impl
 
         public  override Sector obtener(int id)
         {
-            
-            return this._context.Sector
-                .Include(sector => sector.TipoSector)
-                .Include(sector => sector.PuntoSector)
+            Sector sector = this._context.Sector
+                .Include(s => s.TipoSector)
+                .Include(s => s.PuntoSector)
                 .SingleOrDefault(s => s.IdSector == id);
+            
+            return sector;
         }
+        
 
         public ICollection<PuntoSector> obtenerPuntos(int id)
         {
@@ -30,7 +33,8 @@ namespace Conectados2.Repositorio.impl
         public override  List<Sector> obtenerTodos(){
             
             List<Sector> sectores = this._context.Sector
-                .Include(sector => sector.IdTipoSector)
+                .Include(sector => sector.TipoSector)
+                .Where(s => s.TipoSector.Nombre == "Jurisdiccion")
                 .ToList();
 
             return sectores;
@@ -52,7 +56,15 @@ namespace Conectados2.Repositorio.impl
                      _context.PuntoSector.Remove(puntos);
                  }
             }
-
+            if(!puntosNuevos){
+                foreach (var puntos in sector.PuntoSector.ToList()){
+                    if(puntos.IdPuntoSector == 0){
+                        puntosNuevos = true;
+                        break;
+                    }
+                }
+            }
+            
             if(puntosNuevos){
                 foreach (var newPuntos in sector.PuntoSector){
                
@@ -68,5 +80,36 @@ namespace Conectados2.Repositorio.impl
             _context.SaveChanges();
         }
 
+        public Sector ObtenerJurisdiccion(int id)
+        {
+            Sector sector = this._context.Sector
+                .Include(s => s.TipoSector)
+                .Include(s => s.PuntoSector)
+                .SingleOrDefault(s => s.IdSector == id);
+
+            List<Sector> secciones = this._context.Sector
+                .Include(s => s.PuntoSector)
+                .Include(s => s.TipoSector)
+                .Where(s => (s.TipoSector.Nombre == "Seccion" && s.IdSectorPadre == sector.IdSector))
+                .ToList();
+
+            sector.Sectores = secciones;
+
+            return sector;
+        }
+
+        public PaginatedList<Sector> obtenerPaginadosJurisdiccion(int? pagina, int cant)
+        {
+            
+            var sectores = this._context.Sector
+                .Include(sector => sector.TipoSector)
+                .Where(s => s.TipoSector.Nombre == "Jurisdiccion");
+
+
+
+            return PaginatedList<Sector>.Create(sectores.AsNoTracking(), pagina ?? 1, cant);
+
+        }
+        
     }
 }

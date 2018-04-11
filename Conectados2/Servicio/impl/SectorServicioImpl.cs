@@ -34,5 +34,15 @@ namespace Conectados2.Servicio.impl
             sector.PuntoSector = sector.PuntoSector.OrderBy(p => p.Orden).ToList();
             return sector;
         }
+
+        public Sector obtenerJurisdiccion(int id)
+        {
+            return ((SectorRepositorio)this.baseRepositorio).ObtenerJurisdiccion(id);
+        }
+
+        public List<Sector> obtenerPaginadosJurisdiccion(int? pagina, int cant)
+        {
+            return ((SectorRepositorio)this.baseRepositorio).obtenerPaginadosJurisdiccion(pagina, cant);
+        }
     }
 }

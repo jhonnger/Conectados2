@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import { TipoSectorService } from '../../../services/tipo-sector.service';
 import { TipoSector } from '../../../interfaces/TipoSector.interface';
 import { SectorService } from '../../../services/sector.service';
@@ -6,6 +6,7 @@ import { UtilService } from '../../../services/util.service';
 import { Sector } from '../../../interfaces/sector.interface';
 import { LatLngLiteral } from '@agm/core';
 import { PuntoSector } from '../../../interfaces/PuntoSector.interface';
+import { MapaFuncionesService } from '../../../util/mapas-funciones.service';
 
 declare var google: any;
 @Component({
@@ -19,8 +20,9 @@ export class SectorFormularioComponent implements OnInit {
     sectorInicial: Sector = {
         nombre: ""
     };
+    ultimoGuardado = new EventEmitter();
 
-    controls = false;
+    controls = true;
     buttons = {
         nuevo: false,
         modificar: false,
@@ -30,11 +32,12 @@ export class SectorFormularioComponent implements OnInit {
         eliminar: false,
         ver: false
     } ;
+    tabActual = 0;
     dibujoSector: any;
     puntosSector: PuntoSector[] = [ ];
     bounds: any;
 
-    dibujoJurisdiccion = false;
+    hayDibujoJurisdiccion = false;
     figuraJursdiccion : any = null;
 
     map: any;
@@ -50,7 +53,9 @@ export class SectorFormularioComponent implements OnInit {
     tiposSector: TipoSector[] = [];
     constructor(private _tipoSectorService: TipoSectorService,
                 private _sectorService: SectorService,
+                private _mapaFunciones: MapaFuncionesService,
                 private _utilService: UtilService){
+
         this._tipoSectorService.listar().subscribe(
             data => {
                 if(data.success){
@@ -60,35 +65,23 @@ export class SectorFormularioComponent implements OnInit {
                 console.error(err);
             }
         );
-        this.reiniciarFormulario();
+        //this.reiniciarFormulario();
     }
     reiniciarFormulario(){
         this.sectorInicial = {};
         this.deshabilitarDibujoMapa();
-        this.reiniciarBotones();
         this.reiniciarMapa();
     }
-    reiniciarBotones(){
-        this.modificarBotones(true, false, false, false, false, false, true)
-    }
+
     ngOnInit() {
         this.iniciarCargaMapa();
         
     }  
     nuevo (){
         this.habiliarDibujoMapa();
-        this.modificarBotones(false, true, false, false, true, false, false);
         this.controls = true;
     }
-    modificarBotones(nuevo:boolean, guardar: boolean, modificar: boolean, eliminar: boolean, cancelar: boolean, ver: boolean, imprimir: boolean){
-        this.buttons.nuevo = nuevo;
-        this.buttons.guardar = guardar;
-        this.buttons.modificar = modificar;
-        this.buttons.eliminar = eliminar;
-        this.buttons.cancelar = cancelar;
-        this.buttons.ver = ver;
-        this.buttons.imprimir = imprimir;
-    }
+
     iniciarCargaMapa(){       
 
         setTimeout( () => {
@@ -112,7 +105,7 @@ export class SectorFormularioComponent implements OnInit {
     traerSector(id: number){
     
        this._utilService.showLoading();
-        this._sectorService.leer(id).subscribe(
+        this._sectorService.leerJurisdiccion(id).subscribe(
             data => {
                 this.llenarCampos(data.data);
                 this._utilService.hideLoading();
@@ -123,14 +116,13 @@ export class SectorFormularioComponent implements OnInit {
         );
     }
     llenarCampos(sector: Sector){
-
         this.sectorInicial = sector;
         this.controls = false;
 
         this.dibujarFigura(this.sectorInicial.puntoSector);
         this.deshabilitarDibujoMapa();
-        this.modificarBotones(false, false, true, true, true, true, true);
     }
+
     dibujarFigura(puntos: PuntoSector[]){
         this.puntosSector = puntos;
         this.dibujoSector.setMap(null);
@@ -138,25 +130,18 @@ export class SectorFormularioComponent implements OnInit {
             this.reiniciarMapa();
             return;
         }
+        this.hayDibujoJurisdiccion = true;
         this.dibujoSector.setPath(puntos);
         this.dibujoSector.setMap(this.map);
         this.posicionarMapaSegunFigura();
     }
-    modificar(){
-        this.controls = true;
-        this.modificarBotones(false, true, false, false, true, false, false)
-    }
+
 
     cargarMapa(){
-        var polygon1 = {
+        let polygon1 = {
             draggable: true,
             editable: true,
             fillColor: "#f00"
-        };
-        var rect1 = {
-            draggable: true,
-            editable: true,
-            fillColor: "#0f0"
         };
         this.map = new google.maps.Map(document.getElementById('map'), {
             center: { lat:-5.1843741, lng: -80.6431596 },
@@ -177,10 +162,9 @@ export class SectorFormularioComponent implements OnInit {
             drawingMode: google.maps.drawing.OverlayType.POLYGON,
             drawingControl: true,
             polygonOptions: polygon1,
-            rectangleOptions: rect1,
             drawingControlOptions: {
                 position: google.maps.ControlPosition.TOP_CENTER,
-                drawingModes: ['polygon', 'rectangle']
+                drawingModes: ['polygon']
             }
         });
         this.bounds =  new google.maps.LatLngBounds();
@@ -202,16 +186,16 @@ export class SectorFormularioComponent implements OnInit {
                 });
                 i++;
             }
+            self.hayDibujoJurisdiccion = true;
             let ultimoPunto: PuntoSector = {orden: i, lat: self.puntosSector[0].lat, lng: self.puntosSector[0].lng}
             self.puntosSector.push(ultimoPunto);
             self.sectorInicial.puntoSector = self.puntosSector;
-            console.log(self.puntosSector);
+
             self.figuraJursdiccion = event.overlay;
             self.deshabilitarDibujoMapa();
           });
 
           this.reiniciarMapa();
-       // this.habiliarDibujoMapa();
     }
     deshabilitarDibujoMapa(){
         if(this.drawingManager){
@@ -222,6 +206,7 @@ export class SectorFormularioComponent implements OnInit {
         this.drawingManager.setMap(this.map);   
     }
     reiniciarMapa(){
+        this.hayDibujoJurisdiccion = false;
         if (this.figuraJursdiccion){
             this.figuraJursdiccion.setMap(null);
         }
@@ -231,6 +216,7 @@ export class SectorFormularioComponent implements OnInit {
         }   
     }
     reiniciarDibujo(){
+        this.hayDibujoJurisdiccion = false;
         if (this.figuraJursdiccion){
             this.figuraJursdiccion.setMap(null);
         }
@@ -241,30 +227,27 @@ export class SectorFormularioComponent implements OnInit {
     }
 
     posicionarMapaSegunFigura(){
-        var i;
+        let i;
 
         if(this.bounds != null && this.map != null && this.puntosSector.length != 0){
             this.bounds = this.bounds =  new google.maps.LatLngBounds();
             for(let punto of this.puntosSector){
-                console.log(punto)
                 this.bounds.extend(new google.maps.LatLng(punto.lat, punto.lng))
             }
-
             this.map.fitBounds(this.bounds);
-
             this.map.setCenter(this.bounds.getCenter());
-          
         }
     }
 
     guardar(){
         this.sectorInicial.IdTipoSector = 1;
-        this._utilService.showLoading();
+
         if(this.validarFormulario()){
-            
+            this._utilService.showLoading();
             this._sectorService.guardar(this.sectorInicial).subscribe(
                 data => {
                     if(data.success){
+                        this.ultimoGuardado.emit(data.data);
                         this._utilService.hideLoading();
                         this._utilService.alertMensaje("Sector guardado correctamente");
                         this.reiniciarFormulario();
@@ -275,13 +258,25 @@ export class SectorFormularioComponent implements OnInit {
                 }
             );
         }
-        
     }
-    cambio(evento){
-
+    cambio(event: any){
+        switch (event.index) {
+            case 0:
+              break;
+            case 1:
+              if(!this.hayDibujoJurisdiccion){
+                  this._utilService.alertMensaje("Debe dibujar el sector de una jurisdiccion para ver o definir secciones");
+                  this.tabActual = 0;
+              }
+              break;
+          }
     }
 
     validarFormulario(){
+        if(this.sectorInicial.nombre == null || this.sectorInicial.nombre == ''){
+            this._utilService.alertMensaje("Debe ingresar un nombre");
+            return false;
+        }
         if(this.sectorInicial.puntoSector == null || this.sectorInicial.puntoSector.length == 0){
             this._utilService.alertMensaje("Debe dibujar un sector");
             return false;

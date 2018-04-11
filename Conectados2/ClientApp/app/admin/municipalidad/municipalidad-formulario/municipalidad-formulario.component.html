@@ -9,7 +9,25 @@
                 <mat-select  placeholder="Tipo de entidad">
                         <mat-option  *ngFor='let tipo of tiposMuni'  value="tipo.idTipoMuni">{{tipo.nombre}}</mat-option>
                 </mat-select>
-              </mat-form-field>
+            </mat-form-field>
+          <div class="inline">
+              <div class="input-search-muni full-width">
+                  <mat-form-field class="full-width">
+                      <input matInput [readonly]="true"  placeholder="Buscar jurisdiccion..." [(ngModel)]="jurisdiccion.nombre">
+                  </mat-form-field>
+              </div>
+              <div>
+                  <button mat-fab color="primary" (click)="abrirModalBuscarJurisdiccion()">
+                      <mat-icon aria-label="Search icon">&#xE8B6;</mat-icon>
+                  </button>
+              </div>
+              <div>
+                  <button mat-fab color="primary" (click)="abrirModalFormularioJurisdicion()">
+                      <mat-icon aria-label="Search icon">&#xE145;</mat-icon>
+                  </button>
+              </div>
+
+          </div>
       </div>
       <div class="text-center">
           <button mat-raised-button color="primary">

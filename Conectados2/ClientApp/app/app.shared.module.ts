@@ -43,12 +43,14 @@ import { UsuarioMuniModule } from './usuariomuni/usuariomuni.module';
 import { AdminModule } from './admin/admin.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MensajeAlertComponent } from './components/mensajeAlert/mensaje-alert.component';
+import {MapaComponent} from './components/mapa/mapa.component';
+import {NavegacionComponent} from './components/navegacion/navegacion.component';
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
         LoadingComponent,
-        MensajeAlertComponent
+        MensajeAlertComponent,
     ], entryComponents:[LoadingComponent, MensajeAlertComponent],
     imports: [
         

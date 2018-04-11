@@ -25,6 +25,13 @@ namespace Conectados2.Controllers
             this._context = conectaDB;
         }
 
+        [HttpGet]
+        [Route("/api/Municipalidad/pagina/{pagina}/cant/{cant}")]
+        public RespuestaControlador GetMunicipalidadPaginada([FromRoute] int pagina, [FromRoute] int cant)
+        {
+            return RespuestaControlador.respuestaExito( municipalidadServicio.obtenerPaginados(pagina, cant));
+        }
+
         // GET: api/municipalidad
         [HttpGet]
         public RespuestaControlador GetMunicipalidad()

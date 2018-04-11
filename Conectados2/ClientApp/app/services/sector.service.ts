@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import {AppSettings} from '../endPoint.config';
 import {Sector} from "../interfaces/Sector.interface";
+import {Constantes} from '../util/constantes';
 
 @Injectable()
 export class SectorService {
 
   url = AppSettings.API_ENDPOINT + 'api/Sector';
-
+  urlJurisdiccion = AppSettings.API_ENDPOINT + 'api/jurisdiccion';
   constructor(private http: Http
               ) { }
 
@@ -17,8 +18,15 @@ export class SectorService {
         return res.json();
       });
   }
-  listar() {
-    return this.http.get(this.url + '/' ,this.jwt())
+  leerJurisdiccion(id: any) {
+    return this.http.get(this.urlJurisdiccion + '/' + id)
+      .map( res => {
+        return res.json();
+      });
+  }
+  listarJurisdiccion(pagina: number = 1) {
+      let cant = Constantes.cantPorPagina;
+    return this.http.get(this.urlJurisdiccion + '/pagina/'+pagina+'/cant/'+ cant ,this.jwt())
       .map( res => {
         return res.json();
       });
@@ -37,6 +45,7 @@ export class SectorService {
                 return res.json();
             });
     }
+
     private jwt() {
       // create authorization header with jwt token
       let token = (localStorage.getItem('token'));

@@ -1,0 +1,9 @@
+.input-search-muni{
+    width: 95%;
+    padding-right: 15px;
+  }
+
+  #map{
+    height: 400px;
+    width: 100%;
+}

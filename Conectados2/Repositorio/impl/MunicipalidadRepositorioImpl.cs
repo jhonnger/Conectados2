@@ -1,3 +1,4 @@
+using Conectados2.Helpers;
 using Conectados2.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -19,10 +20,19 @@ namespace Conectados2.Repositorio.impl
         public override  List<ComiMuni> obtenerTodos(){
             
             List<ComiMuni> munis = this._context.ComiMuni
-                .Include(muni => muni.IdTipoComiMuni)
+                .Include(muni => muni.TipoComiMuni)
                 .ToList();
 
             return munis;
+            
+        }
+        public override List<ComiMuni> obtenerPaginados(int? pagina, int cant)
+        {
+            
+            var munis = this._context.ComiMuni
+                .Include(muni => muni.TipoComiMuni)
+                ;
+            return PaginatedList<ComiMuni>.Create(munis.AsNoTracking(), pagina ?? 1, cant);
             
         }
     }

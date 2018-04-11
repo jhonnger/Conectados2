@@ -19,5 +19,7 @@ namespace Conectados2.Servicio
         RespuestaControlador actualizar(Entidad entidad);
 
         RespuestaControlador eliminar(key entidadId);
+
+        List<Entidad> obtenerPaginados(int pagina, int cant);
     }
 }

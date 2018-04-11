@@ -48,5 +48,10 @@ namespace Conectados2.Repositorio.impl
 
             return a.ToList<Entidad>();
         }
+
+        public virtual List<Entidad> obtenerPaginados(int? pagina, int cant)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

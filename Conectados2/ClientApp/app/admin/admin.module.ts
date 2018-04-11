@@ -2,7 +2,8 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MunicipalidadComponent } from './municipalidad/municipalidad.component';
 import { ADMIN_ROUTES } from './admin.routes';
 import {MatTableModule} from '@angular/material/table';
-import { MatInputModule, MatSelectModule, MatButtonModule, MatIconModule, MatToolbarModule, MatTabsModule } from '@angular/material';
+import { MatInputModule, MatSelectModule, MatButtonModule, MatIconModule, MatToolbarModule, MatTabsModule,
+    MatDialogModule } from '@angular/material';
 import {MatCardModule} from '@angular/material/card';
 import { MunicipalidadBuscadorComponent } from './municipalidad/municipalidad-buscador/municipalidad-buscador.component';
 import { MunicipalidadService } from '../services/municipalidad.service';
@@ -20,8 +21,15 @@ import { AdminComponent } from './admin.component';
 import { AuthService } from '../services/auth.service';
 import { AuthAdminGuardService as AuthGuard} from '../services/auth-guard.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatMenuModule} from '@angular/material/menu';
+import { MapaFuncionesService } from '../util/mapas-funciones.service';
+import { SeccionComponent } from './seccion/seccion.component';
+import { SectorBuscadorModalComponent } from './sector/sector-buscador-modal/sector-buscador-modal.component';
+import {MapaComponent} from '../components/mapa/mapa.component';
+import {SectorFormularioModalComponent} from './sector/sector-formulario-modal/sector-formulario-modal.component';
+import {NavegacionComponent} from '../components/navegacion/navegacion.component';
 @NgModule({
     declarations: [
         MunicipalidadComponent,
@@ -31,7 +39,13 @@ import {MatMenuModule} from '@angular/material/menu';
         AdminComponent,
         SectorBuscadorComponent,
         SectorFormularioComponent,
-    ], entryComponents:[],
+        SeccionComponent,
+        MapaComponent,
+        SectorBuscadorModalComponent,
+
+        NavegacionComponent,
+        SectorFormularioModalComponent
+    ], entryComponents:[SectorBuscadorModalComponent,SectorFormularioModalComponent],
     exports: [
         
     ],
@@ -40,12 +54,15 @@ import {MatMenuModule} from '@angular/material/menu';
         MatTableModule,
         MatMenuModule,
         CommonModule ,
+        MatPaginatorModule,
+        MatCheckboxModule,
         MatTabsModule,
         MatCardModule,
         MatButtonModule,
         MatIconModule,
         MatToolbarModule,
         MatSelectModule,
+        MatDialogModule,
         MatInputModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyD6l0Wq6cXBaDqF7I03FxvG-6-Py0Ib0F4',
@@ -60,7 +77,8 @@ import {MatMenuModule} from '@angular/material/menu';
         TipoSectorService,
         AuthService,
         AuthGuard,
-        JwtHelperService
+        JwtHelperService,
+        MapaFuncionesService
     ],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Conectados2.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Sector")]
+    
     public class SectorController : Controller
     {
         
@@ -22,22 +22,32 @@ namespace Conectados2.Controllers
             this.sectorServicio = sectorServicio;
         }
 
+        [Route("/api/jurisdiccion/{id}")]
+        [HttpGet("{id}")]
+        public RespuestaControlador GetJurisdiccion([FromRoute] int id)
+        {
+            return RespuestaControlador.respuestaExito(sectorServicio.obtenerJurisdiccion(id));
+        }
+
+        [Route("/api/sector/{id}")]
         [HttpGet("{id}")]
         public RespuestaControlador GetSector([FromRoute] int id)
         {
             return RespuestaControlador.respuestaExito(sectorServicio.obtener(id));
         }
 
+        
          // GET: api/sector
+         [Route("api/jurisdiccion/pagina/{page}/cant/{cant}")]
          [Authorize(Roles = "Admin")]
         [HttpGet]
-        public RespuestaControlador GetSectores()
+        public RespuestaControlador GetJurisdicciones([FromRoute] int page, [FromRoute] int cant)
         {
-            Debug.Write("Holi"+ HttpContext.User.Identity.Name);
-            return RespuestaControlador.respuestaExito( sectorServicio.obtenerTodos());
+            return RespuestaControlador.respuestaExito( sectorServicio.obtenerPaginadosJurisdiccion(page, cant));
         }
 
         // POST: api/Municipalidad
+        [Route("api/Sector")]
         [HttpPost]
         public RespuestaControlador PostSector([FromBody] Sector sector)
         {
@@ -50,6 +60,7 @@ namespace Conectados2.Controllers
         }
 
         // PUT: api/sector
+        [Route("api/Sector")]
         [HttpPut]
         public  RespuestaControlador PutSector([FromBody] Sector sector)
         {

@@ -339,10 +339,12 @@ namespace Conectados2.Models
                     .HasMaxLength(70)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.IdSectorPadreNavigation)
+
+                entity.Ignore(s => s.Sectores);
+               /** entity.HasOne(d => d.IdSectorPadreNavigation)
                     .WithMany(p => p.InverseIdSectorPadreNavigation)
                     .HasForeignKey(d => d.IdSectorPadre)
-                    .HasConstraintName("FK_sector_sector");
+                    .HasConstraintName("FK_sector_sector");**/
 
                 entity.HasOne(d => d.TipoSector)
                     .WithMany(p => p.Sector)

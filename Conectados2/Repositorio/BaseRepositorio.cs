@@ -11,6 +11,8 @@ namespace Conectados2.Repositorio
 
         List<Entidad> obtenerTodos();
 
+        List<Entidad> obtenerPaginados(int? pagina, int cant);
+
         void actualizar(Entidad entidad);
 
         void crear(Entidad entidad);

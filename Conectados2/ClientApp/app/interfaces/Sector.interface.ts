@@ -6,5 +6,7 @@ export interface Sector{
     nombre?: string;
     IdTipoSector?: number;
     tipoSector?: TipoSector;
+    IdSectorPadre? : number;
     puntoSector?: PuntoSector[];
+    sectores?: any[];
 }

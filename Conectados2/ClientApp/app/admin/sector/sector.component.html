@@ -4,5 +4,29 @@
     </div>
     <div class="mitad-section">
         <app-sector-formulario></app-sector-formulario>
+        <div class="text-center">
+            <button [disabled]="!buttons.nuevo" mat-raised-button color="primary" (click)="nuevo()">
+                <mat-icon aria-label="Nueva muni">&#xE873;</mat-icon> Nuevo
+            </button>
+            <button [disabled]="!buttons.guardar" mat-raised-button color="primary" (click)="guardar()">
+                <mat-icon aria-label="Nueva muni">&#xE161;</mat-icon> Guardar
+            </button>
+            <button [disabled]="!buttons.modificar" mat-raised-button color="primary" (click)="modificar()">
+                <mat-icon aria-label="Nueva muni">&#xE254;</mat-icon> Modificar
+            </button>
+            <button [disabled]="!buttons.eliminar" mat-raised-button color="primary">
+                <mat-icon aria-label="Nueva muni">&#xE92B;</mat-icon> Eliminar
+            </button>
+
+            <button [disabled]="!buttons.cancelar" mat-raised-button color="primary" (click)="cancelar()">
+                <mat-icon aria-label="Nueva muni">&#xE5C9;</mat-icon> Cancelar
+            </button>
+            <button [disabled]="!buttons.ver" mat-raised-button color="primary">
+                <mat-icon aria-label="Nueva muni">&#xE417;</mat-icon> Visualizar
+            </button>
+            <button [disabled]="!buttons.imprimir" mat-raised-button color="primary">
+                <mat-icon aria-label="Nueva muni">&#xE8AD;</mat-icon> Imprimir
+            </button>
+        </div>
     </div>
 </div>
