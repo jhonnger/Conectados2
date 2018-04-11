@@ -43,6 +43,10 @@ import { UsuarioMuniModule } from './usuariomuni/usuariomuni.module';
 import { AdminModule } from './admin/admin.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MensajeAlertComponent } from './components/mensajeAlert/mensaje-alert.component';
+
+//Socket
+import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -76,6 +80,7 @@ import { MensajeAlertComponent } from './components/mensajeAlert/mensaje-alert.c
         MatTableModule,
         MatInputModule,
         MatDatepickerModule
+        // SocketIoModule.forRoot(config) 
     ],
     providers:[
         AuthService,

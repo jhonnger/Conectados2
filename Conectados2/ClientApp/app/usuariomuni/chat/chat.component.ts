@@ -3,13 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { NgStyle, NgForOf } from '@angular/common';
 import { ChatService } from '../../services/chat.service';
 
-
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
+ 
+  
 
   //lo utilizo en el chat
   contador: number = 0;
@@ -33,10 +34,14 @@ export class ChatComponent implements OnInit {
 
   text = '';
 
-  constructor(private chatService: ChatService) { }
+  // Socket 
+  socket:any = null;
+
+  constructor(private chatService: ChatService) {
+      
+  }
 
   ngOnInit() {
-    
     
     if (this.chatService.getMemoria('chats')) {
       this.chats = JSON.parse(this.chatService.getMemoria('chats') || '{}');
@@ -44,7 +49,7 @@ export class ChatComponent implements OnInit {
 
   }
 
-
+  
   minimizarChat() {    
     if (this.contador==0) {
       // se debe tener el id de la municipalidad
@@ -78,12 +83,16 @@ export class ChatComponent implements OnInit {
   }
 
   onEnter(event: any, value: any, texto: any) {
-    const mensaje = {'user': 'tu', 'texto': '', 'hora': new Date().getHours()};
+    console.log(value);
+    let usuario_id = JSON.parse(this.chatService.getMemoria('usuario') || '');
+    const mensaje = {'username': usuario_id.usuario, 'texto': '', 'hora': new Date().getHours()};
     if (event.key === 'Enter') {
       mensaje.texto = texto;
       value.mensaje.push(mensaje);
       this.text = '';
+      
     }
+
   }
 
 
@@ -154,7 +163,7 @@ export class ChatComponent implements OnInit {
 
   // Conversacion
   iniciarConversacion(id_cont,username,estado){
-    
+    let usuario_id = JSON.parse(this.chatService.getMemoria('usuario') || '');
     this.chatService.iniciarConversacion(id_cont,username)
     .subscribe( (resp)=>{
       console.log(resp);      
@@ -162,9 +171,11 @@ export class ChatComponent implements OnInit {
         if(resp.length == 1){
           this._chat = resp[0].dt.dt;
           this._chat.idUsuario = id_cont;
+          this._chat.username = usuario_id.usuario;
         }else{          
           this._chat = resp;
           this._chat.idUsuario = id_cont;
+          this._chat.username = usuario_id.usuario;
         }
         
         if ( estado == 0){   

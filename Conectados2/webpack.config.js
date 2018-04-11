@@ -10,7 +10,7 @@ module.exports = (env) => {
     const sharedConfig = {
         stats: { modules: false },
         context: __dirname,
-        resolve: { extensions: [ '.js', '.ts' ] },
+        resolve: { extensions: ['.js', '.ts'] },
         output: {
             filename: '[name].js',
             publicPath: 'dist/' // Webpack dev middleware, if enabled, handles requests for this URL prefix
@@ -19,10 +19,11 @@ module.exports = (env) => {
             rules: [
                 { test: /\.ts$/, use: isDevBuild ? ['awesome-typescript-loader?silent=true', 'angular2-template-loader', 'angular2-router-loader'] : '@ngtools/webpack' },
                 { test: /\.html$/, use: 'html-loader?minimize=false' },
-                { test: /\.css$/, use: [ 'to-string-loader', isDevBuild ? 'css-loader' : 'css-loader?minimize' ] },
+                { test: /\.css$/, use: ['to-string-loader', isDevBuild ? 'css-loader' : 'css-loader?minimize'] },
                 { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
             ]
         },
+        node: { fs: 'empty' },
         plugins: [new CheckerPlugin()]
     };
 

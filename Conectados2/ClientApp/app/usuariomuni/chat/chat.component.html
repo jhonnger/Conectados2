@@ -21,7 +21,7 @@
                                             <div *ngIf="tab.mensaje != ''">
                                                 <div *ngFor="let msgs of tab.mensaje">
                                                     <div class="chatboxmessage">
-                                                        <span class="chatboxmessagefrom">{{msgs.idUsuario}}:&nbsp;&nbsp;</span>
+                                                        <span class="chatboxmessagefrom">{{tab.username}}:&nbsp;&nbsp;</span>
                                                         <span class="chatboxmessagecontent">{{msgs.texto}}</span>
                                                     </div>
                                                     <div class="chatboxmessage">

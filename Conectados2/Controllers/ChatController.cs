@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SocketIo;
+using SocketIo.SocketTypes;
 
 namespace Conectados2.Controllers
 {
@@ -26,13 +28,10 @@ namespace Conectados2.Controllers
         private readonly conectaDBContext _context;
         //private readonly ChatServicio chatServicioImpl;
 
-        public ChatController( conectaDBContext conectaDBContext
-           // ChatServicio chatServicioImpl
-            )
-        {
-            _context = conectaDBContext;
-            // this.chatServicioImpl = chatServicioImpl;
-        }
+
+        public ChatController(conectaDBContext conectaDBContext) => _context = conectaDBContext;
+
+        
 
         // GET: api/chat/contactos/2
         [HttpGet("contactos/{id_usuario}/{id_contacto}/{username}")]

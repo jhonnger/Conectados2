@@ -4,11 +4,15 @@ import  'rxjs/add/operator/map';
 import { JwtHelper } from 'angular2-jwt';
 
 
+
 @Injectable()
 export class AuthService {
-
+    
     constructor(private http: Http,
                 public jwtHelper: JwtHelper) {
+            
+                
+
     }
 
     login(user: string, password: string){

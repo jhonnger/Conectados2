@@ -12,8 +12,10 @@ namespace Conectados2
 {
     public class Program
     {
+        
         public static void Main(string[] args)
         {
+            
             BuildWebHost(args).Run();
         }
 
@@ -21,5 +23,8 @@ namespace Conectados2
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
+
+        
+
     }
 }
