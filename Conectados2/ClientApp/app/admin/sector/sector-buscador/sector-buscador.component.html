@@ -36,6 +36,8 @@
       (click)="selecciona(row.idSector)"></mat-row>
     </mat-table>
     <div class="text-center">
-        <app-navegacion [] (consultar)="consultar($event)"></app-navegacion>
+        <app-navegacion [totalPaginas]="paginacion.totalPaginas"
+                        [paginaActual]="paginacion.paginaActual"
+         (consultar)="consultar($event)"></app-navegacion>
     </div>
   </div>

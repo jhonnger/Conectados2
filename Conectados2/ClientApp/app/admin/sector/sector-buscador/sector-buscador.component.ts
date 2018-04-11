@@ -15,6 +15,10 @@ export class SectorBuscadorComponent implements OnInit {
     displayedColumns = ['pos', 'nombre','tipo'];
     sectores: Sector[] = [{nombre: '', tipoSector: {}}];
     dataSource = new MatTableDataSource(this.sectores);
+    paginacion = {
+        paginaActual: 1,
+        totalPaginas: 1
+    };
     
     constructor(private _sectorService: SectorService,
                 private _utilService: UtilService){

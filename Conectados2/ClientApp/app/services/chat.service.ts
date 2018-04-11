@@ -16,17 +16,20 @@ export class ChatService {
   
 
   // Iniciar Conversacion usuario id = 6 contactos id =7 (alias usuario1)
-  iniciarConversacion(id_usuario,id_contacto,username_contacto){
-    return this.http.get( this.UrlChat + '/contactos/' + id_usuario+"/"+ id_contacto+"/"+ username_contacto+"/" )
+  iniciarConversacion(id_contacto,username_contacto){
+    let id_usuario = JSON.parse(this.getMemoria('usuario') || '{}');
+    return this.http.get( this.UrlChat + '/contactos/' + id_usuario.id+"/"+ id_contacto+"/"+ username_contacto+"/" )
     .map( res => {
       return res.json();
     });
   }
 
   //contactos/2 
-  // se debe enviar el id de la municipalidad ejemplo = 2
-  listarContactos(id_municipalidad:number) {
-    return this.http.get( this.UrlChat + '/contactos/' + id_municipalidad )
+  // se debe enviar el id de usuario
+  listarContactos() {
+    let id_usuario = JSON.parse(this.getMemoria('usuario') || '{}');
+    console.log(id_usuario.id);
+    return this.http.get( this.UrlChat + '/contactos/' + id_usuario.id )
     .map( res => {
       return res.json();
     });
@@ -34,7 +37,8 @@ export class ChatService {
 
   //conversacion/6
   // se debe enviar el id del usuario ejemplo = 6
-  listarConversaciones(id_usuario:number) {
+  listarConversaciones() {
+    let id_usuario = JSON.parse(this.getMemoria('usuario') || '{}');
     return this.http.get( this.UrlChat + '/conversacion/' + id_usuario )
     .map( res => {
       return res.json();

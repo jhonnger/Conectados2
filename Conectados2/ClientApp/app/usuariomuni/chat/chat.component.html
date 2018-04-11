@@ -18,10 +18,10 @@
                                 <mat-tab-group>
                                     <mat-tab *ngFor="let tab of chats" [label]="tab.descripcion">
                                         <div class="chatboxmensajes" style="height: 190px;">
-                                            <div *ngIf="tab.conversaciones != ''">
-                                                <div *ngFor="let msgs of tab.conversaciones">
+                                            <div *ngIf="tab.mensaje != ''">
+                                                <div *ngFor="let msgs of tab.mensaje">
                                                     <div class="chatboxmessage">
-                                                        <span class="chatboxmessagefrom">{{msgs.idUsuario}}:&nbsp;&nbsp;</span>
+                                                        <span class="chatboxmessagefrom">{{tab.username}}:&nbsp;&nbsp;</span>
                                                         <span class="chatboxmessagecontent">{{msgs.texto}}</span>
                                                     </div>
                                                     <div class="chatboxmessage">
@@ -29,7 +29,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div *ngIf="tab.conversaciones == ''" style="padding-top:7%;">
+                                            <div *ngIf="tab.mensaje == ''" style="padding-top:7%;">
                                                 <div class="alert alert-warning">Aun no a iniciado una conversacion</div>
                                             </div>
                                         </div>

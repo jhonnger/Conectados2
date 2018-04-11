@@ -10,6 +10,7 @@ export class NavegacionComponent {
     @Output() consultar = new EventEmitter();
     @Input('totalPaginas') totalPaginas: number;
     @Input('paginaActual') paginaActual: number;
+    
 
     consultarPagina(pagina: number){
     }

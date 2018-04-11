@@ -43,8 +43,13 @@ import { UsuarioMuniModule } from './usuariomuni/usuariomuni.module';
 import { AdminModule } from './admin/admin.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MensajeAlertComponent } from './components/mensajeAlert/mensaje-alert.component';
+
 import {MapaComponent} from './components/mapa/mapa.component';
 import {NavegacionComponent} from './components/navegacion/navegacion.component';
+
+
+//Socket
+import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 @NgModule({
     declarations: [
         AppComponent,
@@ -78,6 +83,7 @@ import {NavegacionComponent} from './components/navegacion/navegacion.component'
         MatTableModule,
         MatInputModule,
         MatDatepickerModule
+        // SocketIoModule.forRoot(config) 
     ],
     providers:[
         AuthService,

@@ -49,16 +49,19 @@
     "karma-cli": "1.0.1",
     "karma-jasmine": "1.1.1",
     "karma-webpack": "3.0.0",
+    "net": "^1.0.2",
+    "net-socket": "^1.1.0",
     "preboot": "6.0.0-beta.3",
     "raw-loader": "0.5.1",
     "reflect-metadata": "0.1.12",
     "rxjs": "^5.5.8",
+    "socket.io": "https://registry.npmjs.org/socket.io/-/socket.io-1.7.3.tgz",
     "style-loader": "0.20.3",
     "to-string-loader": "1.1.5",
     "typescript": "^2.4.2",
     "url-loader": "1.0.1",
     "webpack": "^4.4.1",
-    "webpack-cli": "^2.0.13",
+    "webpack-cli": "^2.0.14",
     "webpack-hot-middleware": "2.21.2",
     "webpack-merge": "4.1.2",
     "zone.js": "0.8.23"
@@ -86,6 +89,8 @@
     "angular-async-local-storage": "^4.0.0",
     "angular2-jwt": "^0.2.3",
     "extract-text-webpack-plugin": "^2.1.2",
-    "jwt-decode": "^2.2.0"
+    "fs": "0.0.1-security",
+    "jwt-decode": "^2.2.0",
+    "net-socket": "^1.1.0"
   }
 }
