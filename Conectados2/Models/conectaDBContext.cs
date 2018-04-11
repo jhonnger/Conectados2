@@ -339,7 +339,15 @@ namespace Conectados2.Models
                     .HasMaxLength(70)
                     .IsUnicode(false);
 
+                entity.Property(e => e.FecCreacion)
+                    .HasColumnName("fec_creacion")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.FecModificacion)
+                    .HasColumnName("fec_modificacion")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
                 entity.Ignore(s => s.Sectores);
                /** entity.HasOne(d => d.IdSectorPadreNavigation)
                     .WithMany(p => p.InverseIdSectorPadreNavigation)

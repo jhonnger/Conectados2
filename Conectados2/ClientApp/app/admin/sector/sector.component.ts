@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { SectorFormularioComponent } from './sector-formulario/sector-formulario.component';
+import {SectorBuscadorComponent} from "./sector-buscador/sector-buscador.component";
 
 @Component({
     selector: 'app-sector',
@@ -10,6 +11,8 @@ export class SectorComponent implements OnInit {
   
     @ViewChild(SectorFormularioComponent)
     private sectorFormularioComponent: SectorFormularioComponent;
+    @ViewChild(SectorBuscadorComponent)
+    private sectorBuscadorComponent: SectorBuscadorComponent;
     buttons = {
         nuevo: false,
         modificar: false,
@@ -26,6 +29,11 @@ export class SectorComponent implements OnInit {
     ngOnInit() {
         this.reiniciarBotones();
         this.sectorFormularioComponent.controls = false;
+        this.sectorFormularioComponent.ultimoGuardado.subscribe(
+            data => {
+                this.sectorBuscadorComponent.listar();
+            }
+        );
     }
     
     salida(entrada: number){

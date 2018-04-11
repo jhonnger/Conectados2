@@ -1,5 +1,5 @@
+using Conectados2.Helpers;
 using Conectados2.Models;
-using System.Collections.Generic;
 
 namespace Conectados2.Servicio
 {
@@ -7,6 +7,6 @@ namespace Conectados2.Servicio
     {
         Sector obtenerJurisdiccion(int id);
 
-        List<Sector> obtenerPaginadosJurisdiccion(int? pagina, int cantidad);
+        BusquedaPaginada<Sector> obtenerPaginadosJurisdiccion(int? pagina, int cantidad);
     }
 }

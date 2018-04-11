@@ -40,7 +40,7 @@ namespace Conectados2.Servicio.impl
             return ((SectorRepositorio)this.baseRepositorio).ObtenerJurisdiccion(id);
         }
 
-        public List<Sector> obtenerPaginadosJurisdiccion(int? pagina, int cant)
+        public BusquedaPaginada<Sector> obtenerPaginadosJurisdiccion(int? pagina, int cant)
         {
             return ((SectorRepositorio)this.baseRepositorio).obtenerPaginadosJurisdiccion(pagina, cant);
         }

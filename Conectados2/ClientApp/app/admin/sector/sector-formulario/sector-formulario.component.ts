@@ -247,10 +247,12 @@ export class SectorFormularioComponent implements OnInit {
             this._sectorService.guardar(this.sectorInicial).subscribe(
                 data => {
                     if(data.success){
-                        this.ultimoGuardado.emit(data.data);
                         this._utilService.hideLoading();
                         this._utilService.alertMensaje("Sector guardado correctamente");
                         this.reiniciarFormulario();
+                        setTimeout(()=>{
+                            this.ultimoGuardado.emit(data.data);
+                        },500)
                     }
                     console.log(data)
                 }, err => {

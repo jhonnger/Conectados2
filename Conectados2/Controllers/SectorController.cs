@@ -22,15 +22,15 @@ namespace Conectados2.Controllers
             this.sectorServicio = sectorServicio;
         }
 
-        [Route("/api/jurisdiccion/{id}")]
-        [HttpGet("{id}")]
+       // [Route("/api/jurisdiccion/{id}")]
+        [HttpGet("/api/jurisdiccion/{id}")]
         public RespuestaControlador GetJurisdiccion([FromRoute] int id)
         {
             return RespuestaControlador.respuestaExito(sectorServicio.obtenerJurisdiccion(id));
         }
 
-        [Route("/api/sector/{id}")]
-        [HttpGet("{id}")]
+        //[Route("/api/sector/{id}")]
+        [HttpGet("/api/sector/{id}")]
         public RespuestaControlador GetSector([FromRoute] int id)
         {
             return RespuestaControlador.respuestaExito(sectorServicio.obtener(id));

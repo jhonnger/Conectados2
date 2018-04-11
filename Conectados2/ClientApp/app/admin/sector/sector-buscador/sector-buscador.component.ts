@@ -3,6 +3,7 @@ import { SectorService } from '../../../services/sector.service';
 import { Sector } from '../../../interfaces/sector.interface';
 import { MatTableDataSource } from '@angular/material';
 import { UtilService } from '../../../services/util.service';
+import {BusquedaPaginada} from "../../../interfaces/BusquedaPaginada.interface";
 
 @Component({
     selector: 'app-sector-buscador',
@@ -15,7 +16,7 @@ export class SectorBuscadorComponent implements OnInit {
     displayedColumns = ['pos', 'nombre','tipo'];
     sectores: Sector[] = [{nombre: '', tipoSector: {}}];
     dataSource = new MatTableDataSource(this.sectores);
-    paginacion = {
+    paginacion: BusquedaPaginada = {
         paginaActual: 1,
         totalPaginas: 1
     };
@@ -35,8 +36,12 @@ export class SectorBuscadorComponent implements OnInit {
             data => {
                 this._utilService.hideLoading();
                 if(data.success){
-                    this.sectores = data.data;
+                    let paginacion: BusquedaPaginada = data.data;
+                    this.sectores = paginacion.items;
+                    this.paginacion.paginaActual = paginacion.paginaActual;
+                    this.paginacion.totalPaginas = paginacion.totalPaginas;
                     this.dataSource = new MatTableDataSource(this.sectores);
+                    console.log(this.paginacion)
                 }
             }, err => {
                 this._utilService.hideLoading();

@@ -49,7 +49,7 @@ import {NavegacionComponent} from './components/navegacion/navegacion.component'
 
 
 //Socket
-import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
+//import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 @NgModule({
     declarations: [
         AppComponent,

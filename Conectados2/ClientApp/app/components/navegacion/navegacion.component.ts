@@ -13,6 +13,7 @@ export class NavegacionComponent {
     
 
     consultarPagina(pagina: number){
+        this.consultar.emit(pagina)
     }
     inicio(){
         if(this.paginaActual > 1){

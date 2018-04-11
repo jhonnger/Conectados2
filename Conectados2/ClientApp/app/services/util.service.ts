@@ -7,13 +7,20 @@ import { MensajeAlertComponent } from '../components/mensajeAlert/mensaje-alert.
 export class UtilService {
 
     dialogRefe: any;
+    cantLoading = 0;
     constructor(public dialog: MatDialog) {
     }
 
 
     showLoading() {
+        let id = "loading" + this.cantLoading;
+        if(this.dialog.getDialogById(id)){
+            this.cantLoading++;
+            this.showLoading();
+            return;
+        }
         this.dialogRefe = this.dialog.open(LoadingComponent, {
-            id: "loading", 
+            id: id,
             disableClose: true
         });
     }
@@ -28,6 +35,9 @@ export class UtilService {
 
     hideLoading(){
         this.dialogRefe.close();
+        if(this.cantLoading > 0){
+            this.cantLoading--;
+        }
     }
 
     cambiarNumeroPuntoPorComa(numero: number){

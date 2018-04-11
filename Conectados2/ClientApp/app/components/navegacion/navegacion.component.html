@@ -1,17 +1,17 @@
-<button mat-icon-button>
+<button mat-icon-button (click)="inicio()">
     <mat-icon aria-label="Search icon">&#xE045;</mat-icon>
 </button>
-<button mat-icon-button>
+<button mat-icon-button (click)="anterior()">
     <mat-icon aria-label="Search icon">&#xE020;</mat-icon>
 </button>
 
 <label class="etiqueta-navegacion">Página</label>&nbsp;
-<input  class="input-navegacion" (keyup)="$event.keyCode == 13 && filtrar()">&nbsp;
-<label class="etiqueta-navegacion">/ 10</label>
+<input [ngModel]="paginaActual"  class="input-navegacion" (keyup)="$event.keyCode == 13 && consultarPagina($event.target.value)">&nbsp;
+<label class="etiqueta-navegacion">/ {{totalPaginas}}</label>
 
-<button mat-icon-button>
+<button mat-icon-button (click)="siguiente()">
     <mat-icon aria-label="Search icon">&#xE01F;</mat-icon>
 </button>
-<button mat-icon-button>
+<button mat-icon-button (click)="ultimo()">
     <mat-icon aria-label="Search icon">&#xE044;</mat-icon>
 </button>

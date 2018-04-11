@@ -10,6 +10,6 @@ namespace Conectados2.Repositorio
         
         Sector ObtenerJurisdiccion(int id);
 
-        PaginatedList<Sector> obtenerPaginadosJurisdiccion(int? pagina, int cant);
+        BusquedaPaginada<Sector> obtenerPaginadosJurisdiccion(int? pagina, int cant);
     }
 }

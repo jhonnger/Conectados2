@@ -3,6 +3,7 @@ using Conectados2.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Conectados2.Helpers;
+using System;
 
 namespace Conectados2.Repositorio.impl
 {
@@ -49,6 +50,7 @@ namespace Conectados2.Repositorio.impl
 
             
             _context.Entry(sectorDB).CurrentValues.SetValues(sector);
+            sectorDB.FecModificacion = DateTime.Now;
 
             foreach (var puntos in sectorDB.PuntoSector.ToList()){
                  if (!sector.PuntoSector.Any(s => s.IdPuntoSector == puntos.IdPuntoSector)){
@@ -98,16 +100,19 @@ namespace Conectados2.Repositorio.impl
             return sector;
         }
 
-        public PaginatedList<Sector> obtenerPaginadosJurisdiccion(int? pagina, int cant)
+        public BusquedaPaginada<Sector> obtenerPaginadosJurisdiccion(int? pagina, int cant)
         {
-            
+
             var sectores = this._context.Sector
                 .Include(sector => sector.TipoSector)
+                .OrderByDescending( s => s.FecModificacion)
                 .Where(s => s.TipoSector.Nombre == "Jurisdiccion");
 
 
+            var results = PaginatedList<Sector>.Create(sectores.AsNoTracking(), pagina ?? 1, cant);
+            var response = BusquedaPaginada<Sector>.Create(results);
 
-            return PaginatedList<Sector>.Create(sectores.AsNoTracking(), pagina ?? 1, cant);
+            return response;
 
         }
         
