@@ -26,6 +26,7 @@ namespace Conectados2.Models
 
         public Sector IdSectorNavigation { get; set; }
         public TipoMuni TipoComiMuni { get; set; }
+        public Ubicacion Ubicacion { get; set; }
         public ICollection<ComiMuniMembresia> ComiMuniMembresia { get; set; }
         public ICollection<Configuracion> Configuracion { get; set; }
         public ICollection<Patrullero> Patrullero { get; set; }

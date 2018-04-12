@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, EventEmitter, ViewChild} from '@angular/core';
 import { MunicipalidadService } from '../../../services/municipalidad.service';
 import { Municipalidad } from '../../../interfaces/Municipalidad.interface';
 import { TipoMuniService } from '../../../services/tipo-muni.service';
@@ -20,9 +20,14 @@ export class MunicipalidadFormularioComponent implements OnInit {
 
     dialogRef: MatDialogRef<SectorBuscadorModalComponent>;
     dialogModalFormulario: MatDialogRef<SectorFormularioModalComponent>;
-    municipalidad: Municipalidad = {nombre: 'uno', tipoComiMuni:{}};
+    @ViewChild('mapaMuni') mapMuni: any;
+    municipalidad: Municipalidad = { ubicacion: {}};
     jurisdiccion: Sector = {};
     tiposMuni: TipoMunicipalidad[] = [];
+    ultimoGuardado = new EventEmitter();
+    controls = true;
+    editarUbicacion = false;
+    zoom = 15;
 
     constructor(private _municipalidadService: MunicipalidadService,
                 private dialog: MatDialog,
@@ -48,7 +53,8 @@ export class MunicipalidadFormularioComponent implements OnInit {
     }
     abrirModalBuscarJurisdiccion(){
         this.dialogRef = this.dialog.open(SectorBuscadorModalComponent, {
-            width: '80%'
+            width: '80%',
+            panelClass: 'buscador'
         });
 
         const sub =  this.dialogRef.componentInstance.onAdd.subscribe((result) => {
@@ -83,7 +89,103 @@ export class MunicipalidadFormularioComponent implements OnInit {
 
             }
         );
-
     }
+
+    traerMunicipalidad(id: number){
+        this._utilService.showLoading();
+        this._municipalidadService.leer(id).subscribe(
+            data => {
+                this._utilService.hideLoading();
+                if(data.success){
+                    this.municipalidad = data.data;
+                    this.jurisdiccion = data.data.idSectorNavigation;
+                    this.zoom = 15;
+                }
+            },
+            err => {
+                this._utilService.hideLoading();
+            }
+        );
+    }
+
+    reiniciarFormulario(){
+        this.municipalidad = { ubicacion:{}};
+        this.jurisdiccion = {};
+        this.controls = false;
+    }
+    guardar(){
+        if(this.validarFormulario()){
+            let lat = this.mapMuni.latitude;
+            let lng = this.mapMuni.longitude;
+
+            this.municipalidad.ubicacion.latitud = lat;
+            this.municipalidad.ubicacion.longitud = lng;
+            this.municipalidad.idSector = this.jurisdiccion.idSector;
+            this._utilService.showLoading();
+            this._municipalidadService.guardar(this.municipalidad).subscribe(
+                data => {
+                    if(data.success){
+                        this._utilService.hideLoading();
+                        this._utilService.alertMensaje("Entidad guardado correctamente");
+                        this.reiniciarFormulario();
+                        
+                        this.ultimoGuardado.emit(data.data);
+                        
+                    }
+                    console.log(data)
+                }, err => {
+                    console.log(err)
+                }
+            );
+        }
+    }
+    validarFormulario(){
+        if(!this.municipalidad.nombre){
+            this._utilService.alertMensaje("Debe escribir el nombre de la entidad");
+            return false;
+        }
+        if(!this.municipalidad.idTipoComiMuni){
+            this._utilService.alertMensaje("Elija el tipo de entidad");
+            return false;
+        }
+        if(!this.jurisdiccion.idSector){
+            this._utilService.alertMensaje("Debe establecer a qué jurisdiccion pertenece");
+        }
+        return true;
+    }
+    mapReady(event: any) {
+        let map = event;
+       
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('editPos'));
+    }
+    geoDecoder(lat: number, lng: number){
+      
+        let latlng = new google.maps.LatLng(lat, lng);
+        let request = {
+            latLng: latlng
+        };
+        let geocoder = new google.maps.Geocoder();
+        geocoder.geocode(request, (results: any, status: any) => {
+            let direccion = "";
+            if (status == google.maps.GeocoderStatus.OK) {
+                if (results[0] != null) {
+
+                  direccion = results[0].formatted_address;                    
+                } else {
+                    direccion = "";
+                }
+            }
+           
+              this.municipalidad.ubicacion.descripcion = direccion;
+            
+        });
+    }
+    idleFunction(){
+      
+        let lat = this.mapMuni.latitude;
+        let lng = this.mapMuni.longitude;
+        
+        this.geoDecoder(lat, lng);
+      }
 }
 

@@ -1,10 +1,14 @@
-﻿using Conectados2.Models;
+﻿using Conectados2.Helpers;
+using Conectados2.Models;
 using Conectados2.Repositorio;
 using Conectados2.Repositorio.impl;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Conectados2.Servicio.impl
 {
@@ -15,6 +19,13 @@ namespace Conectados2.Servicio.impl
         {
         }
 
-        
+        public override RespuestaControlador actualizar(ComiMuni entidad)
+        {
+            entidad.FecModificacion = DateTime.Now;
+            return base.actualizar(entidad);
+        }
+
+
+
     }
 }

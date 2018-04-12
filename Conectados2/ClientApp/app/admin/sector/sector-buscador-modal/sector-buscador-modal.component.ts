@@ -19,7 +19,8 @@ export class SectorBuscadorModalComponent implements OnInit {
     }
     abrirModalBuscarJurisdiccion(){
         let dialogRef = this.dialog.open(SectorBuscadorComponent, {
-            width: '80%'
+            width: '90%',
+            panelClass: 'buscador'
           });
     }
     cerrarModal(event: any){

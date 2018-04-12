@@ -44,7 +44,7 @@ namespace Conectados2.Servicio.impl
             return this.baseRepositorio.obtener(id);
         }
 
-        public List<Entidad> obtenerPaginados(int pagina, int cant)
+        public BusquedaPaginada<Entidad> obtenerPaginados(int pagina, int cant)
         {
             return this.baseRepositorio.obtenerPaginados(pagina, cant);
         }

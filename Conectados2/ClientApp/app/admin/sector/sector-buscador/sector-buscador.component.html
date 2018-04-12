@@ -25,10 +25,7 @@
         <mat-header-cell class="nombre-col" *matHeaderCellDef> Nombre </mat-header-cell>
         <mat-cell class="nombre-col" *matCellDef="let element"> {{element.nombre}} </mat-cell>
       </ng-container>
-      <ng-container  matColumnDef="tipo">
-        <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.tipoSector.nombre}} </mat-cell>
-      </ng-container>
+    
 
 
       <mat-header-row class="azul" *matHeaderRowDef="displayedColumns"></mat-header-row>

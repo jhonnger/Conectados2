@@ -9,6 +9,7 @@ using Conectados2.Models;
 using Conectados2.Helpers;
 using Conectados2.Servicio.impl;
 using Conectados2.Servicio;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Conectados2.Controllers
 {
@@ -41,71 +42,73 @@ namespace Conectados2.Controllers
 
         // GET: api/municipalidad/5
         [HttpGet("{id}" )]
-        public async Task<IActionResult> GetMunicipalidad([FromRoute] int id)
+        public RespuestaControlador GetMunicipalidad([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return RespuestaControlador.respuetaError(ModelState.ToString());
             }
 
-            var municipalidad = await _context.ComiMuni.SingleOrDefaultAsync(m => m.IdComiMuni == id);
+            var municipalidad = this.municipalidadServicio.obtener(id);
 
             if (municipalidad == null)
             {
-                return NotFound();
+                return RespuestaControlador.respuetaError("Entidad no existe o no está disponible");
             }
 
-            return Ok(municipalidad);
+            return RespuestaControlador.respuestaExito(municipalidad);
         }
 
         // PUT: api/municipalidad/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMunicipalidad([FromRoute] int id, [FromBody] ComiMuni municipalidad)
+        [Authorize(Roles = "Admin")]
+        [HttpPut()]
+        public RespuestaControlador PutMunicipalidad([FromBody] ComiMuni municipalidad)
         {
+           
+           
+
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return RespuestaControlador.respuetaError("Parametro incorrecto");
             }
+            municipalidad.FecModificacion = DateTime.Now;
+            municipalidad.UsuarioMod = User.Identity.Name;
+           // _context.Entry(municipalidad).State = EntityState.Modified;
 
-            if (id != municipalidad.IdComiMuni)
-            {
-                return BadRequest();
-            }
+            var sectorUpd = municipalidadServicio.actualizar(municipalidad);
+            return RespuestaControlador.respuestaExito(sectorUpd);
 
-            _context.Entry(municipalidad).State = EntityState.Modified;
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!MunicipalidadExists(municipalidad.IdComiMuni))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MunicipalidadExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            //return NoContent();
         }
 
         // POST: api/Municipalidad
         [HttpPost]
-        public async Task<IActionResult> PostMunicipalidad([FromBody] ComiMuni municipalidad)
+        public RespuestaControlador PostMunicipalidad([FromBody] ComiMuni municipalidad)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return RespuestaControlador.respuetaError("Parametro incorrecto");
             }
 
-            _context.ComiMuni.Add(municipalidad);
-            await _context.SaveChangesAsync();
+            municipalidad.UsuarioMod = HttpContext.User.Identity.Name;
 
-            return CreatedAtAction("GetMunicipalidad", new { id = municipalidad.IdComiMuni }, municipalidad);
+            return municipalidadServicio.crear(municipalidad);
         }
 
         // DELETE: api/municipalidad/5

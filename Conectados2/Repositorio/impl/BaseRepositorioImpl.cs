@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using Conectados2.Helpers;
 
 namespace Conectados2.Repositorio.impl
 {
@@ -49,7 +50,7 @@ namespace Conectados2.Repositorio.impl
             return a.ToList<Entidad>();
         }
 
-        public virtual List<Entidad> obtenerPaginados(int? pagina, int cant)
+        public virtual BusquedaPaginada<Entidad> obtenerPaginados(int? pagina, int cant)
         {
             throw new NotImplementedException();
         }

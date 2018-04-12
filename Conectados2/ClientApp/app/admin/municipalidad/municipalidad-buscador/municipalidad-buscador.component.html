@@ -34,4 +34,9 @@
       <mat-row *matRowDef="let row; columns: displayedColumns;let pos = index;"
       (click)="selecciona(row.idComiMuni)"></mat-row>
     </mat-table>
+    <div class="text-center">
+      <app-navegacion [totalPaginas]="paginacion.totalPaginas"
+                      [paginaActual]="paginacion.paginaActual"
+       (consultar)="clistar($event)"></app-navegacion>
+  </div>
   </div>
