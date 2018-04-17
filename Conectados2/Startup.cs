@@ -24,11 +24,13 @@ using Conectados2.Repositorio;
 using Conectados2.Repositorio.impl;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using Conectados2.WebSockets;
 
 namespace Conectados2
 {
     public class Startup
     {
+       
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,12 +41,13 @@ namespace Conectados2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddWebSocketManager();
             services.AddCors();
 
            // var connection = @"Server=tcp:conectados220180403104748dbserver.database.windows.net,1433;Initial Catalog=conectaDB;Persist Security Info=False;User ID=jhongger;Password=Cotos123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            var connection = @"Data Source=ROSA20;Initial Catalog=conectaDB;User ID=sa;Password=root";
+            //var connection = @"Data Source=ROSA20;Initial Catalog=conectaDB;User ID=sa;Password=root";
 
-           //var connection = @"data source=NotHP;initial catalog=conectaDB;;user id=sa;password=root;integrated security=True;MultipleActiveResultSets=True";
+           var connection = @"data source=NotHP;initial catalog=conectaDB;;user id=sa;password=root;integrated security=True;MultipleActiveResultSets=True";
 
             services.AddDbContext<AuthContext>(options => options.UseSqlServer(connection));
             services.AddDbContext<conectaDBContext>(options => options.UseSqlServer(connection));
@@ -107,7 +110,7 @@ namespace Conectados2
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -121,6 +124,17 @@ namespace Conectados2
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+             var wsOptions = new WebSocketOptions()
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(60),
+                ReceiveBufferSize = 4 * 1024
+            };
+
+            app.UseWebSockets(wsOptions);
+            app.MapWebSocketManager("/chat", serviceProvider.GetService<ChatRoomHandler>());
+            
+            
             // global cors policy
             app.UseCors(x => x
                 .AllowAnyOrigin()

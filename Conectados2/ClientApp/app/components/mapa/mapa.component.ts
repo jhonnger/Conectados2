@@ -3,7 +3,7 @@ import {PuntoSector} from '../../interfaces/PuntoSector.interface';
 import {Polygon} from '@agm/core/services/google-maps-types';
 import {MapaFuncionesService} from '../../util/mapas-funciones.service';
 import {UtilService} from '../../services/util.service';
-import 'jquery';
+import   'jquery';
 
 export declare let google: any;
 @Component({

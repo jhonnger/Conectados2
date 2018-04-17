@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgStyle, NgForOf } from '@angular/common';
 import { ChatService } from '../../services/chat.service';
 
+
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -10,7 +12,14 @@ import { ChatService } from '../../services/chat.service';
 })
 export class ChatComponent implements OnInit {
  
-  
+  // ======================================
+  // Inicio socket
+  // ======================================
+    messageFromServer:string;
+    ws: WebSocket;
+  // ======================================
+  // Fin socket
+  // ======================================
 
   //lo utilizo en el chat
   contador: number = 0;
@@ -18,38 +27,34 @@ export class ChatComponent implements OnInit {
   tam_chat: number = 200;
   // tslint:disable-next-line:no-inferrable-types
   flagChat: boolean = false;
-
   contactos: any = [];
-
   mensajes: any = [] ;
-  
   conversaciones: any = [];
-
   _label: string = 'Mensaje';
   flag_msg_cont: boolean = false;
   // se coloca en los tabs
   chats: any = [];
   // individual de arriba
   _chat: any = {};
-
   text = '';
-
-  // Socket 
-  socket:any = null;
-
+  
   constructor(private chatService: ChatService) {
-      
+    this.chatService.createObservableSocket("localhost:5000")
+        .subscribe( data => {
+          this.messageFromServer = data;
+        });
   }
 
   ngOnInit() {
-    
+  
     if (this.chatService.getMemoria('chats')) {
       this.chats = JSON.parse(this.chatService.getMemoria('chats') || '{}');
     }
-
   }
 
-  
+ 
+ 
+
   minimizarChat() {    
     if (this.contador==0) {
       // se debe tener el id de la municipalidad

@@ -71,3 +71,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    var net = require('net');
+    var client = new net.Socket();
+    client.connect(5000, "127.0.0.1", function() {
+        console.log("connected");
+        client.write("hola c#");
+    });
+</script>

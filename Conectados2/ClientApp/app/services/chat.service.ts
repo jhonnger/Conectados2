@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 // tslint:disable-next-line:import-blacklist
-import 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 //import { map } ;
 import  'rxjs/add/operator/map';
 
@@ -10,10 +10,23 @@ export class ChatService {
   // tslint:disable-next-line:no-inferrable-types
   UrlChat: string = 'http://localhost:5000/api/chat';
   res:any = [];
+  ws: WebSocket;
 
   constructor(private http: Http) { }
   
-  
+  createObservableSocket(url: string) : Observable<string>{
+    this.ws = new WebSocket(url);
+    return new Observable ( observer => {
+      this.ws.onmessage = (event) => observer.next(event.data);    
+      this.ws.onerror = (event) => observer.error(event);
+      this.ws.onclose = (event) => observer.complete(); 
+    });
+    
+  }  
+
+  sendMessage( message: any ){
+    this.ws.send(message);
+  }
 
   // Iniciar Conversacion usuario id = 6 contactos id =7 (alias usuario1)
   iniciarConversacion(id_contacto,username_contacto){
