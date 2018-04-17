@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 
 namespace Conectados2
 {
@@ -15,7 +19,7 @@ namespace Conectados2
         
         public static void Main(string[] args)
         {
-            
+
             BuildWebHost(args).Run();
         }
 

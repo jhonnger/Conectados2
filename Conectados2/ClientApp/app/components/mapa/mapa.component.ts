@@ -6,6 +6,7 @@ import {UtilService} from '../../services/util.service';
 import 'jquery';
 import { Constantes } from '../../util/constantes';
 
+
 export declare let google: any;
 @Component({
     selector: 'app-mapa',

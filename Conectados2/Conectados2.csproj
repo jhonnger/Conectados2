@@ -10,6 +10,7 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.WebSockets" Version="2.1.0-preview2-final" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.AutoHistory" Version="2.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.0.2" />
@@ -19,8 +20,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
-    <PackageReference Include="SocketIo.Core" Version="2.0.0" />
-    <PackageReference Include="SocketIO4Net.Client" Version="0.6.26" />
+    <PackageReference Include="Microsoft.WebSockets" Version="0.2.3.1" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
@@ -52,6 +52,7 @@
   <ItemGroup>
     <Folder Include="ContextoDB\" />
     <Folder Include="modelos\" />
+    <Folder Include="WebSockets\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">

@@ -11,13 +11,12 @@ using Conectados2.Helpers;
 using Conectados2.Models;
 using Conectados2.Seguridad;
 using Conectados2.Servicio;
+using Conectados2.WebSockets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using SocketIo;
-using SocketIo.SocketTypes;
 
 namespace Conectados2.Controllers
 {
@@ -27,9 +26,14 @@ namespace Conectados2.Controllers
     {
         private readonly conectaDBContext _context;
         //private readonly ChatServicio chatServicioImpl;
+        private  ChatRoomHandler chatRoomHandler { get; set; }
+        
 
-
-        public ChatController(conectaDBContext conectaDBContext) => _context = conectaDBContext;
+        public ChatController(conectaDBContext conectaDBContext,
+                              ChatRoomHandler handler){
+            _context = conectaDBContext;
+            chatRoomHandler = handler;                        
+        } 
 
         
 
