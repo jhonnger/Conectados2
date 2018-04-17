@@ -42,13 +42,13 @@ namespace Conectados2.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]LoginModel userDto)
+        public async Task<IActionResult> Authenticate([FromBody]LoginModel userDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            var user = _authServicio.login(userDto.usuario, userDto.password);
+            var user = await _authServicio.login(userDto.usuario, userDto.password);
 
         
             return Ok(user);

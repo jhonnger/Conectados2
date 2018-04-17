@@ -46,6 +46,8 @@ import { MensajeAlertComponent } from './components/mensajeAlert/mensaje-alert.c
 
 import {MapaComponent} from './components/mapa/mapa.component';
 import {NavegacionComponent} from './components/navegacion/navegacion.component';
+import { AgmCoreModule } from '@agm/core';
+import { MapaModule } from './components/mapa/mapa.module';
 
 
 //Socket
@@ -58,7 +60,7 @@ import {NavegacionComponent} from './components/navegacion/navegacion.component'
         MensajeAlertComponent,
     ], entryComponents:[LoadingComponent, MensajeAlertComponent],
     imports: [
-        
+        MapaModule,
         APP_ROUTES,
         CommonModule,
         HttpModule,
@@ -82,7 +84,11 @@ import {NavegacionComponent} from './components/navegacion/navegacion.component'
         MatMenuModule,
         MatTableModule,
         MatInputModule,
-        MatDatepickerModule
+        MatDatepickerModule,
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyD6l0Wq6cXBaDqF7I03FxvG-6-Py0Ib0F4',
+            libraries: ['places','drawing']
+        }),
         // SocketIoModule.forRoot(config) 
     ],
     providers:[

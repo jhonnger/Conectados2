@@ -40,7 +40,10 @@
                   <mat-error>Debe especificar el lugar donde ocurrió del incidente</mat-error>
                 </mat-form-field>
           </div>
-          <agm-map  #mapNuevoCaso [zoom]="13" [latitude]="lat" [longitude]="lng" (idle)="idleFunction()">
+          <agm-map  #mapNuevoCaso 
+                    [zoom]="16" 
+                    [latitude]="ubicacion.latitud" 
+                    [longitude]="ubicacion.longitud" (idle)="idleFunction()">
             <!--<agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>-->
           </agm-map>
           <div class="markerCenter"></div>

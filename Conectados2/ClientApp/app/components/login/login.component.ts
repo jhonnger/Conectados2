@@ -50,7 +50,9 @@ export class LoginComponent implements OnInit {
 
                     localStorage.setItem('token', (data.token));
                     localStorage.setItem('usuario', JSON.stringify(usuario));
-
+                    if(data.municipalidad){
+                        localStorage.setItem('municipalidad',JSON.stringify(data.municipalidad));
+                    }
                     tokenDecode = this._jwtHelper.decodeToken(data.token);
                     if(tokenDecode){
                         this.direccionarSegunRol(tokenDecode.role);

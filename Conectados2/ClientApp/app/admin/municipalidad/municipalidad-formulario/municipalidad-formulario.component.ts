@@ -9,6 +9,9 @@ import {MatDialog, MatDialogRef} from '@angular/material';
 import {UtilService} from '../../../services/util.service';
 import {SectorService} from '../../../services/sector.service';
 import {SectorFormularioModalComponent} from "../../sector/sector-formulario-modal/sector-formulario-modal.component";
+import { Constantes } from '../../../util/constantes';
+import { MapaComponent } from '../../../components/mapa/mapa.component';
+import { TipoSectorService } from '../../../services/tipo-sector.service';
 
 @Component({
     selector: 'app-municipalidad-formulario',
@@ -17,22 +20,27 @@ import {SectorFormularioModalComponent} from "../../sector/sector-formulario-mod
 })
 export class MunicipalidadFormularioComponent implements OnInit {
 
-
-    dialogRef: MatDialogRef<SectorBuscadorModalComponent>;
-    dialogModalFormulario: MatDialogRef<SectorFormularioModalComponent>;
-    @ViewChild('mapaMuni') mapMuni: any;
+    
+    @ViewChild('mapa') mapa: MapaComponent;
+    
+    nombreTipoJurisdiccion = 'Jurisdiccion';
+    idTipoJurisdiccion: number;
     municipalidad: Municipalidad = { ubicacion: {}};
     jurisdiccion: Sector = {};
     tiposMuni: TipoMunicipalidad[] = [];
     ultimoGuardado = new EventEmitter();
     controls = true;
     editarUbicacion = false;
-    zoom = 15;
+    controlsMap = [
+        { id : 'editPos', pos : Constantes.MapPosition.TOP_LEFT },
+        { id : 'editJuris', pos : Constantes.MapPosition.TOP_LEFT },
+    ];
 
     constructor(private _municipalidadService: MunicipalidadService,
                 private dialog: MatDialog,
                 private _sectorService: SectorService,
                 private _utilService: UtilService,
+                private _tipoSectorService: TipoSectorService,
                 private _tipoMuniService: TipoMuniService) {
 
 
@@ -49,46 +57,31 @@ export class MunicipalidadFormularioComponent implements OnInit {
                  }
 
     ngOnInit() {
-      
-    }
-    abrirModalBuscarJurisdiccion(){
-        this.dialogRef = this.dialog.open(SectorBuscadorModalComponent, {
-            width: '80%',
-            panelClass: 'buscador'
-        });
-
-        const sub =  this.dialogRef.componentInstance.onAdd.subscribe((result) => {
-            this.traerJurisdiccion(result);
-            this.dialogRef.close();
-        });
-    }
-    traerJurisdiccion(id){
-        this._utilService.showLoading();
-        this._sectorService.leerJurisdiccion(id).subscribe(
-            response =>{
-                this._utilService.hideLoading();
-                this.jurisdiccion = response.data;
+        this.mapa.ultimoDibujado.subscribe(
+            data => {
+                if(!this.municipalidad.idSectorNavigation){
+                    this.municipalidad.idSectorNavigation = {}
+                }
+                this.municipalidad.idSectorNavigation.puntoSector = data;
+                this.mapa.deshabilitarDibujoMapa();
             },
             err => {
-                this._utilService.hideLoading();
+
+            }
+        );
+        this._tipoSectorService.listar().subscribe(
+            data => {
+                if(data.success){
+                    this.buscarIdJurisdiccion(data.data);
+                } else{
+                    this._utilService.alertMensaje('Error al cargar la página');
+                }
             }
         );
     }
-
-    abrirModalFormularioJurisdicion(){
-        this.dialogModalFormulario = this.dialog.open(SectorFormularioModalComponent, {
-            width: '80%'
-        });
-
-        this.dialogModalFormulario.componentInstance.onAdd.subscribe(
-            response => {
-                this.jurisdiccion = response.data;
-
-                this.dialogModalFormulario.close();
-            }, err => {
-
-            }
-        );
+    dibujarJurisdiccion(){
+        this.mapa.borrarDibujos();
+        this.mapa.habiliarDibujoMapa();
     }
 
     traerMunicipalidad(id: number){
@@ -99,7 +92,9 @@ export class MunicipalidadFormularioComponent implements OnInit {
                 if(data.success){
                     this.municipalidad = data.data;
                     this.jurisdiccion = data.data.idSectorNavigation;
-                    this.zoom = 15;
+                    this.mapa.borrarDibujos();
+                    this.mapa.deshabilitarDibujoMapa();
+                    this.mapa.addDibujo(this.jurisdiccion.puntoSector)
                 }
             },
             err => {
@@ -112,15 +107,16 @@ export class MunicipalidadFormularioComponent implements OnInit {
         this.municipalidad = { ubicacion:{}};
         this.jurisdiccion = {};
         this.controls = false;
+        this.mapa.deshabilitarDibujoMapa();
+        this.mapa.borrarDibujos();
     }
     guardar(){
         if(this.validarFormulario()){
-            let lat = this.mapMuni.latitude;
-            let lng = this.mapMuni.longitude;
-
-            this.municipalidad.ubicacion.latitud = lat;
-            this.municipalidad.ubicacion.longitud = lng;
             this.municipalidad.idSector = this.jurisdiccion.idSector;
+            if(!this.municipalidad.idSectorNavigation.nombre){
+                this.municipalidad.idSectorNavigation.nombre = this.municipalidad.nombre;
+            }
+            this.municipalidad.idSectorNavigation.IdTipoSector = this.idTipoJurisdiccion;
             this._utilService.showLoading();
             this._municipalidadService.guardar(this.municipalidad).subscribe(
                 data => {
@@ -132,11 +128,18 @@ export class MunicipalidadFormularioComponent implements OnInit {
                         this.ultimoGuardado.emit(data.data);
                         
                     }
-                    console.log(data)
                 }, err => {
                     console.log(err)
                 }
             );
+        }
+    }
+    buscarIdJurisdiccion(tiposSector){
+        for(let tipoSector of tiposSector){
+            if(tipoSector.nombre == this.nombreTipoJurisdiccion){
+                this.idTipoJurisdiccion = tipoSector.idTipoSector;
+                return;
+            }
         }
     }
     validarFormulario(){
@@ -148,15 +151,10 @@ export class MunicipalidadFormularioComponent implements OnInit {
             this._utilService.alertMensaje("Elija el tipo de entidad");
             return false;
         }
-        if(!this.jurisdiccion.idSector){
+        if(!this.municipalidad.idSectorNavigation){
             this._utilService.alertMensaje("Debe establecer a qué jurisdiccion pertenece");
         }
         return true;
-    }
-    mapReady(event: any) {
-        let map = event;
-       
-        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('editPos'));
     }
     geoDecoder(lat: number, lng: number){
       
@@ -175,17 +173,15 @@ export class MunicipalidadFormularioComponent implements OnInit {
                     direccion = "";
                 }
             }
-           
-              this.municipalidad.ubicacion.descripcion = direccion;
-            
+            this.municipalidad.ubicacion.descripcion = direccion;
         });
     }
-    idleFunction(){
-      
-        let lat = this.mapMuni.latitude;
-        let lng = this.mapMuni.longitude;
-        
-        this.geoDecoder(lat, lng);
+    idleFunction(center: any){
+      if(this.editarUbicacion){
+          this.municipalidad.ubicacion.latitud = center.lat;
+          this.municipalidad.ubicacion.longitud = center.lng;
+        this.geoDecoder(center.lat, center.lng);
       }
+    }
 }
 

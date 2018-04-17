@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Conectados2.Helpers;
 using Conectados2.Models;
 using Conectados2.Repositorio;
@@ -18,22 +19,26 @@ namespace Conectados2.Servicio.impl
         private readonly AppSettings _appSettings;
 
         private readonly UsuarioRepositorio _usuarioRepositorio;
+
+        private readonly MunicipalidadRepositorio _municipalidadRepositorio;
          public AuthServicioImpl(
              IUserService userService, 
              IOptions<AppSettings> appSettings,
+             MunicipalidadRepositorio municipalidadRepositorio,
              UsuarioRepositorio usuarioRepositorio)
         {
             _userService = userService;
             _appSettings = appSettings.Value;
             _usuarioRepositorio = usuarioRepositorio;
+            _municipalidadRepositorio = municipalidadRepositorio;
         }
 
-        public RespuestaControlador login(string username, string password)
+        public async Task<RespuestaControlador> login(string username, string password)
         {
             var user = _userService.Authenticate(username, password);
 
             if (user == null)
-                return RespuestaControlador.respuetaError("Email o contraseña incorrectos"); ;
+                return RespuestaControlador.respuetaError("Email o contraseÃ±a incorrectos"); ;
             Claim[] claims = this.obtenerClaims(user);
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -46,7 +51,7 @@ namespace Conectados2.Servicio.impl
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
-
+            
             // return basic user info (without password) and token to store client side
             return RespuestaControlador.respuestaExito(new
             {
@@ -54,7 +59,8 @@ namespace Conectados2.Servicio.impl
                 Username = user.Username,
                 FirstName = user.FotoPerfil,
                 LastName = user.UsuarioMod,
-                Token = tokenString
+                Token = tokenString,
+                municipalidad = await _municipalidadRepositorio.ObtenerPorIdUsuario(user.IdUsuario)
             });
             
         }

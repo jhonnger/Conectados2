@@ -4,6 +4,8 @@ import {TipoDenunciaService} from '../../services/tipo-denuncia.service';
 import {TipoDenuncia} from '../../interfaces/TipoDenuncia';
 import {UtilService} from "../../services/util.service";
 import {AgmMap} from "@agm/core";
+import { Municipalidad } from '../../interfaces/Municipalidad.interface';
+import { Ubicacion } from '../../interfaces/Ubicacion.interface';
 
 
 //declare var geocoder: any;
@@ -21,7 +23,11 @@ export class NuevocasoComponent implements OnInit, AfterViewInit {
   thirdFormGroup: FormGroup;
 
   tipoDenuncia: TipoDenuncia[] = [];
-    @ViewChild('mapNuevoCaso') mapNuevoCaso: any;
+  @ViewChild('mapNuevoCaso') mapNuevoCaso: any;
+  ubicacion: Ubicacion = {
+    latitud: 40.7786232,
+    longitud: -74.0007019
+  }
   lat = 40.7786232;
   lng = -74.0007019;
   date = new FormControl(new Date());
@@ -32,6 +38,10 @@ export class NuevocasoComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     
+    let muni: Municipalidad = JSON.parse(localStorage.getItem('municipalidad'));
+    if(muni){
+      this.ubicacion = muni.ubicacion;
+    }
     this.firstFormGroup = this._formBuilder.group({
       tipoIncidente: ['', Validators.required],
       horaIncidente: ['', Validators.required]
