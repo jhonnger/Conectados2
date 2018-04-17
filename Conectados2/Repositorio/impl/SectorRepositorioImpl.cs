@@ -115,6 +115,19 @@ namespace Conectados2.Repositorio.impl
             return response;
 
         }
-        
+        public override BusquedaPaginada<Sector> obtenerPaginados(int? pagina, int cant)
+        {
+            var sectores = this._context.Sector
+                .Include(sector => sector.TipoSector)
+                .OrderByDescending(s => s.FecModificacion)
+                .Where(s => s.TipoSector.Nombre == "Jurisdiccion");
+
+
+            var results = PaginatedList<Sector>.Create(sectores.AsNoTracking(), pagina ?? 1, cant);
+            var response = BusquedaPaginada<Sector>.Create(results);
+
+            return response;
+        }
+
     }
 }

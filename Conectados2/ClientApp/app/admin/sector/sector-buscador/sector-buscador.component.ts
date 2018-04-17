@@ -13,7 +13,7 @@ import {BusquedaPaginada} from "../../../interfaces/BusquedaPaginada.interface";
 export class SectorBuscadorComponent implements OnInit {
   
     @Output() seleccionaFila = new EventEmitter<string>();
-    displayedColumns = ['pos', 'nombre','tipo'];
+    displayedColumns = ['pos', 'nombre'];
     sectores: Sector[] = [{nombre: '', tipoSector: {}}];
     dataSource = new MatTableDataSource(this.sectores);
     paginacion: BusquedaPaginada = {

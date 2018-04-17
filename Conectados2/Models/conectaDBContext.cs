@@ -89,6 +89,12 @@ namespace Conectados2.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.HasOne(d => d.Ubicacion)
+                    .WithMany(p => p.ComiMuni)
+                    .HasForeignKey(d => d.IdUbicacion)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_comi_muni_ubicacion");
+
                 entity.HasOne(d => d.IdSectorNavigation)
                     .WithMany(p => p.ComiMuni)
                     .HasForeignKey(d => d.IdSector)

@@ -8,6 +8,31 @@ body {
 .right{
     float: right;
 }
+.markerCenter{
+    position:absolute;
+    /*url of the marker*/
+    background:url(http://maps.gstatic.com/mapfiles/markers2/marker.png) no-repeat;
+    /*center the marker*/
+    top: calc(50% - 30px);
+    left:50%;
+    z-index:1;
+    /*fix offset when needed*/
+    margin-left:-10px;
+    margin-top:-34px;
+    /*size of the image*/
+    height:34px;
+    width:20px;
+    cursor:pointer;
+}
+.muni{
+    position: relative;
+}
+.muni agm-map{
+    height: 300px;
+}
+.muni .markerCenter{
+    margin-top: 0 !important;
+}
 
 .home-map agm-map {
     height: 700px;
@@ -26,13 +51,41 @@ body {
 .full-width{
     width: 100% !important;
 }
-
+.float-buttons{
+    position: fixed;
+    right: 0;
+    width: 45px;
+    top: 30px;
+}
+.float-buttons button{
+    margin-bottom: 10px;
+}
 .mat-tab-label {
     width: 25%;
 }
 .mitad-section{
     width: 50%;
     padding: 55px
+}
+.buscador{
+    width: 80%;
+}
+@media (max-width: 960px){
+    .mitad-section{
+        width: 100%;
+        padding: 10px;
+        padding-right: 45px;
+    }
+    .full-width.flex{
+        display: block;
+    }
+    .buscador{
+        max-height: unset!important;
+        max-width: 100% !important;;
+        width: 100% !important;
+        height: 100% !important;
+        
+    }
 }
 .flex{
     display: flex;

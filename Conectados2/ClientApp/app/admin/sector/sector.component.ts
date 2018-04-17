@@ -37,7 +37,6 @@ export class SectorComponent implements OnInit {
     }
     
     salida(entrada: number){
-        console.log(entrada);
         this.sectorFormularioComponent.traerSector(entrada);
         this.modificarBotones(false, false, true, true, true, true, true);
     }
