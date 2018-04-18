@@ -205,7 +205,10 @@ namespace Conectados2.Models
                     .HasColumnName("id_denuncia")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Descripcion).HasColumnName("descripcion");
+                entity.Property(e => e.Descripcion)
+                    .HasColumnName("descripcion")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Dispositivo)
                     .IsRequired()
@@ -218,8 +221,7 @@ namespace Conectados2.Models
                 entity.Property(e => e.FecCreacion)
                     .IsRequired()
                     .HasColumnName("fec_creacion")
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
+                    .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.FecDenuncia)
@@ -230,8 +232,7 @@ namespace Conectados2.Models
                 entity.Property(e => e.FecModificacion)
                     .IsRequired()
                     .HasColumnName("fec_modificacion")
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
+                    .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.IdEstadoDenuncia).HasColumnName("id_estado_denuncia");

@@ -16,7 +16,7 @@ export class ChatComponent implements OnInit {
   // Inicio socket
   // ======================================
     messageFromServer:string;
-    ws: WebSocket;
+    //ws: WebSocket;
   // ======================================
   // Fin socket
   // ======================================

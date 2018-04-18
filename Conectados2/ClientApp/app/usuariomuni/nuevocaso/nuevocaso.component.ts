@@ -15,7 +15,7 @@ declare var google: any;
   templateUrl: './nuevocaso.component.html',
   styleUrls: ['./nuevocaso.component.css']
 })
-export class NuevocasoComponent implements OnInit, AfterViewInit {
+export class NuevocasoComponent implements OnInit{
     
 
   firstFormGroup: FormGroup;
@@ -56,22 +56,19 @@ export class NuevocasoComponent implements OnInit, AfterViewInit {
     this.firstFormGroup.patchValue({
       horaIncidente: horaActual
     });
+    this._utilService.showLoading();
+    this._tipoDenunciaService.listar().subscribe(
+        data => {
+            console.log(data);
+            if(data.success){
+                this.tipoDenuncia = (data.data);
+            }
+            
+                this._utilService.hideLoading();
+            //
+        }
+    );       
   }
-    ngAfterViewInit(){
-     
-          this._utilService.showLoading();
-          this._tipoDenunciaService.listar().subscribe(
-              data => {
-                  console.log(data);
-                  if(data.success){
-                      this.tipoDenuncia = (data.data);
-                  }
-                  
-                      this._utilService.hideLoading();
-                  //
-              }
-          );       
-    }
 
   obtenerHoraActual() {
     const currentdate = new Date();

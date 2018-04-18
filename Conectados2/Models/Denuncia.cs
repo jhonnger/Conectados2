@@ -11,13 +11,13 @@ namespace Conectados2.Models
         public int IdEstadoDenuncia { get; set; }
         public int IdPosicionDenuncia { get; set; }
         public int IdPosicionUsuario { get; set; }
-        public int Descripcion { get; set; }
+        public string Descripcion { get; set; }
         public DateTime FecDenuncia { get; set; }
         public string Navegador { get; set; }
         public string Dispositivo { get; set; }
         public string UsuarioMod { get; set; }
-        public string FecModificacion { get; set; }
-        public string FecCreacion { get; set; }
+        public DateTime FecModificacion { get; set; }
+        public DateTime FecCreacion { get; set; }
         public bool Estado { get; set; }
 
         public EstadoDenuncia IdEstadoDenunciaNavigation { get; set; }

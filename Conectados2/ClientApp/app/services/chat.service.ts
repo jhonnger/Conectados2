@@ -10,22 +10,22 @@ export class ChatService {
   // tslint:disable-next-line:no-inferrable-types
   UrlChat: string = 'http://localhost:5000/api/chat';
   res:any = [];
-  ws: WebSocket;
+  //ws: WebSocket;
 
   constructor(private http: Http) { }
   
   createObservableSocket(url: string) : Observable<string>{
-    this.ws = new WebSocket(url);
+   // this.ws = new WebSocket(url);
     return new Observable ( observer => {
-      this.ws.onmessage = (event) => observer.next(event.data);    
-      this.ws.onerror = (event) => observer.error(event);
-      this.ws.onclose = (event) => observer.complete(); 
+    //  this.ws.onmessage = (event) => observer.next(event.data);    
+      //this.ws.onerror = (event) => observer.error(event);
+      //this.ws.onclose = (event) => observer.complete(); 
     });
     
   }  
 
   sendMessage( message: any ){
-    this.ws.send(message);
+  //  this.ws.send(message);
   }
 
   // Iniciar Conversacion usuario id = 6 contactos id =7 (alias usuario1)
