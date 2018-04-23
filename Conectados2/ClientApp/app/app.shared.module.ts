@@ -48,6 +48,7 @@ import {MapaComponent} from './components/mapa/mapa.component';
 import {NavegacionComponent} from './components/navegacion/navegacion.component';
 import { AgmCoreModule } from '@agm/core';
 import { MapaModule } from './components/mapa/mapa.module';
+import { DenunciaService } from './services/denuncia.service';
 
 
 //Socket
@@ -96,7 +97,8 @@ import { MapaModule } from './components/mapa/mapa.module';
         UtilService,
         AdminGuard,
         JwtHelper,
-        MunicipalGuard
+        MunicipalGuard,
+        DenunciaService
     ]
 })
 export class AppModuleShared {

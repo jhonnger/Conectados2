@@ -110,7 +110,6 @@ export class MapaComponent implements OnInit {
             let center = { lat : centro.lat(), lng : centro.lng()}
 
             self.idle.emit(center);
-            console.log(center);
         });
         google.maps.event.addListener(this.drawingManager, 'overlaycomplete', function(event: any) {
 
@@ -193,6 +192,23 @@ export class MapaComponent implements OnInit {
         }
     }
 
+    addMarker(lat: number, lng: number, icono: string){
+        let icon;
+
+        switch(icono){
+            case 'Alerta Muni': 
+                            icon = "/assets/img/markergreen.png";break;
+            default: 
+                            icon = "/assets/img/markergreen.png";break;
+        }
+        let marker = new google.maps.Marker({
+            position: new google.maps.LatLng( lat, lng),
+            map: this.map,
+            icon: icon,
+            title: 'Hello World!'
+        });
+        console.log(lat + ", " + lng);
+    }
     obtenerBoundPrincipal(){
 
         if(this.dibujos.length == 0){
@@ -232,7 +248,7 @@ export class MapaComponent implements OnInit {
         if( this.map != null && this.dibujos.length != 0){
             this.bounds =  new google.maps.LatLngBounds();
             //let dibujo: Polygon;
-            console.log(this.dibujos);
+           
             let i;
             for(let i = 0; i< this.dibujos.length; i++){
 
@@ -375,7 +391,6 @@ export class MapaComponent implements OnInit {
                 if (b > h/2) can_show = false;
             }
 
-
             // show/hide
             if (this._args.debugVisibility){
                 div.style.visibility = 'visible';
@@ -398,19 +413,14 @@ export class MapaComponent implements OnInit {
             if (this._maxBox){}
         }
 
-        // this.habiliarDibujoMapa();
-
         let overlay1 = new LabelOverlay({
             ll		: pos,
-            //minBox	: box,
 
             minBoxH		: 0.346,
             minBoxW		: 1.121,
 
             maxBoxH		: 0.09,
             maxBoxW		: 0.3,
-
-            //className	: 'small',
 
             debugBoxes	: false,
             debugVisibility	: true,

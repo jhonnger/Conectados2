@@ -25,6 +25,12 @@ namespace Conectados2.Controllers
         public RespuestaControlador GetDenuncia()
         {
             return RespuestaControlador.respuestaExito( denunciaServicio.obtenerTodos());
-        }    
+        }  
+
+        [HttpPost]
+        public RespuestaControlador GuardarDenuncia([FromBody] Denuncia denuncia)
+        {
+            return RespuestaControlador.respuestaExito( denunciaServicio.crear(denuncia));
+        }      
     }
 }
