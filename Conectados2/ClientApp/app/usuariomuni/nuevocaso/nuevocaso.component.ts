@@ -6,6 +6,8 @@ import {UtilService} from "../../services/util.service";
 import {AgmMap} from "@agm/core";
 import { Municipalidad } from '../../interfaces/Municipalidad.interface';
 import { Ubicacion } from '../../interfaces/Ubicacion.interface';
+import { Denuncia } from '../../interfaces/Denuncia.interface';
+import { DenunciaService } from '../../services/denuncia.service';
 
 
 //declare var geocoder: any;
@@ -33,6 +35,7 @@ export class NuevocasoComponent implements OnInit{
   date = new FormControl(new Date());
 
   constructor(private _formBuilder: FormBuilder,
+              private _denunciaService: DenunciaService,
               private _tipoDenunciaService: TipoDenunciaService,
               private _utilService: UtilService) { }
 
@@ -114,5 +117,35 @@ export class NuevocasoComponent implements OnInit{
               direccionIncidente: direccion
             });
         });
+        this.lat = lat;
+        this.lng = lng;
     }
+    guardar(){
+      let denuncia: Denuncia = {};
+      let browserInfo = this._utilService.get_browser_info();
+      let ubicacionDenuncia: Ubicacion = {};
+
+      ubicacionDenuncia.latitud = this.lat;
+      ubicacionDenuncia.longitud = this.lng;
+      ubicacionDenuncia.descripcion = this.secondFormGroup.value.direccionIncidente;
+      
+      denuncia.navegador = browserInfo.name;
+      denuncia.dispositivo = this._utilService.getOS();
+      denuncia.fecDenuncia = this.date.value;
+      denuncia.posicionDenuncia = ubicacionDenuncia;
+      denuncia.posicionUsuario = ubicacionDenuncia;
+      denuncia.idTipoDenuncia = this.firstFormGroup.value.tipoIncidente;
+    
+      this._denunciaService.guardar(denuncia).subscribe(
+        response => {
+          console.log(response);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+      console.log(denuncia);
+      console.log(this.firstFormGroup.value);
+    }
+
 }

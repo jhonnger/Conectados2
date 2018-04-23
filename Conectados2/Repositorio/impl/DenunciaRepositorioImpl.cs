@@ -16,6 +16,7 @@ namespace Conectados2.Repositorio.impl
         public  override Denuncia obtener(int id)
         {
             Denuncia denuncia = this._context.Denuncia
+                .Include(p => p.PosicionDenuncia)
                 .SingleOrDefault(s => s.IdDenuncia == id);
             
             return denuncia;
@@ -25,6 +26,9 @@ namespace Conectados2.Repositorio.impl
         public override  List<Denuncia> obtenerTodos(){
             
             List<Denuncia> denuncia = this._context.Denuncia
+                .Include(p => p.PosicionDenuncia)
+                .Include(p => p.IdTipoDenunciaNavigation)
+                .Include(p => p.OrigenDenuncia )
                 .ToList();
 
             return denuncia;
