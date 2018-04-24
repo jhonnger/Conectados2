@@ -18,6 +18,7 @@ namespace Conectados2.Models
         public virtual DbSet<Configuracion> Configuracion { get; set; }
         public virtual DbSet<Conversacion> Conversacion { get; set; }
         public virtual DbSet<Denuncia> Denuncia { get; set; }
+        public virtual DbSet<OrigenDenuncia> OrigenDenuncia {get; set;}
         public virtual DbSet<EstadoDenuncia> EstadoDenuncia { get; set; }
         public virtual DbSet<Sector> Sector { get; set; }
         public virtual DbSet<Membresia> Membresia { get; set; }
@@ -205,7 +206,10 @@ namespace Conectados2.Models
                     .HasColumnName("id_denuncia")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Descripcion).HasColumnName("descripcion");
+                entity.Property(e => e.Descripcion)
+                    .HasColumnName("descripcion")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Dispositivo)
                     .IsRequired()
@@ -218,8 +222,7 @@ namespace Conectados2.Models
                 entity.Property(e => e.FecCreacion)
                     .IsRequired()
                     .HasColumnName("fec_creacion")
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
+                    .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.FecDenuncia)
@@ -230,8 +233,7 @@ namespace Conectados2.Models
                 entity.Property(e => e.FecModificacion)
                     .IsRequired()
                     .HasColumnName("fec_modificacion")
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
+                    .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.IdEstadoDenuncia).HasColumnName("id_estado_denuncia");
@@ -239,6 +241,7 @@ namespace Conectados2.Models
                 entity.Property(e => e.IdPosicionDenuncia).HasColumnName("id_posicion_denuncia");
 
                 entity.Property(e => e.IdPosicionUsuario).HasColumnName("id_posicion_usuario");
+                entity.Property(e => e.IdOrigenDenuncia).HasColumnName("id_origen_denuncia");
 
                 entity.Property(e => e.IdTipoDenuncia).HasColumnName("id_tipo_denuncia");
 
@@ -262,13 +265,19 @@ namespace Conectados2.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_denuncia_estado_denuncia");
 
-                entity.HasOne(d => d.IdPosicionDenunciaNavigation)
+                entity.HasOne(d => d.OrigenDenuncia)
+                    .WithMany(p => p.Denuncia)
+                    .HasForeignKey(d => d.IdOrigenDenuncia)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_denuncia_origen_denuncia");
+
+                entity.HasOne(d => d.PosicionDenuncia)
                     .WithMany(p => p.DenunciaIdPosicionDenunciaNavigation)
                     .HasForeignKey(d => d.IdPosicionDenuncia)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_denuncia_ubicacion");
 
-                entity.HasOne(d => d.IdPosicionUsuarioNavigation)
+                entity.HasOne(d => d.PosicionUsuario)
                     .WithMany(p => p.DenunciaIdPosicionUsuarioNavigation)
                     .HasForeignKey(d => d.IdPosicionUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -286,6 +295,19 @@ namespace Conectados2.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_denuncia_usuario");
             });
+
+            modelBuilder.Entity<OrigenDenuncia>(entity =>
+            {
+                entity.HasKey(e => e.IdOrigenDenuncia);
+
+                entity.ToTable("origen_denuncia");
+
+                entity.Property(e => e.IdOrigenDenuncia).HasColumnName("id_origen_denuncia");
+
+                entity.Property(e => e.Nombre).HasColumnName("nombre");
+
+            });
+
 
             modelBuilder.Entity<EstadoDenuncia>(entity =>
             {

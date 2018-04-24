@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Conectados2.Entities;
@@ -11,10 +6,8 @@ using Conectados2.Helpers;
 using Conectados2.Seguridad;
 using Conectados2.Servicio;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Conectados2.Controllers
 {
@@ -42,13 +35,13 @@ namespace Conectados2.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]LoginModel userDto)
+        public async Task<IActionResult> Authenticate([FromBody]LoginModel userDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            var user = _authServicio.login(userDto.usuario, userDto.password);
+            var user = await _authServicio.login(userDto.usuario, userDto.password);
 
         
             return Ok(user);

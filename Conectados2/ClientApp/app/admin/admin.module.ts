@@ -30,6 +30,7 @@ import { SectorBuscadorModalComponent } from './sector/sector-buscador-modal/sec
 import {MapaComponent} from '../components/mapa/mapa.component';
 import {SectorFormularioModalComponent} from './sector/sector-formulario-modal/sector-formulario-modal.component';
 import {NavegacionComponent} from '../components/navegacion/navegacion.component';
+import { MapaModule } from '../components/mapa/mapa.module';
 @NgModule({
     declarations: [
         MunicipalidadComponent,
@@ -40,7 +41,6 @@ import {NavegacionComponent} from '../components/navegacion/navegacion.component
         SectorBuscadorComponent,
         SectorFormularioComponent,
         SeccionComponent,
-        MapaComponent,
         SectorBuscadorModalComponent,
 
         NavegacionComponent,
@@ -50,6 +50,7 @@ import {NavegacionComponent} from '../components/navegacion/navegacion.component
         
     ],
     imports: [
+        MapaModule,
         FormsModule,
         MatTableModule,
         MatMenuModule,

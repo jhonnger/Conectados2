@@ -12,6 +12,7 @@
   font-size: 23px;
   text-align: left;
   padding: 10px 15px;
+  margin: 0 !important;
 }
 .leyenda-mapa img{
   width: 40px;

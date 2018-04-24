@@ -46,6 +46,7 @@ export class SectorFormularioComponent implements OnInit {
 
     lat = 24.886;
     lng = -70.268;
+    paths = [];
 
    
     zoom: number = 10;

@@ -13,7 +13,7 @@ body {
     /*url of the marker*/
     background:url(http://maps.gstatic.com/mapfiles/markers2/marker.png) no-repeat;
     /*center the marker*/
-    top: calc(50% - 30px);
+    top: calc(50% - 0px);
     left:50%;
     z-index:1;
     /*fix offset when needed*/
@@ -34,8 +34,8 @@ body {
     margin-top: 0 !important;
 }
 
-.home-map agm-map {
-    height: 700px;
+.home-map #map {
+    height: 700px !important;
 }
 .sector-mapa agm-map {
     height: 400px;
@@ -69,6 +69,13 @@ body {
 }
 .buscador{
     width: 80%;
+}
+.control-mapa{
+  
+    color: rgb(0, 0, 0) !important;
+    font-size: 10px !important;
+    padding: 0 8px !important;
+    min-width: 28px !important;
 }
 @media (max-width: 960px){
     .mitad-section{

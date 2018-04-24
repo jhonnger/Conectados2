@@ -1,5 +1,6 @@
 import { TipoMunicipalidad } from "./TipoMunicipalidad.interface";
 import { Ubicacion } from "./Ubicacion.interface";
+import { Sector } from "./Sector.interface";
 
 export interface Municipalidad{
     idComiMuni?: number;
@@ -8,4 +9,5 @@ export interface Municipalidad{
     nombre?: string;
     idSector?: number;
     ubicacion?: Ubicacion;
+    idSectorNavigation? : Sector; 
 }

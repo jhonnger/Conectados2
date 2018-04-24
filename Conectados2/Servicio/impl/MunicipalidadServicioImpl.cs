@@ -24,7 +24,15 @@ namespace Conectados2.Servicio.impl
             entidad.FecModificacion = DateTime.Now;
             return base.actualizar(entidad);
         }
-
+        public override ComiMuni obtener(int id)
+        {
+            var muni = this.baseRepositorio.obtener(id);
+            if(muni.IdSectorNavigation != null){
+                muni.IdSectorNavigation.PuntoSector = muni.IdSectorNavigation.PuntoSector.OrderBy(p => p.Orden).ToList();
+            }
+            
+            return muni;
+        }
 
 
     }

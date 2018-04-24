@@ -49,6 +49,9 @@ import { MensajeAlertComponent } from './components/mensajeAlert/mensaje-alert.c
 
 import {MapaComponent} from './components/mapa/mapa.component';
 import {NavegacionComponent} from './components/navegacion/navegacion.component';
+import { AgmCoreModule } from '@agm/core';
+import { MapaModule } from './components/mapa/mapa.module';
+import { DenunciaService } from './services/denuncia.service';
 
 import { BarrasComponent } from './components/graficos/barras/barras.component';
 
@@ -73,7 +76,7 @@ import { EstadisticasComponent } from './usuariomuni/estadisticas/estadisticas.c
         EstadisticasComponent,
     ], entryComponents:[LoadingComponent, MensajeAlertComponent],
     imports: [
-        
+        MapaModule,
         APP_ROUTES,
         CommonModule,
         HttpModule,
@@ -98,7 +101,10 @@ import { EstadisticasComponent } from './usuariomuni/estadisticas/estadisticas.c
         MatTableModule,
         MatInputModule,
         MatDatepickerModule,
-        ChartsModule,
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyD6l0Wq6cXBaDqF7I03FxvG-6-Py0Ib0F4',
+            libraries: ['places','drawing']
+        })
         // SocketIoModule.forRoot(config) 
     ],
     providers:[
@@ -106,7 +112,8 @@ import { EstadisticasComponent } from './usuariomuni/estadisticas/estadisticas.c
         UtilService,
         AdminGuard,
         JwtHelper,
-        MunicipalGuard
+        MunicipalGuard,
+        DenunciaService
     ]
 })
 export class AppModuleShared {

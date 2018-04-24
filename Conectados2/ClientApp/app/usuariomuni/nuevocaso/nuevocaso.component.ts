@@ -4,6 +4,10 @@ import {TipoDenunciaService} from '../../services/tipo-denuncia.service';
 import {TipoDenuncia} from '../../interfaces/TipoDenuncia';
 import {UtilService} from "../../services/util.service";
 import {AgmMap} from "@agm/core";
+import { Municipalidad } from '../../interfaces/Municipalidad.interface';
+import { Ubicacion } from '../../interfaces/Ubicacion.interface';
+import { Denuncia } from '../../interfaces/Denuncia.interface';
+import { DenunciaService } from '../../services/denuncia.service';
 
 
 //declare var geocoder: any;
@@ -13,7 +17,7 @@ declare var google: any;
   templateUrl: './nuevocaso.component.html',
   styleUrls: ['./nuevocaso.component.css']
 })
-export class NuevocasoComponent implements OnInit, AfterViewInit {
+export class NuevocasoComponent implements OnInit{
     
 
   firstFormGroup: FormGroup;
@@ -21,17 +25,26 @@ export class NuevocasoComponent implements OnInit, AfterViewInit {
   thirdFormGroup: FormGroup;
 
   tipoDenuncia: TipoDenuncia[] = [];
-    @ViewChild('mapNuevoCaso') mapNuevoCaso: any;
+  @ViewChild('mapNuevoCaso') mapNuevoCaso: any;
+  ubicacion: Ubicacion = {
+    latitud: 40.7786232,
+    longitud: -74.0007019
+  }
   lat = 40.7786232;
   lng = -74.0007019;
   date = new FormControl(new Date());
 
   constructor(private _formBuilder: FormBuilder,
+              private _denunciaService: DenunciaService,
               private _tipoDenunciaService: TipoDenunciaService,
               private _utilService: UtilService) { }
 
   ngOnInit() {
     
+    let muni: Municipalidad = JSON.parse(localStorage.getItem('municipalidad'));
+    if(muni){
+      this.ubicacion = muni.ubicacion;
+    }
     this.firstFormGroup = this._formBuilder.group({
       tipoIncidente: ['', Validators.required],
       horaIncidente: ['', Validators.required]
@@ -46,22 +59,19 @@ export class NuevocasoComponent implements OnInit, AfterViewInit {
     this.firstFormGroup.patchValue({
       horaIncidente: horaActual
     });
+    this._utilService.showLoading();
+    this._tipoDenunciaService.listar().subscribe(
+        data => {
+            console.log(data);
+            if(data.success){
+                this.tipoDenuncia = (data.data);
+            }
+            
+                this._utilService.hideLoading();
+            //
+        }
+    );       
   }
-    ngAfterViewInit(){
-     
-          this._utilService.showLoading();
-          this._tipoDenunciaService.listar().subscribe(
-              data => {
-                  console.log(data);
-                  if(data.success){
-                      this.tipoDenuncia = (data.data);
-                  }
-                  
-                      this._utilService.hideLoading();
-                  //
-              }
-          );       
-    }
 
   obtenerHoraActual() {
     const currentdate = new Date();
@@ -107,5 +117,35 @@ export class NuevocasoComponent implements OnInit, AfterViewInit {
               direccionIncidente: direccion
             });
         });
+        this.lat = lat;
+        this.lng = lng;
     }
+    guardar(){
+      let denuncia: Denuncia = {};
+      let browserInfo = this._utilService.get_browser_info();
+      let ubicacionDenuncia: Ubicacion = {};
+
+      ubicacionDenuncia.latitud = this.lat;
+      ubicacionDenuncia.longitud = this.lng;
+      ubicacionDenuncia.descripcion = this.secondFormGroup.value.direccionIncidente;
+      
+      denuncia.navegador = browserInfo.name;
+      denuncia.dispositivo = this._utilService.getOS();
+      denuncia.fecDenuncia = this.date.value;
+      denuncia.posicionDenuncia = ubicacionDenuncia;
+      denuncia.posicionUsuario = ubicacionDenuncia;
+      denuncia.idTipoDenuncia = this.firstFormGroup.value.tipoIncidente;
+    
+      this._denunciaService.guardar(denuncia).subscribe(
+        response => {
+          console.log(response);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+      console.log(denuncia);
+      console.log(this.firstFormGroup.value);
+    }
+
 }

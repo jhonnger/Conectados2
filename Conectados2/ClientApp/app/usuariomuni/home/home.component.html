@@ -3,9 +3,11 @@
     <mat-tab-group (selectedTabChange)="cambio($event)" class="demo-tab-group">
         <mat-tab label="Monitoreo">
             <div class="home-map">
-                <agm-map #mapMonitoreo [zoom]="13" [latitude]="lat" [longitude]="lng">
-                    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-                </agm-map>
+                <app-mapa [lat]="municipalidad.ubicacion.latitud" [lng]="municipalidad.ubicacion.longitud" [controls]="controlsMap" (idle)="idleFunction()" #mapa></app-mapa>
+                <!--
+        <agm-map #mapMonitoreo [zoom]="13" [latitude]="lat" [longitude]="lng">
+          <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+        </agm-map>-->
             </div>
         </mat-tab>
         <mat-tab label="Unidades">
@@ -22,7 +24,7 @@
         </mat-tab>
         <mat-tab label="Estadisticas">
             <div class="demo-tab-content">
-                <app-estadisticas></app-estadisticas>
+                holi xd
             </div>
         </mat-tab>
 

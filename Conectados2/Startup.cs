@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Conectados2.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,7 +12,6 @@ using AutoMapper;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Conectados2.Seguridad;
 using Conectados2.Models;
 using Conectados2.Servicio;
@@ -45,9 +41,9 @@ namespace Conectados2
             services.AddCors();
 
            // var connection = @"Server=tcp:conectados220180403104748dbserver.database.windows.net,1433;Initial Catalog=conectaDB;Persist Security Info=False;User ID=jhongger;Password=Cotos123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            //var connection = @"Data Source=ROSA20;Initial Catalog=conectaDB;User ID=sa;Password=root";
+            var connection = @"Data Source=DESKTOP-BPMRTD7\SQLEXPRESS;Initial Catalog=conectaDB;User ID=sa;Password=root";
 
-           var connection = @"data source=NotHP;initial catalog=conectaDB;;user id=sa;password=root;integrated security=True;MultipleActiveResultSets=True";
+           //var connection = @"data source=NotHP;initial catalog=conectaDB;;user id=sa;password=root;integrated security=True;MultipleActiveResultSets=True";
 
             services.AddDbContext<AuthContext>(options => options.UseSqlServer(connection));
             services.AddDbContext<conectaDBContext>(options => options.UseSqlServer(connection));
@@ -73,6 +69,10 @@ namespace Conectados2
             services.AddTransient<UsuarioServicio, UsuarioServicioImpl>();
 
             services.AddTransient<AuthServicio, AuthServicioImpl>();
+
+            
+            services.AddTransient<DenunciaRepositorio, DenunciaRepositorioImpl>();
+            services.AddTransient<DenunciaServicio, DenunciaServicioImpl>();
 
             services.AddMvc().AddJsonOptions(options => {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

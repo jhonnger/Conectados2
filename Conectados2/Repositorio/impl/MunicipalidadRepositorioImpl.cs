@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Conectados2.Repositorio.impl
 {
@@ -18,8 +19,12 @@ namespace Conectados2.Repositorio.impl
             ComiMuni comiMuni = this._context.ComiMuni
                 .Include(s => s.TipoComiMuni)
                 .Include(s => s.IdSectorNavigation)
+                    .ThenInclude(p => p.PuntoSector)
                 .Include(s => s.Ubicacion)
                 .SingleOrDefault(s => s.IdComiMuni == id);
+
+            comiMuni.IdSectorNavigation.PuntoSector = comiMuni.IdSectorNavigation
+                                                    .PuntoSector.OrderBy(p => p.Orden).ToList();
 
             return comiMuni;
         }
@@ -33,10 +38,18 @@ namespace Conectados2.Repositorio.impl
             return munis;
             
         }
+        public async Task<ComiMuni> ObtenerPorIdUsuario(int i){
+            var usuarioMuni = await this._context.UsuarioMuni
+                            .FirstOrDefaultAsync(u => u.IdUsuario == i);
+
+            return (this.obtener(usuarioMuni.IdMuni));
+                            
+        }
         public override BusquedaPaginada<ComiMuni> obtenerPaginados(int? pagina, int cant)
         {
             var munis = this._context.ComiMuni
                 .Include(muni => muni.TipoComiMuni)
+                .OrderByDescending(m => m.FecModificacion)
                 ;
 
             var results = PaginatedList<ComiMuni>.Create(munis.AsNoTracking(), pagina ?? 1, cant);
@@ -47,9 +60,12 @@ namespace Conectados2.Repositorio.impl
 
         public override void actualizar(ComiMuni muni)
         {
+            bool puntosNuevos = false;
 
             var muniDB = _context.ComiMuni
                             .Include(e => e.Ubicacion)
+                            .Include(m => m.IdSectorNavigation)
+                                .ThenInclude(s => s.PuntoSector)
                             .Single(c => c.IdComiMuni == muni.IdComiMuni);
 
 
@@ -57,6 +73,35 @@ namespace Conectados2.Repositorio.impl
             muniDB.FecModificacion = DateTime.Now;
 
             _context.Entry(muniDB.Ubicacion).CurrentValues.SetValues(muni.Ubicacion);
+
+            var sector = muni.IdSectorNavigation;
+            var sectorDB = muniDB.IdSectorNavigation;
+            foreach (var puntos in sectorDB.PuntoSector.ToList()){
+                 if (!sector.PuntoSector.Any(s => s.IdPuntoSector == puntos.IdPuntoSector)){
+                     puntosNuevos = true;
+                     _context.PuntoSector.Remove(puntos);
+                 }
+            }
+            if(!puntosNuevos){
+                foreach (var puntos in sector.PuntoSector.ToList()){
+                    if(puntos.IdPuntoSector == 0){
+                        puntosNuevos = true;
+                        break;
+                    }
+                }
+            }
+            
+            if(puntosNuevos){
+                foreach (var newPuntos in sector.PuntoSector){
+               
+                    // Insert subFoos into the database that are not
+                    // in the dbFoo.subFoo collection
+                  
+                       sectorDB.PuntoSector.Add(newPuntos);
+                  
+                        // Update subFoos that are in the newFoo.SubFoo collection                               
+                }
+            } 
 
             _context.SaveChanges();
         }

@@ -1,9 +1,11 @@
-import {Component, EventEmitter, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Input, Output} from '@angular/core';
 import {PuntoSector} from '../../interfaces/PuntoSector.interface';
 import {Polygon} from '@agm/core/services/google-maps-types';
 import {MapaFuncionesService} from '../../util/mapas-funciones.service';
 import {UtilService} from '../../services/util.service';
-import   'jquery';
+import 'jquery';
+import { Constantes } from '../../util/constantes';
+
 
 export declare let google: any;
 @Component({
@@ -16,6 +18,10 @@ export class MapaComponent implements OnInit {
     ultimoDibujado = new EventEmitter();
     puntosSector: PuntoSector[] = [ ];
     bounds: any;
+    @Input("lat") lat: number;
+    @Input("lng") lng: number;
+    @Input("controls") controls: any[];
+    @Output() idle = new EventEmitter();
 
     map: any;
     drawingManager: any;
@@ -78,9 +84,13 @@ export class MapaComponent implements OnInit {
             fillColor: "#f00"
         };
 
+        this.lat = this.lat ? this.lat : -5.1843741;
+        this.lng = this.lng ? this.lng : -80.6431596;
+
         this.map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat:-5.1843741, lng: -80.6431596 },
-            zoom: 15
+            center: { lat: this.lat, lng: this.lng},
+            zoom: 15,
+            mapTypeControl : false
         });
 
         this.drawingManager = new google.maps.drawing.DrawingManager({
@@ -95,7 +105,12 @@ export class MapaComponent implements OnInit {
         this.bounds =  new google.maps.LatLngBounds();
 
         let self = this;
+        google.maps.event.addListener(this.map, 'idle', function(event: any) {
+            let centro = self.map.getCenter();
+            let center = { lat : centro.lat(), lng : centro.lng()}
 
+            self.idle.emit(center);
+        });
         google.maps.event.addListener(this.drawingManager, 'overlaycomplete', function(event: any) {
 
 
@@ -105,19 +120,23 @@ export class MapaComponent implements OnInit {
             let i;
             let boundsGeneral = self.obtenerBoundPrincipal();
             let fueraArea = false;
-            for ( i= 0; i<puntos.length; i++) {
-                let punto = puntos[i];
-                puntosSector.push({
-                    orden : i,
-                    lat : (punto.lat()),
-                    lng : (punto.lng())
-                });
 
-                let pointLatn = new google.maps.LatLng(punto.lat(),punto.lng());
-                if(!self._mapaUtil.pointContainsBounds(pointLatn, boundsGeneral)){
-                    fueraArea = true;
+           
+                for ( i= 0; i<puntos.length; i++) {
+                    let punto = puntos[i];
+                    puntosSector.push({
+                        orden : i,
+                        lat : (punto.lat()),
+                        lng : (punto.lng())
+                    });
+    
+                    let pointLatn = new google.maps.LatLng(punto.lat(),punto.lng());
+                    if(boundsGeneral && !self._mapaUtil.pointContainsBounds(pointLatn, boundsGeneral)){
+                        fueraArea = true;
+                    }
                 }
-            }
+                       
+            
             let ultimoPunto: PuntoSector = {orden: i, lat: puntosSector[0].lat, lng: puntosSector[0].lng}
             puntosSector.push(ultimoPunto);
 
@@ -130,10 +149,71 @@ export class MapaComponent implements OnInit {
                 self.addDibujo(puntosSector);
             }
         });
+        this.setControlsButtons();
     }
 
+    setControlsButtons(){
+        if(this.controls){
+            for(let control of this.controls){
+                let pos = this.getPosition(control.pos);
+                this.map.controls[pos].push(document.getElementById(control.id));
+            }
+        }
+    }
+    getPosition(pos: string){
+        switch(pos){ 
+            case Constantes.MapPosition.TOP_RIGHT:
+                return google.maps.ControlPosition.TOP_RIGHT; 
+            case Constantes.MapPosition.TOP_CENTER:
+                return google.maps.ControlPosition.TOP_CENTER;
+            case Constantes.MapPosition.TOP_LEFT:
+                return google.maps.ControlPosition.TOP_LEFT;
+
+            case Constantes.MapPosition.BOTTOM_RIGHT:
+                return google.maps.ControlPosition.BOTTOM_RIGHT;    
+            case Constantes.MapPosition.BOTTOM_CENTER:
+                return google.maps.ControlPosition.BOTTOM_CENTER;
+            case Constantes.MapPosition.BOTTOM_LEFT:
+                return google.maps.ControlPosition.BOTTOM_LEFT;
+              
+            case Constantes.MapPosition.LEFT_BOTTOM:
+                return google.maps.ControlPosition.LEFT_BOTTOM;
+            case Constantes.MapPosition.LEFT_CENTER:
+                return google.maps.ControlPosition.LEFT_CENTER;
+            case Constantes.MapPosition.LEFT_TOP:
+                return google.maps.ControlPosition.LEFT_TOP;
+
+            case Constantes.MapPosition.RIGHT_BOTTOM:
+                return google.maps.ControlPosition.RIGHT_BOTTOM;
+            case Constantes.MapPosition.RIGHT_CENTER:
+                return google.maps.ControlPosition.RIGHT_CENTER;
+            case Constantes.MapPosition.RIGHT_TOP:
+                return google.maps.ControlPosition.RIGHT_TOP;
+        }
+    }
+
+    addMarker(lat: number, lng: number, icono: string){
+        let icon;
+
+        switch(icono){
+            case 'Alerta Muni': 
+                            icon = "/assets/img/markergreen.png";break;
+            default: 
+                            icon = "/assets/img/markergreen.png";break;
+        }
+        let marker = new google.maps.Marker({
+            position: new google.maps.LatLng( lat, lng),
+            map: this.map,
+            icon: icon,
+            title: 'Hello World!'
+        });
+        console.log(lat + ", " + lng);
+    }
     obtenerBoundPrincipal(){
 
+        if(this.dibujos.length == 0){
+            return null;
+        }
         let dibujo: any = this.dibujos[0];
         let puntos = dibujo.getPath().getArray();
 
@@ -168,7 +248,7 @@ export class MapaComponent implements OnInit {
         if( this.map != null && this.dibujos.length != 0){
             this.bounds =  new google.maps.LatLngBounds();
             //let dibujo: Polygon;
-            console.log(this.dibujos);
+           
             let i;
             for(let i = 0; i< this.dibujos.length; i++){
 
@@ -311,7 +391,6 @@ export class MapaComponent implements OnInit {
                 if (b > h/2) can_show = false;
             }
 
-
             // show/hide
             if (this._args.debugVisibility){
                 div.style.visibility = 'visible';
@@ -334,19 +413,14 @@ export class MapaComponent implements OnInit {
             if (this._maxBox){}
         }
 
-        // this.habiliarDibujoMapa();
-
         let overlay1 = new LabelOverlay({
             ll		: pos,
-            //minBox	: box,
 
             minBoxH		: 0.346,
             minBoxW		: 1.121,
 
             maxBoxH		: 0.09,
             maxBoxW		: 0.3,
-
-            //className	: 'small',
 
             debugBoxes	: false,
             debugVisibility	: true,

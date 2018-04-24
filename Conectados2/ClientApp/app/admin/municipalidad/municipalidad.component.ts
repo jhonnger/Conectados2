@@ -70,5 +70,7 @@ export class MunicipalidadComponent implements OnInit {
     guardar(){
         this.municipalidadFormularioComponent.guardar();
     }
-    
+    eliminar(){
+        
+    }
 }

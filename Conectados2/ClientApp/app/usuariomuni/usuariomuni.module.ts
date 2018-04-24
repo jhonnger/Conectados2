@@ -21,6 +21,8 @@ import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { TipoDenunciaService } from '../services/tipo-denuncia.service';
 import { MatInputModule } from '@angular/material';
 import { UsuarioMuniComponent } from './usuario-muni.component';
+import { MapaComponent } from '../components/mapa/mapa.component';
+import { MapaModule } from '../components/mapa/mapa.module';
 
 
 @NgModule({
@@ -30,6 +32,7 @@ import { UsuarioMuniComponent } from './usuario-muni.component';
         NuevocasoComponent,
         UltialertaComponent,
         UsuarioMuniComponent,
+        
     ], entryComponents:[NuevocasoComponent],
     exports: [
         
@@ -45,11 +48,9 @@ import { UsuarioMuniComponent } from './usuario-muni.component';
         ReactiveFormsModule,
         MatButtonModule,
         MatDatepickerModule,
-		USUARIOMUNI_ROUTES,
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyD6l0Wq6cXBaDqF7I03FxvG-6-Py0Ib0F4',
-            libraries: ['places','drawing']
-        }),
+        USUARIOMUNI_ROUTES,
+        MapaModule
+        
     ], 
 	providers: [
         ChatService,

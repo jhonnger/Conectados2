@@ -10,7 +10,7 @@
                         <mat-option  *ngFor='let tipo of tiposMuni'  [value]="tipo.idTipoMuni">{{tipo.nombre}}</mat-option>
                 </mat-select>
             </mat-form-field>
-          <div class="inline">
+          <div class="inline" *ngIf="false">
               <div class="input-search-muni full-width">
                   <mat-form-field class="full-width">
                       <input matInput [disabled] = "!controls"  [readonly]="true"  placeholder="Buscar jurisdiccion..." [(ngModel)]="jurisdiccion.nombre">
@@ -29,19 +29,19 @@
           </div>
           <div>
             <div class="muni">
-                <agm-map [zoom]="zoom"
-                         #mapaMuni
-                         (mapReady)="mapReady($event)" 
-                         (idle)="idleFunction()"
-                         [mapDraggable] = "editarUbicacion"
-                         [latitude]="municipalidad.ubicacion.latitud" 
-                         [longitude]="municipalidad.ubicacion.longitud" >
 
-                         <button id="editPos" [disabled] = "!controls"  mat-raised-button color="primary" (click)="editarUbicacion = ! editarUbicacion">
-                            Editar
-                        </button>
-                </agm-map>
-                <div class="markerCenter"></div>
+                <button id="editPos" [disabled] = "!controls"  mat-raised-button class="control-mapa" (click)="editarUbicacion = ! editarUbicacion">
+                    <span *ngIf="!editarUbicacion">Ubicacion</span>
+                    <span *ngIf="editarUbicacion">Establecer</span>
+                </button>
+                <button id="editJuris" [disabled] = "!controls || editarUbicacion"  mat-raised-button class="control-mapa" (click)="dibujarJurisdiccion()">
+                    Dibujar jurisdiccion
+                </button>
+                <app-mapa [lat]="municipalidad.ubicacion.latitud" 
+                          [lng]="municipalidad.ubicacion.longitud" 
+                          [controls] = "controlsMap"
+                          (idle)="idleFunction($event)" #mapa></app-mapa>
+                <div [ngClass]="{'markerCenter': editarUbicacion}"></div>
               </div>
           </div>
       </div>
