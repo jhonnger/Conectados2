@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   sectorDibujado = false;
   lat = 40.7786232;
   lng = -74.0007019;
+  position = 'below';
   municipalidad: Municipalidad = {
     ubicacion : {
       latitud : this.lat,

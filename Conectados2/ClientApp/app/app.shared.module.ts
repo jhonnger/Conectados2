@@ -18,6 +18,8 @@ import {  MatListModule } from "@angular/material/list";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatGridListModule } from "@angular/material/grid-list";
 import {  MatCardModule } from '@angular/material/card';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 
 import { AppComponent } from './components/app/app.component';
 
@@ -42,6 +44,7 @@ import { UsuarioMuniComponent } from './usuariomuni/usuario-muni.component';
 import { AdminComponent } from './admin/admin.component';
 import { MatTableModule } from '@angular/material';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import { UsuarioMuniModule } from './usuariomuni/usuariomuni.module';
 import { AdminModule } from './admin/admin.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -53,27 +56,19 @@ import { AgmCoreModule } from '@agm/core';
 import { MapaModule } from './components/mapa/mapa.module';
 import { DenunciaService } from './services/denuncia.service';
 
-import { BarrasComponent } from './components/graficos/barras/barras.component';
+
 
 
 //Socket
-//import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
-import { SectoresComponent } from './components/graficos/sectores/sectores.component';
-import { AnilloComponent } from './components/graficos/anillo/anillo.component';
-import { CurvasComponent } from './components/graficos/curvas/curvas.component';
-import { EstadisticasComponent } from './usuariomuni/estadisticas/estadisticas.component';
+//import { SocketIoModule, SocketIoConfig } from 'ng-socket-io
+
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
         LoadingComponent,
-        MensajeAlertComponent,
-        BarrasComponent,
-        SectoresComponent,
-        AnilloComponent,
-        CurvasComponent,
-        EstadisticasComponent,
+        MensajeAlertComponent
     ], entryComponents:[LoadingComponent, MensajeAlertComponent],
     imports: [
         MapaModule,
@@ -90,10 +85,12 @@ import { EstadisticasComponent } from './usuariomuni/estadisticas/estadisticas.c
         MatSnackBarModule,
 		MatButtonModule,
         MatDialogModule,
+        MatTooltipModule,
         MatNativeDateModule,
         MatListModule,
         MatGridListModule,
         MatCheckboxModule,
+        MatSidenavModule,
         AdminModule, 
         UsuarioMuniModule,   
         HttpClientModule,
@@ -101,6 +98,7 @@ import { EstadisticasComponent } from './usuariomuni/estadisticas/estadisticas.c
         MatTableModule,
         MatInputModule,
         MatDatepickerModule,
+        ChartsModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyD6l0Wq6cXBaDqF7I03FxvG-6-Py0Ib0F4',
             libraries: ['places','drawing']

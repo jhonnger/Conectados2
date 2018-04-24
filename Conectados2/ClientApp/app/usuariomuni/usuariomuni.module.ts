@@ -19,11 +19,16 @@ import { MatButtonModule } from '@angular/material/button'
 import { ChatService } from "../services/chat.service";
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { TipoDenunciaService } from '../services/tipo-denuncia.service';
-import { MatInputModule } from '@angular/material';
+import { MatInputModule, MatTooltipModule } from '@angular/material';
 import { UsuarioMuniComponent } from './usuario-muni.component';
 import { MapaComponent } from '../components/mapa/mapa.component';
 import { MapaModule } from '../components/mapa/mapa.module';
-
+import { BarrasComponent } from '../components/graficos/barras/barras.component';
+import { SectoresComponent } from '../components/graficos/sectores/sectores.component';
+import { AnilloComponent } from '../components/graficos/anillo/anillo.component';
+import { CurvasComponent } from '../components/graficos/curvas/curvas.component';
+import { EstadisticasComponent } from '../usuariomuni/estadisticas/estadisticas.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
     declarations: [
@@ -32,7 +37,11 @@ import { MapaModule } from '../components/mapa/mapa.module';
         NuevocasoComponent,
         UltialertaComponent,
         UsuarioMuniComponent,
-        
+        BarrasComponent,
+        SectoresComponent,
+        AnilloComponent,
+        CurvasComponent,
+        EstadisticasComponent,
     ], entryComponents:[NuevocasoComponent],
     exports: [
         
@@ -48,6 +57,8 @@ import { MapaModule } from '../components/mapa/mapa.module';
         ReactiveFormsModule,
         MatButtonModule,
         MatDatepickerModule,
+        MatTooltipModule,
+        ChartsModule,
         USUARIOMUNI_ROUTES,
         MapaModule
         

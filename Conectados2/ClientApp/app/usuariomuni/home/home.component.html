@@ -2,12 +2,27 @@
     <app-ultialerta></app-ultialerta>
     <mat-tab-group (selectedTabChange)="cambio($event)" class="demo-tab-group">
         <mat-tab label="Monitoreo">
-            <div class="home-map">
-                <app-mapa [lat]="municipalidad.ubicacion.latitud" [lng]="municipalidad.ubicacion.longitud" [controls]="controlsMap" (idle)="idleFunction()" #mapa></app-mapa>
-                <!--
-        <agm-map #mapMonitoreo [zoom]="13" [latitude]="lat" [longitude]="lng">
-          <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-        </agm-map>-->
+            <div class="row">
+                <div class="col-sm-1" style="padding: 0;">
+                    <button (click)="openDialog()" mat-raised-button color="warn" matTooltip="Nuevo Caso!">Registro</button>
+                    <button mat-raised-button matTooltip="Waze" matTooltipShowDelay="500"><img src="/assets/img/waze.png" width="50" alt="waze icon"></button>
+                    <button mat-raised-button matTooltip="Marcador"><img src="/assets/img/markergreen.png" width="50" alt="waze icon"></button>
+                    <button mat-raised-button matTooltip="Base de Policia"><img src="/assets/img/basepoli.png" width="50" alt="waze icon"></button>
+                    <button mat-raised-button matTooltip="Policia Transito"><img src="/assets/img/transito.png" width="50" alt="waze icon"></button>
+                    <button mat-raised-button matTooltip="Serenazgo"><img src="/assets/img/serenazgo.png" width="50" alt="waze icon"></button>
+                    <button mat-raised-button matTooltip="Motocicleta Policia"><img src="/assets/img/moto.png" width="50" alt="waze icon"></button>
+                    <button mat-raised-button matTooltip="Patrullero Policia"><img src="/assets/img/camioneta.png" width="50" alt="waze icon"></button>
+                    <button mat-raised-button matTooltip="Ambulancia"><img src="/assets/img/ambulancia.png" width="50" alt="waze icon"></button>
+                </div>
+                <div class="col-sm-11" style="padding: 0;">
+                    <div class="home-map">
+                        <app-mapa [lat]="municipalidad.ubicacion.latitud" [lng]="municipalidad.ubicacion.longitud" [controls]="controlsMap" (idle)="idleFunction()" #mapa></app-mapa>
+                        <!--
+                        <agm-map #mapMonitoreo [zoom]="13" [latitude]="lat" [longitude]="lng">
+                        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                        </agm-map>-->
+                    </div>
+                </div>
             </div>
         </mat-tab>
         <mat-tab label="Unidades">
@@ -23,29 +38,10 @@
             </div>
         </mat-tab>
         <mat-tab label="Estadisticas">
-            <div class="demo-tab-content">
-                holi xd
+            <div>
+                <app-estadisticas></app-estadisticas>
             </div>
         </mat-tab>
-
-
     </mat-tab-group>
-    <div class="leyenda-mapa">
-        <div style="position:relative;">
-
-            <button mat-raised-button><img src="/assets/img/waze.png" alt="waze icon">Waze</button>
-            <button mat-raised-button><img src="/assets/img/markergreen.png" alt="marker green">Alerta Muni</button>
-            <button mat-raised-button><img src="/assets/img/basepoli.png" alt="marker green">Radio Policia</button>
-            <button mat-raised-button><img src="/assets/img/transito.png" alt="marker green">Radio Transito</button>
-            <button mat-raised-button><img src="/assets/img/serenazgo.png" alt="marker green">Radio Serenazgo</button>
-            <button mat-raised-button><img src="/assets/img/moto.png" alt="marker green">Motocicleta</button>
-            <button mat-raised-button><img src="/assets/img/camioneta.png" alt="marker green">Camioneta</button>
-            <button mat-raised-button><img src="/assets/img/ambulancia.png" alt="marker green">Ambulancia</button>
-
-            <div class="btn-nuevo-caso">
-                <button (click)="openDialog()" mat-raised-button color="warn">Nuevo caso</button>
-            </div>
-        </div>
-    </div>
     <app-chat></app-chat>
 </div>
