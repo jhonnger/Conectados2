@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -34,6 +35,8 @@ import { JwtHelper } from 'angular2-jwt';
 import {AuthAdminGuardService as AdminGuard} from './services/auth-guard.service';
 import { AuthMunicipalGuardService as MunicipalGuard } from "./services/auth-municipal.service";
 
+import { ChartsModule } from 'ng2-charts';
+
 import { APP_ROUTES } from './app.routes';
 import { UsuarioMuniComponent } from './usuariomuni/usuario-muni.component';
 import { AdminComponent } from './admin/admin.component';
@@ -47,15 +50,27 @@ import { MensajeAlertComponent } from './components/mensajeAlert/mensaje-alert.c
 import {MapaComponent} from './components/mapa/mapa.component';
 import {NavegacionComponent} from './components/navegacion/navegacion.component';
 
+import { BarrasComponent } from './components/graficos/barras/barras.component';
+
 
 //Socket
 //import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
+import { SectoresComponent } from './components/graficos/sectores/sectores.component';
+import { AnilloComponent } from './components/graficos/anillo/anillo.component';
+import { CurvasComponent } from './components/graficos/curvas/curvas.component';
+import { EstadisticasComponent } from './usuariomuni/estadisticas/estadisticas.component';
+
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
         LoadingComponent,
         MensajeAlertComponent,
+        BarrasComponent,
+        SectoresComponent,
+        AnilloComponent,
+        CurvasComponent,
+        EstadisticasComponent,
     ], entryComponents:[LoadingComponent, MensajeAlertComponent],
     imports: [
         
@@ -82,7 +97,8 @@ import {NavegacionComponent} from './components/navegacion/navegacion.component'
         MatMenuModule,
         MatTableModule,
         MatInputModule,
-        MatDatepickerModule
+        MatDatepickerModule,
+        ChartsModule,
         // SocketIoModule.forRoot(config) 
     ],
     providers:[
