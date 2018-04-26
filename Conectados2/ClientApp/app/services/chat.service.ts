@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 // tslint:disable-next-line:import-blacklist
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 //import { map } ;
 import  'rxjs/add/operator/map';
 
@@ -11,8 +11,9 @@ export class ChatService {
   UrlChat: string = 'http://localhost:5000/api/chat';
   res:any = [];
   //ws: WebSocket;
-
-  constructor(private http: Http) { }
+  //items: Observable<any[]>;
+  constructor(private http: Http){ 
+  }
   
   createObservableSocket(url: string) : Observable<string>{
    // this.ws = new WebSocket(url);

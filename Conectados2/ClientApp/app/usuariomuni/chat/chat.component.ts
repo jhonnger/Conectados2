@@ -88,14 +88,14 @@ export class ChatComponent implements OnInit {
   }
 
   onEnter(event: any, value: any, texto: any) {
-    console.log(value);
+    
     let usuario_id = JSON.parse(this.chatService.getMemoria('usuario') || '');
     const mensaje = {'username': usuario_id.usuario, 'texto': '', 'hora': new Date().getHours()};
     if (event.key === 'Enter') {
       mensaje.texto = texto;
       value.mensaje.push(mensaje);
       this.text = '';
-      
+      console.log(value);
     }
 
   }
